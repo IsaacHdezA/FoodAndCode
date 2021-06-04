@@ -15,13 +15,12 @@ app.use(morgan('tiny'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use(express.static(path.join(__dirname, 'uploads')));
+app.use(express.static(path.join(__dirname, 'models')));
+
 
 app.use("/mesero",  mesero_ruta);
-app.use("/",(req,res)=>{
 
-    res.status(200).send({mensaje:"Hola gente"});
-});
+
 
 
 module.exports = app;
