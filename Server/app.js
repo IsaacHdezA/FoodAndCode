@@ -15,7 +15,7 @@ app.use(morgan('tiny'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use(express.static(path.join(__dirname, 'models')));
+app.use(express.static(path.join(__dirname, 'uploads')));
 
 
 app.use("/mesero",  mesero_ruta);
