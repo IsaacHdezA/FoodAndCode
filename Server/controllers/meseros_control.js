@@ -4,7 +4,7 @@ var mesero=require('../models/meseros');
 var mesero_control= () => {};
 
 
-mesero_control.nuevo=async (req,res)=>{
+mesero_control.nuevo= (req,res)=>{
     
     console.log(req.file.filename);
     let body=req.body;
@@ -32,7 +32,7 @@ mesero_control.nuevo=async (req,res)=>{
     
 };
 
-mesero_control.seleccionarTodos=async (req,res)=>{
+mesero_control.seleccionarTodos=(req,res)=>{
     mesero.seleccionarTodos([],(err,rows)=>{
         if(err){
             res.status(500).send({message:err});

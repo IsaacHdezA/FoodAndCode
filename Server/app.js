@@ -19,7 +19,7 @@ app.use(express.static(path.join(__dirname, 'uploads')));
 
 
 app.use("/mesero",  mesero_ruta);
-
+app.get('/favicon.ico', (req, res) => res.status(204));
 
 
 
