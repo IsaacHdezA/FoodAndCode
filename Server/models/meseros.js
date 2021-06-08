@@ -1,4 +1,4 @@
-const conn=require('./connection2');
+const conn=require('./connection');
 
 let mesero=()=>{};
 
