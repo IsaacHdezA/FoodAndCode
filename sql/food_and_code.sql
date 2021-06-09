@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS mesero(
     mro_correo VARCHAR(40) NULL,
     mro_sueldo DECIMAL(4,2) NOT NULL,
     mro_domicilio VARCHAR(100) NOT NULL,
-    mro_estado CHAR(1) NOT NULL DEFAULT 'A',
+    mro_estado CHAR(1) NOT NULL DEFAULT 'a',
     mro_foto VARCHAR(255) NULL,
     PRIMARY KEY (mro_id)
 );
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS categoria(
 CREATE TABLE IF NOT EXISTS mesa(
 	mes_id TINYINT UNSIGNED AUTO_INCREMENT,
     mes_capacidad TINYINT NOT NULL,
-    mes_disponible CHAR(1) NOT NULL DEFAULT 'A',
+    mes_disponible CHAR(1) NOT NULL DEFAULT 'a',
     PRIMARY KEY (mes_id)
 );
 
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS orden(
     ord_mro_id TINYINT UNSIGNED NOT NULL,
     ord_mes_id TINYINT UNSIGNED NOT NULL,
     ord_fecha_hora TIMESTAMP NOT NULL,
-    ord_estado CHAR(1) NOT NULL DEFAULT 'A', # DEFAULT CURRENT_TIMESTAMP(),
+    ord_estado CHAR(1) NOT NULL DEFAULT 'a', # DEFAULT CURRENT_TIMESTAMP(),
     CONSTRAINT fk_mesero_orden
 		FOREIGN KEY (ord_mro_id)
         REFERENCES mesero (mro_id)
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS comida(
     com_nombre VARCHAR(20) NOT NULL,
     com_precio DECIMAL(4,2) NOT NULL,
     com_descripcion TEXT NULL,
-    com_estado CHAR(1) NOT NULL DEFAULT 'A',
+    com_estado CHAR(1) NOT NULL DEFAULT 'a',
     UNIQUE (com_nombre),
     CONSTRAINT fk_categoria_comida
 		FOREIGN KEY (com_cat_id)
