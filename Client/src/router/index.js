@@ -10,6 +10,21 @@ const routes = [
     name: "table",
     component: Table,
   },
+  {
+    path: "/order",
+    name: "Order",
+    component: () => import("../views/Order.vue"),
+  },
+  {
+    path: "/food",
+    name: "Food",
+    component: () => import("../views/Food.vue"),
+  },
+  {
+    path: "/employee",
+    name: "Employee",
+    component: () => import("../views/Employee.vue"),
+  },
 ];
 
 const router = new VueRouter({
