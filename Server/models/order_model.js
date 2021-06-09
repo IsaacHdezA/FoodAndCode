@@ -1,6 +1,5 @@
 const connection = require("./connection.js");
-
-let order = () => {};
+const order = () => {};
 
 order.allOrders = (data, callback) => {
   connection.query("SELECT * FROM", data, callback);
