@@ -7,7 +7,11 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "table",
+    redirect: "/table",
+  },
+  {
+    path: "/table",
+    name: "Table",
     component: Table,
   },
   {
