@@ -1,0 +1,23 @@
+/* FONT */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@300;400&display=swap");
+
+/* GENERAL */
+
+/* APP */
+.application {
+  font-family: "Poppins", sans-serif;
+  /* font-family: "Kumbh Sans", sans-serif; */
+  margin: 0.5em 1em;
+}
+
+.list-item {
+  height: 75px;
+}
+
+.list-item-icon-top {
+  padding: 10px 0;
+}
+.list-item-icon {
+  padding: 30px 0;
+}
