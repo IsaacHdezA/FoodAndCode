@@ -4,7 +4,7 @@
     <br />
     <template>
       <v-card color="grey lighten-4">
-        <v-toolbar flat dense color="primary" dark>
+        <v-toolbar flat dense color="primary">
           <v-toolbar-title>Agregar orden</v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
@@ -56,44 +56,35 @@
     </template>
     <br />
     <template>
-      <v-data-iterator
-        :items="orders"
-        :sort-by="sortBy.toLowerCase()"
-        hide-default-footer
-      >
+      <v-data-iterator :items="activeOrders" hide-default-footer>
         <template v-slot:header>
-          <v-toolbar dark color="primary" class="mb-1 container-inside">
-            <template>
-              <v-spacer></v-spacer>
-              <v-select
-                v-model="sortBy"
-                flat
-                solo-inverted
-                hide-details
-                :items="keys"
-                prepend-inner-icon="mdi-magnify"
-                label="Sort by"
-              ></v-select>
-              <v-spacer></v-spacer>
-            </template>
+          <v-toolbar class="mb-2" color="primary">
+            <v-toolbar-title>Órdenes activas</v-toolbar-title>
           </v-toolbar>
         </template>
         <template>
           <v-row>
             <v-col
-              v-for="order in orders"
-              :key="order.ord_id"
+              v-for="(order, index) in activeOrders"
+              v-bind:key="index"
               cols="12"
               sm="6"
               md="4"
-              lg="3"
+              lg="4"
             >
-              <v-card>
+              <v-card dense color="primary">
                 <v-card-title class="subheading font-weight-bold">
                   Mesa {{ order.mes_id }}
+                  <v-spacer></v-spacer>
+                  <v-btn icon color="black">
+                    <v-icon>fas fa-eye</v-icon>
+                  </v-btn>
+                  <v-btn icon color="black" @click="openPaymentDialog(order)">
+                    <v-icon size="21">fas fa-money-bill-alt</v-icon>
+                  </v-btn>
                 </v-card-title>
                 <v-divider></v-divider>
-                <v-list dense class="container-inside">
+                <v-list dense class="container-inside" color="grey lighten-4">
                   <v-list-item>
                     <v-list-item-content>Mesero a cargo:</v-list-item-content>
                     <v-list-item-content class="align-end">
@@ -124,7 +115,60 @@
           </v-row>
         </template>
       </v-data-iterator>
-      <v-btn @click="pDialog = true">open dialog</v-btn>
+      <br />
+      <v-data-iterator :items="waitingOrders" hide-default-footer>
+        <template v-slot:header>
+          <v-toolbar class="mb-2" color="secondary">
+            <v-toolbar-title>Órdenes pendientes</v-toolbar-title>
+          </v-toolbar>
+        </template>
+        <template>
+          <v-row>
+            <v-col
+              v-for="(order, index) in waitingOrders"
+              v-bind:key="index"
+              cols="12"
+              sm="6"
+              md="4"
+              lg="4"
+            >
+              <v-card dense color="secondary">
+                <v-card-title class="subheading font-weight-bold">
+                  Mesa {{ order.mes_id }}
+                  <v-spacer></v-spacer>
+                  <v-btn icon color="black">
+                    <v-icon>fas fa-eye</v-icon>
+                  </v-btn>
+                  <v-btn icon color="black" @click="deleteOrder(order)">
+                    <v-icon size="21">fas fa-trash</v-icon>
+                  </v-btn>
+                </v-card-title>
+                <v-divider></v-divider>
+                <v-list dense class="container-inside" color="grey lighten-4">
+                  <v-list-item>
+                    <v-list-item-content>Mesero a cargo:</v-list-item-content>
+                    <v-list-item-content class="align-end">
+                      {{ order.mro_nombre }}
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-content>Fecha y hora:</v-list-item-content>
+                    <v-list-item-content class="align-end">
+                      {{ order.ord_fecha_hora }}
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-content>Estado:</v-list-item-content>
+                    <v-list-item-content class="align-end">
+                      Pendiente
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </v-card>
+            </v-col>
+          </v-row>
+        </template>
+      </v-data-iterator>
       <v-dialog v-model="pDialog" max-width="500px">
         <PaymentDialog />
       </v-dialog>
@@ -143,13 +187,11 @@ export default {
   name: "Order",
 
   data: () => ({
-    filter: {},
-    sortBy: "name",
-    keys: ["Name", "Calories", "Fat"],
-
-    orders: [],
+    activeOrders: [],
+    waitingOrders: [],
     employees: [],
     tables: [],
+    idPayment: "",
     newOrder: {
       mro_id: "",
       mes_id: "",
@@ -161,47 +203,34 @@ export default {
   }),
 
   watch: {
-    /* nlDialog(isOpen) {
+    /* pDialog(isOpen) {
       !isOpen ? (this.newLoan = {}) : this.getUsers();
     },
 
-    nldDialog(isOpen) {
+    tdDialog(isOpen) {
       !isOpen ? (this.lDetails = {}) : this.getBooks();
     }, */
   },
 
   created() {
-    this.getOrders();
+    this.cancelAddOrder();
     this.getActiveEmployees();
     this.getActiveTables();
-    this.cancelAddOrder();
-  },
-
-  computed: {
-    numberOfPages() {
-      return Math.ceil(this.orders.length / this.itemsPerPage);
-    },
-
-    filteredKeys() {
-      return this.keys.filter((key) => key !== "Name");
-    },
+    this.getActiveOrders();
+    this.getWaitingOrders();
   },
 
   methods: {
-    nextPage() {
-      if (this.page + 1 <= this.numberOfPages) this.page += 1;
-    },
-    formerPage() {
-      if (this.page - 1 >= 1) this.page -= 1;
-    },
-    updateItemsPerPage(number) {
-      this.itemsPerPage = number;
+    async getActiveOrders() {
+      const apiData = await this.axios.get("order/allActiveOrders/");
+
+      this.activeOrders = apiData.data;
     },
 
-    async getOrders() {
-      const apiData = await this.axios.get("order/allOrders/");
+    async getWaitingOrders() {
+      const apiData = await this.axios.get("order/allWaitingOrders/");
 
-      this.orders = apiData.data;
+      this.waitingOrders = apiData.data;
     },
 
     async getActiveEmployees() {
@@ -229,16 +258,42 @@ export default {
       this.loadingAddOrder = true;
       await this.axios.post("order/addOrder/", this.newOrder);
 
-      // actualizar a mesa no disponible
+      // PROCEDIMIENTOS DE TRIGGERS
+      // mesaOcupada
+      // mesaDisponible
+      // ordenPendiente
+      // ordenPagada
 
-      this.getOrders();
+      // DIALOGO DE VER MESA / ORDEN / SUBORDEN
+
+      this.getWaitingOrders();
+      this.getActiveOrders();
       this.cancelAddOrder();
       this.loader = null;
       this.loadingAddOrder = false;
     },
 
+    async deleteOrder(order) {
+      const body = { ord_id: order.ord_id };
+      await this.axios.post("order/deleteOrder/", body);
+
+      this.getWaitingOrders();
+      this.getActiveOrders();
+      this.cancelAddOrder();
+    },
+
     cancelAddOrder() {
       this.newOrder = {};
+    },
+
+    cancelPayment() {
+      this.idPayment = "";
+      this.pDialog = false;
+    },
+
+    openPaymentDialog(order) {
+      this.idPayment = order.pag_ord_id;
+      this.pDialog = true;
     },
   },
 
