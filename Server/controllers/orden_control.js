@@ -64,35 +64,32 @@ orderControl.allOrders = (request, result) => {
   });
 };
 
+orderControl.allEmployees = (request, result) => {
+  orderModel.allEmployees([], (error, rows) => {
+    if (error) result.status(500).send({ message: error });
+    else result.status(200).send(rows);
+  });
+};
+
+orderControl.allTables = (request, result) => {
+  orderModel.allTables([], (error, rows) => {
+    if (error) result.status(500).send({ message: error });
+    else result.status(200).send(rows);
+  });
+};
+
 orderControl.addOrder = (request, result) => {
   const body = request.body;
-  /* if (
-    body.mro_nombre &&
-    body.mro_telefono &&
-    body.mro_correo &&
-    body.mro_sueldo &&
-    body.mro_domicilio &&
-    body.mro_foto
-  ) { */ // VALIDACION DE DATOS
-  orderModel.addOrder(
-    [
-      body.mro_nombre,
-      body.mro_telefono,
-      body.mro_correo,
-      body.mro_sueldo,
-      body.mro_domicilio,
-      request.file.filename,
-    ],
-    (error, rows) => {
+  if (body.mro_id && body.mes_id) {
+    orderModel.addOrder([body.mro_id, body.mes_id], (error, rows) => {
       if (error) result.status(500).send({ message: error });
       else {
         if (rows.affectedRows > 0)
           result.status(202).send({ message: "Orden registrada" });
         else result.status(500).send({ message: "No se registró la orden" });
       }
-    }
-  );
-  /* } else result.status(401).send({ message: "Peticion incorrecta" }); */ // VALIDACION DE DATOS
+    });
+  } else result.status(401).send({ message: "Peticion de orden incorrecta" });
 };
 
 module.exports = orderControl;
