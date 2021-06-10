@@ -12,4 +12,8 @@ comida.seleccionar_todos = (datos,cb) => {
      conn.query("SELECT * FROM comida;",[],cb);
 };
 
+comida.eliminar = (datos, cb) => {
+    conn.query("DELETE FROM comida WHERE com_id = ?;", datos, cb);
+};
+
 module.exports = comida;

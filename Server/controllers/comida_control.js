@@ -35,4 +35,20 @@ comida_control.agregar_nuevo = (request, result) => {
   } else result.status(401).send({ message: "Peticion incorrecta" }); // VALIDACION DE DATOS
 };
 
+comida_control.eliminar_comida = (request, result) => {
+  const body = request.body;
+  if (body.com_id) { // VALIDACIÓN DE DATOS
+    comida_model.eliminar([body.com_id],
+      (error, rows) => {
+        if (error) result.status(500).send({ message: error });
+        else {
+          if (rows.affectedRows > 0)
+            result.status(202).send({ message: "Orden registrada" });
+          else result.status(500).send({ message: "No se registró la orden" });
+        }
+      }
+    );
+  } else result.status(401).send({ message: "Peticion incorrecta" }); // VALIDACION DE DATOS
+}
+
 module.exports = comida_control;
