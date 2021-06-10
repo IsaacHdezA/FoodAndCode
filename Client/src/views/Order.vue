@@ -28,8 +28,19 @@
                 </v-select>
               </v-col>
               <v-col cols="1">
-                <v-btn color="accent" @click="addOrder()">
+                <v-btn
+                  class="ma-2"
+                  :loading="loadingAddOrder"
+                  :disabled="loadingAddOrder"
+                  color="accent"
+                  @click="addOrder()"
+                >
                   Agregar
+                  <template v-slot:loader>
+                    <span class="custom-loader">
+                      <v-icon light>fas fa-sync-alt</v-icon>
+                    </span>
+                  </template>
                 </v-btn>
               </v-col>
             </v-row>
@@ -62,6 +73,8 @@ export default {
     },
     pDialog: false,
     tDialog: false,
+    loader: null,
+    loadingAddOrder: false,
   }),
 
   watch: {
@@ -109,12 +122,16 @@ export default {
     },
 
     async addOrder() {
+      this.loader = "loadingAddOrder";
+      this.loadingAddOrder = true;
       await this.axios.post("orders/addOrder/", this.newOrder);
 
       // actualizar a mesa no disponible
 
       this.getOrders();
       this.cancelAddOrder();
+      this.loader = null;
+      this.loadingAddOrder = false;
     },
 
     cancelAddOrder() {
