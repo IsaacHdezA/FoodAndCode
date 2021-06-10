@@ -1,13 +1,13 @@
-var express = require("express");
-var path = require("path");
-var morgan = require("morgan");
-var cors = require("cors");
-var app = express();
+const express = require("express");
+const path = require("path");
+const morgan = require("morgan");
+const cors = require("cors");
+const app = express();
 
-var mesero_ruta = require("./routes/mesero_ruta");
-var comida_ruta = require("./routes/comida_ruta");
-//var order_route = require("./routes/order_route.js");
-var payment_route = require("./routes/payment_route.js");
+const mesero_ruta = require("./routes/mesero_ruta");
+const comida_ruta = require("./routes/comida_ruta");
+//const order_route = require("./routes/order_route.js");
+const payment_route = require("./routes/payment_route.js");
 
 app.use(cors());
 app.use(morgan("tiny"));
