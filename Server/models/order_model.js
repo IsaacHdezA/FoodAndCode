@@ -14,12 +14,16 @@ order.allEmployees = (data, callback) => {
 };
 
 order.allTables = (data, callback) => {
-  connection.query("SELECT mes_id FROM mesa", data, callback);
+  connection.query(
+    "SELECT mes_id FROM mesa WHERE mes_disponible = 'a'",
+    data,
+    callback
+  );
 };
 
 order.addOrder = (data, callback) => {
   connection.query(
-    "INSERT INTO order(ord_mro_id, ord_mes_id) VALUES (?, ?)",
+    "INSERT INTO orden(ord_mro_id, ord_mes_id) VALUES(?, ?)",
     data,
     callback
   );
