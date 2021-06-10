@@ -1,11 +1,15 @@
 <template>
   <v-app>
     <NavigationDrawer />
-    <v-content>
+    <v-content class="application">
       <router-view />
     </v-content>
   </v-app>
 </template>
+
+<style lang="css">
+@import "./styles/app.css";
+</style>
 
 <script>
 import NavigationDrawer from "@/components/NavigationDrawer";
