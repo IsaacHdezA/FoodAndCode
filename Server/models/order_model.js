@@ -36,4 +36,7 @@ order.addOrder = (data, callback) =>
     callback
   );
 
+order.deleteOrder = (data, callback) =>
+  connection.query("DELETE FROM orden WHERE ord_id = ?", data, callback);
+
 module.exports = order;

@@ -7,5 +7,6 @@ router.get("/allWaitingOrders", orderControl.allWaitingOrders);
 router.get("/allActiveEmployees", orderControl.allActiveEmployees);
 router.get("/allActiveTables", orderControl.allActiveTables);
 router.post("/addOrder", orderControl.addOrder);
+router.post("/deleteOrder", orderControl.deleteOrder);
 
 module.exports = router;
