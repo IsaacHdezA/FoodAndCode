@@ -33,8 +33,8 @@ CREATE TABLE IF NOT EXISTS orden(
 	ord_id INT UNSIGNED AUTO_INCREMENT,
     ord_mro_id TINYINT UNSIGNED NOT NULL,
     ord_mes_id TINYINT UNSIGNED NOT NULL,
-    ord_fecha_hora TIMESTAMP NOT NULL,
-    ord_estado CHAR(1) NOT NULL DEFAULT 'a', # DEFAULT CURRENT_TIMESTAMP(),
+    ord_fecha_hora TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+    ord_estado CHAR(1) NOT NULL DEFAULT 'a', 
     CONSTRAINT fk_mesero_orden
 		FOREIGN KEY (ord_mro_id)
         REFERENCES mesero (mro_id)
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS pago(
 );
 
 CREATE TABLE IF NOT EXISTS comida(
-	com_id TINYINT UNSIGNED AUTO_INCREMENT,
+    com_id TINYINT UNSIGNED AUTO_INCREMENT,
     com_cat_id TINYINT UNSIGNED NOT NULL,
     com_nombre VARCHAR(20) NOT NULL,
     com_precio DECIMAL(4,2) NOT NULL,
