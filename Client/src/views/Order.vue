@@ -184,6 +184,10 @@
           </v-row>
         </template>
       </v-data-iterator>
+      <v-btn @click="pDialog = true">open dialog</v-btn>
+      <v-dialog v-model="pDialog" max-width="500px">
+        <PaymentDialog />
+      </v-dialog>
     </template>
   </v-container>
 </template>
@@ -193,6 +197,8 @@
 </style>
 
 <script>
+import PaymentDialog from "@/components/PaymentDialog";
+
 export default {
   name: "Order",
 
@@ -322,6 +328,8 @@ export default {
     },
   },
 
-  components: {},
+  components: {
+    PaymentDialog,
+  },
 };
 </script>
