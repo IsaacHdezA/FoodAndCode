@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS suborden(
 	PRIMARY KEY (sub_id)
 );
 
-DELIMITER $$
+/* DELIMITER $$
 
 CREATE TRIGGER mesaOcupada AFTER INSERT ON orden
     FOR EACH ROW
@@ -130,4 +130,4 @@ CREATE TRIGGER ordenPagada AFTER INSERT ON pago
     END;
 $$
 
-DELIMITER ;
+DELIMITER ; */
