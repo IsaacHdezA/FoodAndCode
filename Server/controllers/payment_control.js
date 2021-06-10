@@ -1,20 +1,35 @@
 const paymentModel = require("../models/payment_model.js");
 const paymentControl = () => {};
 
+paymentControl.showAllPayments = (request, result) => {
+	paymentModel.showAllPayments([], (error, rows) => {
+		if(error) result.status(500).send({ message: error });
+		else result.status(200).send(rows);
+	});
+};
+
 paymentControl.showOrdersPerTable = (request, result) => {
 	const body = request.body;
-		paymentModel.showOrdersPerTable([25], (error, rows) => {
-			if(error) result.status(500).send({ message: error });
-			else result.status(200).send(rows);
-		});
+	paymentModel.showOrdersPerTable([body.sub_ord_id], (error, rows) => {
+		if(error) result.status(500).send({ message: error });
+		else result.status(200).send(rows);
+	});
 };
 
 paymentControl.orderTotal = (request, result) => {
 	const body = request.body;
-		paymentModel.orderTotal([25], (error, rows) => {
-			if(error) result.status(500).send({ message: error });
-			else result.status(200).send(rows);
-		});
+	paymentModel.orderTotal([body.sub_ord_id], (error, rows) => {
+		if(error) result.status(500).send({ message: error });
+		else result.status(200).send(rows);
+	});
+};
+
+paymentControl.insertPayment = (request, result) => {
+	const body = request.body;
+	paymentModel.insertPayment([body.sub_ord_id, body.sub_ord_id, body.sub_ord_id, body.pag_propina, body.pag_tipo_pago], (error, rows) => {
+		if(error) result.status(500).send({ message: error });
+		else result.status(200).send(rows);
+	});
 };
 
 module.exports = paymentControl;
