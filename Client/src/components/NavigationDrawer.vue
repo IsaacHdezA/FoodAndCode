@@ -17,7 +17,7 @@
       <v-list-item class="px-2">
         <v-spacer></v-spacer>
         <v-list-item-icon class="list-item-icon-top">
-          <v-icon size="30">fas fa-utensils </v-icon>
+          <v-icon size="30">fas fa-code </v-icon>
         </v-list-item-icon>
         <v-spacer></v-spacer>
 
@@ -58,10 +58,10 @@ export default {
     return {
       drawer: true,
       items: [
-        { title: "Mesas", icon: "fas fa-table", to: "Table" },
-        { title: "Ordenes", icon: "fas fa-align-left", to: "Order" },
+        { title: "Mesas", icon: "fas fa-th", to: "Table" },
+        { title: "Ordenes", icon: "fas fa-list-alt", to: "Order" },
         { title: "Comida", icon: "fas fa-utensils", to: "Food" },
-        { title: "Empleados", icon: "fas fa-user", to: "Employee" },
+        { title: "Empleados", icon: "fas fa-users", to: "Employee" },
       ],
       mini: true,
     };
