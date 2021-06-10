@@ -1,29 +1,26 @@
 const orderModel = require("../models/order_model.js");
 const orderControl = () => {};
 
-orderControl.allOrders = (request, result) => {
+orderControl.allOrders = (request, result) =>
   orderModel.allOrders([], (error, rows) =>
     error
       ? result.status(500).send({ message: error })
       : result.status(200).send(rows)
   );
-};
 
-orderControl.allActiveEmployees = (request, result) => {
+orderControl.allActiveEmployees = (request, result) =>
   orderModel.allActiveEmployees([], (error, rows) =>
     error
       ? result.status(500).send({ message: error })
       : result.status(200).send(rows)
   );
-};
 
-orderControl.allActiveTables = (request, result) => {
+orderControl.allActiveTables = (request, result) =>
   orderModel.allActiveTables([], (error, rows) =>
     error
       ? result.status(500).send({ message: error })
       : result.status(200).send(rows)
   );
-};
 
 orderControl.addOrder = (request, result) => {
   const body = request.body;
