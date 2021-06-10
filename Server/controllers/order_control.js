@@ -1,8 +1,15 @@
 const orderModel = require("../models/order_model.js");
 const orderControl = () => {};
 
-orderControl.allOrders = (request, result) =>
-  orderModel.allOrders([], (error, rows) =>
+orderControl.allActiveOrders = (request, result) =>
+  orderModel.allActiveOrders([], (error, rows) =>
+    error
+      ? result.status(500).send({ message: error })
+      : result.status(200).send(rows)
+  );
+
+orderControl.allWaitingOrders = (request, result) =>
+  orderModel.allWaitingOrders([], (error, rows) =>
     error
       ? result.status(500).send({ message: error })
       : result.status(200).send(rows)
