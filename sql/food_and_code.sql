@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS orden(
     ord_mro_id TINYINT UNSIGNED NOT NULL,
     ord_mes_id TINYINT UNSIGNED NOT NULL,
     ord_fecha_hora TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-    ord_estado CHAR(1) NOT NULL DEFAULT 'a', 
+    ord_estado CHAR(1) NOT NULL DEFAULT 'a',
     CONSTRAINT fk_mesero_orden
 		FOREIGN KEY (ord_mro_id)
         REFERENCES mesero (mro_id)
@@ -97,3 +97,27 @@ CREATE TABLE IF NOT EXISTS suborden(
         ON DELETE CASCADE,
 	PRIMARY KEY (sub_id)
 );
+
+DELIMITER $$
+
+CREATE TRIGGER mesaOcupada AFTER INSERT ON orden
+    BEGIN
+        UPDATE mesa SET mes_disponible = 'i' WHERE mes_id = old.ord_mes_id
+    END;
+$$
+
+CREATE TRIGGER mesaDisponible AFTER UPDATE ON orden
+    BEGIN
+        IF new.ord_estado = 'i' THEN
+            UPDATE mesa SET mes_disponible = 'a' WHERE mes_id = new.ord_mes_id
+        END IF;
+    END;
+$$
+
+CREATE TRIGGER ordenPagada AFTER INSERT ON pago
+    BEGIN
+        UPDATE orden SET ord_estado = 'i' WHERE ord_id = new.pag_ord_id
+    END;
+$$
+
+DELIMITER ;
