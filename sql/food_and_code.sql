@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS orden(
     ord_mro_id TINYINT UNSIGNED NOT NULL,
     ord_mes_id TINYINT UNSIGNED NOT NULL,
     ord_fecha_hora TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-    ord_estado CHAR(1) NOT NULL DEFAULT 'a',
+    ord_estado CHAR(1) NOT NULL DEFAULT 'w',
     CONSTRAINT fk_mesero_orden
 		FOREIGN KEY (ord_mro_id)
         REFERENCES mesero (mro_id)
