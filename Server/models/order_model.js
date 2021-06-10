@@ -10,7 +10,11 @@ order.allOrders = (data, callback) => {
 };
 
 order.allEmployees = (data, callback) => {
-  connection.query("SELECT mro_id, mro_nombre FROM mesero", data, callback);
+  connection.query(
+    "SELECT mro_id, mro_nombre FROM mesero WHERE mro_estado = 'a'",
+    data,
+    callback
+  );
 };
 
 order.allTables = (data, callback) => {
