@@ -1,38 +1,51 @@
 <template>
   <nav>
-    <v-navigation-drawer
+    <!-- <v-navigation-drawer
       v-model="drawer"
       :mini-variant.sync="mini"
       permanent
       app
+    > -->
+    <!-- <v-navigation-drawer v-model="drawer" :mini-variant="mini" permanent app> -->
+    <v-navigation-drawer
+      v-model="drawer"
+      width="80"
+      color="primary"
+      permanent
+      app
     >
       <v-list-item class="px-2">
-        <v-list-item-avatar>
-          <v-icon>fas fa-utensils </v-icon>
-        </v-list-item-avatar>
+        <v-spacer></v-spacer>
+        <v-list-item-icon class="list-item-icon-top">
+          <v-icon size="30">fas fa-utensils </v-icon>
+        </v-list-item-icon>
+        <v-spacer></v-spacer>
 
-        <v-list-item-title>Food and Code</v-list-item-title>
+        <!-- <v-list-item-title>Food and Code</v-list-item-title> -->
 
-        <v-btn icon @click.stop="mini = !mini">
+        <!-- <v-btn icon @click.stop="mini = !mini">
           <v-icon>fas fa-chevron-left</v-icon>
-        </v-btn>
+        </v-btn> -->
       </v-list-item>
 
       <v-divider></v-divider>
 
-      <v-list dense shaped>
+      <v-list dense>
         <v-list-item
           v-for="item in items"
           :key="item.title"
           link
           :to="{ name: item.to }"
+          class="list-item"
         >
-          <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
+          <v-spacer></v-spacer>
+          <v-list-item-icon class="list-item-icon">
+            <v-icon size="30">{{ item.icon }}</v-icon>
           </v-list-item-icon>
-          <v-list-item-content>
+          <!-- <v-list-item-content>
             <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
+          </v-list-item-content> -->
+          <v-spacer></v-spacer>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
