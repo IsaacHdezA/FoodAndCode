@@ -23,7 +23,7 @@
                 <v-select
                   :items="tables"
                   v-model="newOrder.mes_id"
-                  label="Mesa"
+                  label="Mesas disponibles"
                 >
                 </v-select>
               </v-col>
@@ -62,29 +62,6 @@ export default {
     },
     pDialog: false,
     tDialog: false,
-
-    /* valid: false,
-    com_nombre: "",
-    com_precio: "",
-    reglas_precio: [
-      (v) =>
-        /^[+]?([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$/.test(v) ||
-        "Cantidad incorrecta",
-    ],
-    com_cat_id: "",
-    categorias: ["Programming", "Design", "Vue", "Vuetify"],
-    com_descripcion: "",
-
-    search: "",
-    encabezados: [
-      { text: "Categoria", value: "com_cat_id" },
-      { text: "Nombre", value: "com_nombre" },
-      { text: "Precio", value: "com_precio" },
-      { text: "Descripción", value: "com_descripcion" },
-      { text: "Acciones", value: "actions" },
-    ],
-    platillos: [],
-    nuevo_platillo: [], */
   }),
 
   watch: {
