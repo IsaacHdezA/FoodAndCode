@@ -54,8 +54,8 @@
   }
 }); */
 
-var orderModel = require("../models/order_model.js");
-var orderControl = () => {};
+const orderModel = require("../models/order_model.js");
+const orderControl = () => {};
 
 orderControl.allOrders = (request, result) => {
   orderModel.allOrders([], (error, rows) => {
