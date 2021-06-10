@@ -101,22 +101,32 @@ CREATE TABLE IF NOT EXISTS suborden(
 DELIMITER $$
 
 CREATE TRIGGER mesaOcupada AFTER INSERT ON orden
+    FOR EACH ROW
     BEGIN
-        UPDATE mesa SET mes_disponible = 'i' WHERE mes_id = old.ord_mes_id
+        UPDATE mesa SET mes_disponible = 'i' WHERE mes_id = NEW.ord_mes_id;
     END;
 $$
 
 CREATE TRIGGER mesaDisponible AFTER UPDATE ON orden
+    FOR EACH ROW
     BEGIN
-        IF new.ord_estado = 'i' THEN
-            UPDATE mesa SET mes_disponible = 'a' WHERE mes_id = new.ord_mes_id
+        IF NEW.ord_estado = 'i' THEN
+            UPDATE mesa SET mes_disponible = 'a' WHERE mes_id = NEW.ord_mes_id;
         END IF;
     END;
 $$
 
-CREATE TRIGGER ordenPagada AFTER INSERT ON pago
+CREATE TRIGGER ordenPendiente AFTER INSERT ON suborden
+    FOR EACH ROW
     BEGIN
-        UPDATE orden SET ord_estado = 'i' WHERE ord_id = new.pag_ord_id
+        UPDATE orden SET ord_estado = 'a' WHERE ord_id = NEW.sub_ord_id;
+    END;
+$$
+
+CREATE TRIGGER ordenPagada AFTER INSERT ON pago
+    FOR EACH ROW
+    BEGIN
+        UPDATE orden SET ord_estado = 'i' WHERE ord_id = NEW.pag_ord_id;
     END;
 $$
 
