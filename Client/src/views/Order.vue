@@ -252,8 +252,8 @@ export default {
 
   created() {
     this.getOrders();
-    this.getEmployees();
-    this.getTables();
+    this.getActiveEmployees();
+    this.getActiveTables();
     this.cancelAddOrder();
   },
 
@@ -279,13 +279,13 @@ export default {
     },
 
     async getOrders() {
-      const apiData = await this.axios.get("orders/allOrders/");
+      const apiData = await this.axios.get("order/allOrders/");
 
       this.orders = apiData.data;
     },
 
-    async getEmployees() {
-      const apiData = await this.axios.get("orders/allEmployees/");
+    async getActiveEmployees() {
+      const apiData = await this.axios.get("order/allActiveEmployees/");
       apiData.data.forEach((employee) =>
         this.employees.push({
           text: employee.mro_nombre,
@@ -294,8 +294,8 @@ export default {
       );
     },
 
-    async getTables() {
-      const apiData = await this.axios.get("orders/allTables/");
+    async getActiveTables() {
+      const apiData = await this.axios.get("order/allActiveTables/");
       apiData.data.forEach((table) =>
         this.tables.push({
           text: table.mes_id,
@@ -307,7 +307,7 @@ export default {
     async addOrder() {
       this.loader = "loadingAddOrder";
       this.loadingAddOrder = true;
-      await this.axios.post("orders/addOrder/", this.newOrder);
+      await this.axios.post("order/addOrder/", this.newOrder);
 
       // actualizar a mesa no disponible
 

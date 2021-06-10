@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname, "uploads")));
 
 app.use("/mesero", mesero_ruta);
 app.use("/comida", comida_ruta);
-app.use("/orders", order_route);
+app.use("/order", order_route);
 
 app.get("/favicon.ico", (req, res) => res.status(204));
 
