@@ -176,13 +176,13 @@
         transition="dialog-bottom-transition"
       >
         <v-card>
-          <v-toolbar dark color="primary">
-            <v-btn icon dark @click="pDialog = false">
+          <v-toolbar dark color="primary" class="toolbar-title">
+            <v-btn icon dark9 @click="pDialog = false">
               <v-icon>fas fa-times</v-icon>
             </v-btn>
 
             <v-toolbar-title>
-              <h2>Pago de cuenta</h2>
+              <h3>Pago de cuenta</h3>
             </v-toolbar-title>
             <v-spacer></v-spacer>
           </v-toolbar>
@@ -190,7 +190,7 @@
             <v-data-table
               :headers="headers"
               :items="subOrders"
-              class="elevation-1"
+              class="elevation-1 container-inside"
             >
             </v-data-table>
           </template>
