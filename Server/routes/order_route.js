@@ -8,7 +8,5 @@ router.get("/allActiveEmployees", orderControl.allActiveEmployees);
 router.get("/allActiveTables", orderControl.allActiveTables);
 router.post("/addOrder", orderControl.addOrder);
 router.post("/deleteOrder", orderControl.deleteOrder);
-router.post("/activateTable", orderControl.activateTable);
-router.post("/desactivateTable", orderControl.desactivateTable);
 
 module.exports = router;

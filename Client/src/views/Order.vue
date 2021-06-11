@@ -276,13 +276,13 @@ export default {
 
       // DIALOGO DE VER MESA / ORDEN / SUBORDEN
 
+      this.loader = null;
+      this.loadingAddOrder = false;
+
       this.getWaitingOrders();
       this.getActiveOrders();
       this.getActiveTables();
       this.cancelAddOrder();
-
-      this.loader = null;
-      this.loadingAddOrder = false;
     },
 
     async deleteOrder(order) {

@@ -39,18 +39,4 @@ order.addOrder = (data, callback) =>
 order.deleteOrder = (data, callback) =>
   connection.query("DELETE FROM orden WHERE ord_id = ?", data, callback);
 
-order.activateTable = (data, callback) =>
-  connection.query(
-    "UPDATE mesa SET mes_disponible = 'a' WHERE mes_id = ?",
-    data,
-    callback
-  );
-
-order.desactivateTable = (data, callback) =>
-  connection.query(
-    "UPDATE mesa SET mes_disponible = 'i' WHERE mes_id = ?",
-    data,
-    callback
-  );
-
 module.exports = order;

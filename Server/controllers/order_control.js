@@ -61,36 +61,4 @@ orderControl.deleteOrder = (request, result) => {
     result.status(401).send({ message: "Peticion de borrar orden incorrecta" });
 };
 
-orderControl.activateTable = (request, result) => {
-  const body = request.body;
-
-  if (body.mes_id)
-    orderModel.activateTable([body.mes_id], (error, rows) =>
-      error
-        ? result.status(500).send({ message: error })
-        : rows.affectedRows > 0
-        ? result.status(202).send({ message: "Mesa activada" })
-        : result.status(500).send({ message: "No se activó la mesa" })
-    );
-  else
-    result.status(401).send({ message: "Peticion de activar mesa incorrecta" });
-};
-
-orderControl.desactivateTable = (request, result) => {
-  const body = request.body;
-
-  if (body.mes_id)
-    orderModel.desactivateTable([body.mes_id], (error, rows) =>
-      error
-        ? result.status(500).send({ message: error })
-        : rows.affectedRows > 0
-        ? result.status(202).send({ message: "Mesa desactivada" })
-        : result.status(500).send({ message: "No se desactivó la mesa" })
-    );
-  else
-    result
-      .status(401)
-      .send({ message: "Peticion de desactivar mesa incorrecta" });
-};
-
 module.exports = orderControl;
