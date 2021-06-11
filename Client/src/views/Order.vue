@@ -264,7 +264,6 @@ export default {
       this.loader = "loadingAddOrder";
       this.loadingAddOrder = true;
 
-      const body = { mes_id: this.newOrder.mes_id };
       await this.axios.post("order/addOrder/", this.newOrder);
 
       // PROCEDIMIENTOS DE TRIGGERS
