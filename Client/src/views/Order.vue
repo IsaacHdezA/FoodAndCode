@@ -139,7 +139,7 @@
                   <v-btn icon color="black">
                     <v-icon>fas fa-eye</v-icon>
                   </v-btn>
-                  <v-btn icon color="black" @click="deleteOrder(order)">
+                  <v-btn icon color="black" @click="openCDeleteDialog(order)">
                     <v-icon size="21">fas fa-trash</v-icon>
                   </v-btn>
                 </v-card-title>
@@ -169,35 +169,52 @@
           </v-row>
         </template>
       </v-data-iterator>
-      <v-row justify="center">
-        <v-dialog
-          v-model="pDialog"
-          fullscreen
-          hide-overlay
-          transition="dialog-bottom-transition"
-        >
-          <v-card>
-            <v-toolbar dark color="primary">
-              <v-btn icon dark @click="pDialog = false">
-                <v-icon>fas fa-times</v-icon>
-              </v-btn>
+      <v-dialog
+        v-model="pDialog"
+        fullscreen
+        hide-overlay
+        transition="dialog-bottom-transition"
+      >
+        <v-card>
+          <v-toolbar dark color="primary">
+            <v-btn icon dark @click="pDialog = false">
+              <v-icon>fas fa-times</v-icon>
+            </v-btn>
 
-              <v-toolbar-title>
-                <h2>Pago de cuenta</h2>
-              </v-toolbar-title>
-              <v-spacer></v-spacer>
-            </v-toolbar>
-            <template>
-              <v-data-table
-                :headers="headers"
-                :items="subOrders"
-                class="elevation-1"
-              >
-              </v-data-table>
-            </template>
-          </v-card>
-        </v-dialog>
-      </v-row>
+            <v-toolbar-title>
+              <h2>Pago de cuenta</h2>
+            </v-toolbar-title>
+            <v-spacer></v-spacer>
+          </v-toolbar>
+          <template>
+            <v-data-table
+              :headers="headers"
+              :items="subOrders"
+              class="elevation-1"
+            >
+            </v-data-table>
+          </template>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="cDeleteDialog" max-width="300">
+        <v-card>
+          <v-card-title class="text-h5">
+            ¿Estás seguro?
+          </v-card-title>
+          <v-card-text>
+            Esta acción es irreversible.
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary darken-1" text @click="cancelDeleteOrder()">
+              Cancelar
+            </v-btn>
+            <v-btn color="red darken-1" text @click="deleteOrder()">
+              Eliminar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </template>
   </v-container>
 </template>
@@ -212,6 +229,7 @@ export default {
 
   data: () => ({
     // ORDERS
+    order: [],
     activeOrders: [],
     waitingOrders: [],
     employees: [],
@@ -221,6 +239,7 @@ export default {
       mes_id: "",
     },
     pDialog: false,
+    cDeleteDialog: false,
     loader: null,
     loadingAddOrder: false,
 
@@ -237,7 +256,6 @@ export default {
       pag_total: "",
       pag_propina: "",
       pag_tipo_pago: "",
-      pag_pag_fecha_pago: "",
     },
   }),
 
@@ -248,6 +266,10 @@ export default {
         this.newPayment = {};
         this.subOrders = [];
       }
+    },
+
+    cDeleteDialog(isOpen) {
+      if (!isOpen) this.order = [];
     },
   },
 
@@ -312,18 +334,29 @@ export default {
       this.loadingAddOrder = false;
     },
 
-    async deleteOrder(order) {
-      await this.axios.post("order/deleteOrder/", order);
+    async deleteOrder() {
+      await this.axios.post("order/deleteOrder/", this.order);
 
       this.tables = [];
       this.getWaitingOrders();
       this.getActiveOrders();
       this.getActiveTables();
+      this.cancelDeleteOrder();
       this.cancelAddOrder();
     },
 
     cancelAddOrder() {
       this.newOrder = {};
+    },
+
+    cancelDeleteOrder() {
+      this.order = [];
+      this.cDeleteDialog = false;
+    },
+
+    openCDeleteDialog(order) {
+      this.order = order;
+      this.cDeleteDialog = true;
     },
 
     // PAYMENTS
