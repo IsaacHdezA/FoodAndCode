@@ -169,8 +169,9 @@
           </v-row>
         </template>
       </v-data-iterator>
-        <v-row justify="center">
-        <v-dialog v-model="pDialog" max-width="500px"
+      <v-row justify="center">
+        <v-dialog
+          v-model="pDialog"
           fullscreen
           hide-overlay
           transition="dialog-bottom-transition"
