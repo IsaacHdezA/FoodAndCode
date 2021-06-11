@@ -252,6 +252,8 @@ export default {
 
     async getActiveTables() {
       const apiData = await this.axios.get("order/allActiveTables/");
+      apiData.data.sort((a, b) => a - b);
+
       apiData.data.forEach((table) =>
         this.tables.push({
           text: table.mes_id,
@@ -267,26 +269,26 @@ export default {
       await this.axios.post("order/addOrder/", this.newOrder);
 
       // PROCEDIMIENTOS DE TRIGGERS
-      // mesaOcupada
-      // mesaDisponible
       // ordenPendiente
       // ordenPagada
 
       // DIALOGO DE VER MESA / ORDEN / SUBORDEN
 
-      this.loader = null;
-      this.loadingAddOrder = false;
-
+      this.tables = [];
       this.getWaitingOrders();
       this.getActiveOrders();
       this.getActiveTables();
       this.cancelAddOrder();
+
+      this.loader = null;
+      this.loadingAddOrder = false;
     },
 
     async deleteOrder(order) {
       const body = { ord_id: order.ord_id, mes_id: order.mes_id };
       await this.axios.post("order/deleteOrder/", body);
 
+      this.tables = [];
       this.getWaitingOrders();
       this.getActiveOrders();
       this.getActiveTables();
