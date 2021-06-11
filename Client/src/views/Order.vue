@@ -169,9 +169,15 @@
           </v-row>
         </template>
       </v-data-iterator>
-      <v-dialog v-model="pDialog" max-width="500px">
-        <PaymentDialog />
-      </v-dialog>
+        <v-row justify="center">
+        <v-dialog v-model="pDialog" max-width="500px"
+          fullscreen
+          hide-overlay
+          transition="dialog-bottom-transition"
+        >
+          <PaymentDialog />
+        </v-dialog>
+      </v-row>
     </template>
   </v-container>
 </template>
