@@ -1,9 +1,9 @@
 <template>
   <v-app>
     <NavigationDrawer />
-    <v-content class="application">
+    <v-main class="application">
       <router-view />
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 
