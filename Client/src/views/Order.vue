@@ -176,7 +176,39 @@
           hide-overlay
           transition="dialog-bottom-transition"
         >
-          <PaymentDialog />
+          <v-card>
+            <v-toolbar dark color="primary">
+              <v-btn icon dark @click="pDialog = false">
+                <v-icon>fas fa-times</v-icon>
+              </v-btn>
+
+              <v-toolbar-title>
+                <h2>Pago de cuenta</h2>
+              </v-toolbar-title>
+              <v-spacer></v-spacer>
+            </v-toolbar>
+
+            <template>
+              <v-card color="grey lighten-4" flat tile>
+                <v-toolbar flat dense color="primary" dark>
+                  <v-toolbar-title>mmmm</v-toolbar-title>
+                  <v-spacer></v-spacer>
+                </v-toolbar>
+
+                <v-card-text>
+                  <template>
+                    <v-data-table
+                      :headers="headers"
+                      :items="payments"
+                      :items-per-page="5"
+                      class="elevation-1"
+                    >
+                    </v-data-table>
+                  </template>
+                </v-card-text>
+              </v-card>
+            </template>
+          </v-card>
         </v-dialog>
       </v-row>
     </template>
@@ -188,12 +220,11 @@
 </style>
 
 <script>
-import PaymentDialog from "@/components/PaymentDialog";
-
 export default {
   name: "Order",
 
   data: () => ({
+    // ORDERS
     activeOrders: [],
     waitingOrders: [],
     employees: [],
@@ -204,22 +235,40 @@ export default {
       mes_id: "",
     },
     pDialog: false,
-    tDialog: false,
     loader: null,
     loadingAddOrder: false,
+
+    // PAYMENTS
+    headers: [
+      { text: "Orden", align: "center", value: "pag_ord_id" },
+      { text: "Subtotal", align: "center", value: "pag_subtotal" },
+      { text: "Total (IVA)", align: "center", value: "pag_total" },
+      { text: "Propina", align: "center", value: "pag_propina" },
+      { text: "Tipo de pago", align: "center", value: "pag_tipo_pago" },
+      { text: "Fecha de pago", align: "center", value: "pag_fecha_pago" },
+    ],
+
+    payments: [],
+
+    newPayment: {
+      pag_ord_id: "",
+      pag_subtotal: "",
+      pag_total: "",
+      pag_propina: "",
+      pag_tipo_pago: "",
+      pag_pag_fecha_pago: "",
+    },
   }),
 
   watch: {
-    /* pDialog(isOpen) {
-      !isOpen ? (this.newLoan = {}) : this.getUsers();
+    // PAYMENTS
+    pDialog(isOpen) {
+      !isOpen ? (this.newPayment = {}) : this.showPayments();
     },
-
-    tdDialog(isOpen) {
-      !isOpen ? (this.lDetails = {}) : this.getBooks();
-    }, */
   },
 
   created() {
+    // ORDERS
     this.cancelAddOrder();
     this.getActiveEmployees();
     this.getActiveTables();
@@ -228,6 +277,7 @@ export default {
   },
 
   methods: {
+    // ORDERS
     async getActiveOrders() {
       const apiData = await this.axios.get("order/allActiveOrders/");
 
@@ -301,10 +351,24 @@ export default {
       this.idPayment = order.pag_ord_id;
       this.pDialog = true;
     },
+
+    // PAYMENTS
+    async showPayments() {
+      const apiData = await this.axios.get("/payment/showAllPayments/");
+      console.log(apiData.data);
+      this.payments = apiData.data;
+    },
+
+    async insertPayment(item) {
+      const body = {
+        pag_ord_id: item.pag_ord_id,
+        pag_propina: item.pag_propina,
+        pag_tipo_pago: item.pag_tipo_pago,
+      };
+      await this.axios.post("/payment/insertPayment", body);
+    },
   },
 
-  components: {
-    PaymentDialog,
-  },
+  components: {},
 };
 </script>
