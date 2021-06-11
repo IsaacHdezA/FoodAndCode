@@ -66,10 +66,10 @@
 
                 <v-col cols="5">
                   <v-row>
-                    <v-col cols="3" class="text-right mt-3">
+                    <v-col cols="4" class="text-right mt-3">
                       <h3 class="black--text">Descripción</h3>
                     </v-col>
-                    <v-col cols="9">
+                    <v-col cols="8">
                       <v-textarea
                         outlined
                         rows="5"
@@ -181,18 +181,18 @@ export default {
   },
   methods: {
     async llenar_platillos() {
-      const api_data = await this.axios.get("/comida/menu");
+      const api_data = await this.axios.get("/food/all_food");
       this.platillos = api_data.data;
     },
     async eliminar_platillo(item) {
       const body = {
         com_id: item.com_id,
       };
-      await this.axios.post("/comida/eliminar_platillo", body);
+      await this.axios.post("/food/delete_food", body);
       this.llenar_platillos();
     },
     async guardar_platillo() {
-      await this.axios.post("/comida/nuevo_platillo", this.nuevo_platillo);
+      await this.axios.post("/food/new_food", this.nuevo_platillo);
       this.llenar_platillos();
     },
   },

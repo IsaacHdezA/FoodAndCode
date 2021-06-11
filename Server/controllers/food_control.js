@@ -1,14 +1,14 @@
-var comida_model = require("../models/comida_model.js");
-var comida_control = () => {};
+var food_model = require("../models/food_model.js");
+var food_control = () => {};
 
-comida_control.seleccionar_todos = (request, result) => {
-  comida_model.seleccionar_todos([], (error, rows) => {
+food_control.all_food = (request, result) => {
+  food_model.all_food([], (error, rows) => {
     if (error) result.status(500).send({ message: error });
     else result.status(200).send(rows);
   });
 };
 
-comida_control.agregar_nuevo = (request, result) => {
+food_control.new_food= (request, result) => {
   const body = request.body;
   if (
     body.com_id_categoria &&
@@ -16,7 +16,7 @@ comida_control.agregar_nuevo = (request, result) => {
     body.com_precio &&
     body.com_descripcion
   ) {  // VALIDACION DE DATOS
-    comida_model.agregar_nuevo(
+    food_model.new_food(
       [
         body.com_id_categoria,
         body.com_nombre,
@@ -35,10 +35,10 @@ comida_control.agregar_nuevo = (request, result) => {
   } else result.status(401).send({ message: "Peticion incorrecta" }); // VALIDACION DE DATOS
 };
 
-comida_control.eliminar_comida = (request, result) => {
+food_control.delete_food = (request, result) => {
   const body = request.body;
   if (body.com_id) { // VALIDACIÓN DE DATOS
-    comida_model.eliminar([body.com_id],
+    food_model.delete_food([body.com_id],
       (error, rows) => {
         if (error) result.status(500).send({ message: error });
         else {
@@ -51,4 +51,4 @@ comida_control.eliminar_comida = (request, result) => {
   } else result.status(401).send({ message: "Peticion incorrecta" }); // VALIDACION DE DATOS
 }
 
-module.exports = comida_control;
+module.exports = food_control;

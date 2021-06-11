@@ -5,7 +5,7 @@ const cors = require("cors");
 const app = express();
 
 const mesero_ruta = require("./routes/mesero_ruta");
-const comida_ruta = require("./routes/comida_ruta");
+const food_route = require("./routes/food_route");
 const order_route = require("./routes/order_route.js");
 const payment_route = require("./routes/payment_route.js");
 
@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "uploads")));
 
 app.use("/mesero", mesero_ruta);
-app.use("/comida", comida_ruta);
+app.use("/food", food_route);
 app.use("/order", order_route);
 app.use("/payment", payment_route);
 
