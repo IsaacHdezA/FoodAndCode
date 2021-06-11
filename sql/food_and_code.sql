@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS suborden(
 
 DELIMITER $$
 
-CREATE TRIGGER mesaOcupada AFTER INSERT ON orden
+CREATE TRIGGER mesaOcupada BEFORE INSERT ON orden
     FOR EACH ROW
     BEGIN
         UPDATE mesa SET mes_disponible = 'i' WHERE mes_id = NEW.ord_mes_id;
