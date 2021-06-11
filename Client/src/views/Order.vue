@@ -279,8 +279,7 @@ export default {
     },
 
     async deleteOrder(order) {
-      const body = { ord_id: order.ord_id, mes_id: order.mes_id };
-      await this.axios.post("order/deleteOrder/", body);
+      await this.axios.post("order/deleteOrder/", order);
 
       this.tables = [];
       this.getWaitingOrders();
