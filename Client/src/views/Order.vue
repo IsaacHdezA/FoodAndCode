@@ -190,8 +190,7 @@
             <template>
               <v-data-table
                 :headers="headers"
-                :items="payments"
-                :items-per-page="5"
+                :items="subOrders"
                 class="elevation-1"
               >
               </v-data-table>
@@ -227,16 +226,11 @@ export default {
 
     // PAYMENTS
     headers: [
-      { text: "Orden", align: "center", value: "pag_ord_id" },
-      { text: "Subtotal", align: "center", value: "pag_subtotal" },
-      { text: "Total (IVA)", align: "center", value: "pag_total" },
-      { text: "Propina", align: "center", value: "pag_propina" },
-      { text: "Tipo de pago", align: "center", value: "pag_tipo_pago" },
-      { text: "Fecha de pago", align: "center", value: "pag_fecha_pago" },
+      { text: "Comida", align: "center", value: "com_nombre" },
+      { text: "Cantidad", align: "center", value: "cant_total_comida" },
+      { text: "Total", align: "center", value: "total_neto" },
     ],
-
-    payments: [],
-    idPayment: "",
+    subOrders: [],
     newPayment: {
       pag_ord_id: "",
       pag_subtotal: "",
@@ -330,15 +324,12 @@ export default {
     },
 
     // PAYMENTS
-    async showOrdersPerTable(idPayment) {
-      const body = {
-        sub_ord_id: idPayment,
-      };
+    async showOrdersPerTable(idOrder) {
       const apiData = await this.axios.get(
-        "/payment/showOrdersPerTable/" + body.sub_ord_id.toString()
+        "/payment/showOrdersPerTable/" + idOrder.toString()
       );
 
-      this.payments = apiData.data;
+      this.subOrders = apiData.data;
     },
 
     async insertPayment(item) {
@@ -351,12 +342,11 @@ export default {
     },
 
     cancelPayment() {
-      this.idPayment = "";
       this.pDialog = false;
     },
 
     openPaymentDialog(order) {
-      this.idPayment = order.pag_ord_id;
+      this.showOrdersPerTable(order.ord_id);
       this.pDialog = true;
     },
   },
