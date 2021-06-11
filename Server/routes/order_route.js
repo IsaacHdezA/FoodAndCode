@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const orderControl = require("../controllers/orden_control.js");
+const orderControl = require("../controllers/order_control.js");
 
 router.get("/allOrders", orderControl.allOrders);
-router.get("/allEmployees", orderControl.allEmployees);
-router.get("/allTables", orderControl.allTables);
+router.get("/allActiveEmployees", orderControl.allActiveEmployees);
+router.get("/allActiveTables", orderControl.allActiveTables);
 router.post("/addOrder", orderControl.addOrder);
 
 module.exports = router;
