@@ -244,7 +244,10 @@ export default {
   watch: {
     // PAYMENTS
     pDialog(isOpen) {
-      if (!isOpen) this.newPayment = {};
+      if (!isOpen) {
+        this.newPayment = {};
+        this.subOrders = [];
+      }
     },
   },
 
