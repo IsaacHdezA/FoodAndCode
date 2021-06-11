@@ -187,26 +187,14 @@
               </v-toolbar-title>
               <v-spacer></v-spacer>
             </v-toolbar>
-
             <template>
-              <v-card color="grey lighten-4" flat tile>
-                <v-toolbar flat dense color="primary" dark>
-                  <v-toolbar-title>mmmm</v-toolbar-title>
-                  <v-spacer></v-spacer>
-                </v-toolbar>
-
-                <v-card-text>
-                  <template>
-                    <v-data-table
-                      :headers="headers"
-                      :items="payments"
-                      :items-per-page="5"
-                      class="elevation-1"
-                    >
-                    </v-data-table>
-                  </template>
-                </v-card-text>
-              </v-card>
+              <v-data-table
+                :headers="headers"
+                :items="payments"
+                :items-per-page="5"
+                class="elevation-1"
+              >
+              </v-data-table>
             </template>
           </v-card>
         </v-dialog>
@@ -229,7 +217,6 @@ export default {
     waitingOrders: [],
     employees: [],
     tables: [],
-    idPayment: "",
     newOrder: {
       mro_id: "",
       mes_id: "",
@@ -249,7 +236,7 @@ export default {
     ],
 
     payments: [],
-
+    idPayment: "",
     newPayment: {
       pag_ord_id: "",
       pag_subtotal: "",
@@ -263,7 +250,7 @@ export default {
   watch: {
     // PAYMENTS
     pDialog(isOpen) {
-      !isOpen ? (this.newPayment = {}) : this.showPayments();
+      if (!isOpen) this.newPayment = {};
     },
   },
 
@@ -342,20 +329,15 @@ export default {
       this.newOrder = {};
     },
 
-    cancelPayment() {
-      this.idPayment = "";
-      this.pDialog = false;
-    },
-
-    openPaymentDialog(order) {
-      this.idPayment = order.pag_ord_id;
-      this.pDialog = true;
-    },
-
     // PAYMENTS
-    async showPayments() {
-      const apiData = await this.axios.get("/payment/showAllPayments/");
-      console.log(apiData.data);
+    async showOrdersPerTable(idPayment) {
+      const body = {
+        sub_ord_id: idPayment,
+      };
+      const apiData = await this.axios.get(
+        "/payment/showOrdersPerTable/" + body.sub_ord_id.toString()
+      );
+
       this.payments = apiData.data;
     },
 
@@ -366,6 +348,16 @@ export default {
         pag_tipo_pago: item.pag_tipo_pago,
       };
       await this.axios.post("/payment/insertPayment", body);
+    },
+
+    cancelPayment() {
+      this.idPayment = "";
+      this.pDialog = false;
+    },
+
+    openPaymentDialog(order) {
+      this.idPayment = order.pag_ord_id;
+      this.pDialog = true;
     },
   },
 
