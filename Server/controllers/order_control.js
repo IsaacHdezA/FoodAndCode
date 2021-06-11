@@ -32,7 +32,7 @@ orderControl.allActiveTables = (request, result) =>
 orderControl.addOrder = (request, result) => {
   const body = request.body;
 
-  if (body.mro_id && body.mes_id) {
+  if (body.mro_id && body.mes_id)
     orderModel.addOrder([body.mro_id, body.mes_id], (error, rows) =>
       error
         ? result.status(500).send({ message: error })
@@ -40,7 +40,7 @@ orderControl.addOrder = (request, result) => {
         ? result.status(202).send({ message: "Orden registrada" })
         : result.status(500).send({ message: "No se registró la orden" })
     );
-  } else
+  else
     result
       .status(401)
       .send({ message: "Peticion de agregar orden incorrecta" });
@@ -49,7 +49,7 @@ orderControl.addOrder = (request, result) => {
 orderControl.deleteOrder = (request, result) => {
   const body = request.body;
 
-  if (body.ord_id) {
+  if (body.ord_id)
     orderModel.deleteOrder([body.ord_id], (error, rows) =>
       error
         ? result.status(500).send({ message: error })
@@ -57,8 +57,40 @@ orderControl.deleteOrder = (request, result) => {
         ? result.status(202).send({ message: "Orden borrada" })
         : result.status(500).send({ message: "No se borró la orden" })
     );
-  } else
+  else
     result.status(401).send({ message: "Peticion de borrar orden incorrecta" });
+};
+
+orderControl.activateTable = (request, result) => {
+  const body = request.body;
+
+  if (body.mes_id)
+    orderModel.activateTable([body.mes_id], (error, rows) =>
+      error
+        ? result.status(500).send({ message: error })
+        : rows.affectedRows > 0
+        ? result.status(202).send({ message: "Mesa activada" })
+        : result.status(500).send({ message: "No se activó la mesa" })
+    );
+  else
+    result.status(401).send({ message: "Peticion de activar mesa incorrecta" });
+};
+
+orderControl.desactivateTable = (request, result) => {
+  const body = request.body;
+
+  if (body.mes_id)
+    orderModel.desactivateTable([body.mes_id], (error, rows) =>
+      error
+        ? result.status(500).send({ message: error })
+        : rows.affectedRows > 0
+        ? result.status(202).send({ message: "Mesa desactivada" })
+        : result.status(500).send({ message: "No se desactivó la mesa" })
+    );
+  else
+    result
+      .status(401)
+      .send({ message: "Peticion de desactivar mesa incorrecta" });
 };
 
 module.exports = orderControl;

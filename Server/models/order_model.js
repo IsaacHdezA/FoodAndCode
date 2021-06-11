@@ -17,14 +17,14 @@ order.allWaitingOrders = (data, callback) =>
 
 order.allActiveEmployees = (data, callback) =>
   connection.query(
-    "SELECT mro_id, mro_nombre FROM mesero WHERE mro_estado = 'a'",
+    "SELECT mro_id, mro_nombre FROM mesero WHERE mro_estado = 'a' ORDER BY mro_nombre",
     data,
     callback
   );
 
 order.allActiveTables = (data, callback) =>
   connection.query(
-    "SELECT mes_id FROM mesa WHERE mes_disponible = 'a'",
+    "SELECT mes_id FROM mesa WHERE mes_disponible = 'a' ORDER BY mes_id",
     data,
     callback
   );
@@ -38,5 +38,19 @@ order.addOrder = (data, callback) =>
 
 order.deleteOrder = (data, callback) =>
   connection.query("DELETE FROM orden WHERE ord_id = ?", data, callback);
+
+order.activateTable = (data, callback) =>
+  connection.query(
+    "UPDATE mesa SET mes_disponible = 'a' WHERE mes_id = ?",
+    data,
+    callback
+  );
+
+order.desactivateTable = (data, callback) =>
+  connection.query(
+    "UPDATE mesa SET mes_disponible = 'i' WHERE mes_id = ?",
+    data,
+    callback
+  );
 
 module.exports = order;
