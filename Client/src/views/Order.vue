@@ -139,7 +139,7 @@
                   <v-btn icon color="black">
                     <v-icon>fas fa-eye</v-icon>
                   </v-btn>
-                  <v-btn icon color="black" @click="deleteOrder(order)">
+                  <v-btn icon color="black" @click="openCDeleteDialog(order)">
                     <v-icon size="21">fas fa-trash</v-icon>
                   </v-btn>
                 </v-card-title>
@@ -169,16 +169,52 @@
           </v-row>
         </template>
       </v-data-iterator>
-      <v-row justify="center">
-        <v-dialog
-          v-model="pDialog"
-          fullscreen
-          hide-overlay
-          transition="dialog-bottom-transition"
-        >
-          <PaymentDialog />
-        </v-dialog>
-      </v-row>
+      <v-dialog
+        v-model="pDialog"
+        fullscreen
+        hide-overlay
+        transition="dialog-bottom-transition"
+      >
+        <v-card>
+          <v-toolbar dark color="primary" class="toolbar-title">
+            <v-btn icon dark9 @click="pDialog = false">
+              <v-icon>fas fa-times</v-icon>
+            </v-btn>
+
+            <v-toolbar-title>
+              <h3>Pago de cuenta</h3>
+            </v-toolbar-title>
+            <v-spacer></v-spacer>
+          </v-toolbar>
+          <template>
+            <v-data-table
+              :headers="headers"
+              :items="subOrders"
+              class="elevation-1 container-inside"
+            >
+            </v-data-table>
+          </template>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="cDeleteDialog" max-width="300">
+        <v-card>
+          <v-card-title class="text-h5">
+            ¿Estás seguro?
+          </v-card-title>
+          <v-card-text>
+            Esta acción es irreversible.
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary darken-1" text @click="cancelDeleteOrder()">
+              Cancelar
+            </v-btn>
+            <v-btn color="red darken-1" text @click="deleteOrder()">
+              Eliminar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </template>
   </v-container>
 </template>
@@ -188,38 +224,57 @@
 </style>
 
 <script>
-import PaymentDialog from "@/components/PaymentDialog";
-
 export default {
   name: "Order",
 
   data: () => ({
+    // ORDERS
+    order: [],
     activeOrders: [],
     waitingOrders: [],
     employees: [],
     tables: [],
-    idPayment: "",
     newOrder: {
       mro_id: "",
       mes_id: "",
     },
     pDialog: false,
-    tDialog: false,
+    cDeleteDialog: false,
     loader: null,
     loadingAddOrder: false,
+
+    // PAYMENTS
+    headers: [
+      { text: "Comida", align: "center", value: "com_nombre" },
+      { text: "Cantidad", align: "center", value: "cant_total_comida" },
+      { text: "Total", align: "center", value: "total_neto" },
+    ],
+    subOrders: [],
+    newPayment: {
+      pag_ord_id: "",
+      pag_subtotal: "",
+      pag_total: "",
+      pag_propina: "",
+      pag_tipo_pago: "",
+    },
   }),
 
   watch: {
-    /* pDialog(isOpen) {
-      !isOpen ? (this.newLoan = {}) : this.getUsers();
+    // PAYMENTS
+    pDialog(isOpen) {
+      if (!isOpen) {
+        this.newPayment = {};
+        this.subOrders = [];
+      }
     },
 
-    tdDialog(isOpen) {
-      !isOpen ? (this.lDetails = {}) : this.getBooks();
-    }, */
+    cDeleteDialog(isOpen) {
+      if (!isOpen) this.order = [];
+    },
   },
 
   created() {
+    // ORDERS
     this.cancelAddOrder();
     this.getActiveEmployees();
     this.getActiveTables();
@@ -228,6 +283,7 @@ export default {
   },
 
   methods: {
+    // ORDERS
     async getActiveOrders() {
       const apiData = await this.axios.get("order/allActiveOrders/");
 
@@ -278,14 +334,14 @@ export default {
       this.loadingAddOrder = false;
     },
 
-    async deleteOrder(order) {
-      const body = { ord_id: order.ord_id, mes_id: order.mes_id };
-      await this.axios.post("order/deleteOrder/", body);
+    async deleteOrder() {
+      await this.axios.post("order/deleteOrder/", this.order);
 
       this.tables = [];
       this.getWaitingOrders();
       this.getActiveOrders();
       this.getActiveTables();
+      this.cancelDeleteOrder();
       this.cancelAddOrder();
     },
 
@@ -293,19 +349,44 @@ export default {
       this.newOrder = {};
     },
 
+    cancelDeleteOrder() {
+      this.order = [];
+      this.cDeleteDialog = false;
+    },
+
+    openCDeleteDialog(order) {
+      this.order = order;
+      this.cDeleteDialog = true;
+    },
+
+    // PAYMENTS
+    async showOrdersPerTable(idOrder) {
+      const apiData = await this.axios.get(
+        "/payment/showOrdersPerTable/" + idOrder.toString()
+      );
+
+      this.subOrders = apiData.data;
+    },
+
+    async insertPayment(item) {
+      const body = {
+        pag_ord_id: item.pag_ord_id,
+        pag_propina: item.pag_propina,
+        pag_tipo_pago: item.pag_tipo_pago,
+      };
+      await this.axios.post("/payment/insertPayment", body);
+    },
+
     cancelPayment() {
-      this.idPayment = "";
       this.pDialog = false;
     },
 
     openPaymentDialog(order) {
-      this.idPayment = order.pag_ord_id;
+      this.showOrdersPerTable(order.ord_id);
       this.pDialog = true;
     },
   },
 
-  components: {
-    PaymentDialog,
-  },
+  components: {},
 };
 </script>

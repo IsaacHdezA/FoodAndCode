@@ -40,6 +40,10 @@
   display: flex;
 }
 
+.toolbar-title {
+  font-family: "Poppins", sans-serif;
+}
+
 @-moz-keyframes loader {
   from {
     transform: rotate(0);
