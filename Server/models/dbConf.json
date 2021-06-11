@@ -1,9 +1,9 @@
 {
-    "mysql": {
-      "host": "us-cdbr-east-04.cleardb.com",
-      "port": "3306",
-      "user": "b91cb1a18a1eb2",
-      "password": "59b29276",
-      "database": "heroku_86fe280505d1ea6"
-    }
+  "mysql": {
+    "host": "freedb.tech",
+    "port": "3306",
+    "user": "freedbtech_Administrador",
+    "password": "abasolo12",
+    "database": "freedbtech_foodandcode"
   }
+}
