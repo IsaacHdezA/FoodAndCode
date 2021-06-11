@@ -75,3 +75,17 @@
     transform: rotate(360deg);
   }
 }
+
+/* Comida */
+th span {
+  color: black;
+}
+
+tbody {
+  background-color: #fbfaf1;
+}
+
+.v-data-table-header,
+.v-data-footer {
+  background-color: #f5f5f5;
+}
