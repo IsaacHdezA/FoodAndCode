@@ -266,7 +266,6 @@ export default {
 
       const body = { mes_id: this.newOrder.mes_id };
       await this.axios.post("order/addOrder/", this.newOrder);
-      //await this.axios.post("order/desactivateTable/", body);
 
       // PROCEDIMIENTOS DE TRIGGERS
       // mesaOcupada
@@ -288,7 +287,6 @@ export default {
     async deleteOrder(order) {
       const body = { ord_id: order.ord_id, mes_id: order.mes_id };
       await this.axios.post("order/deleteOrder/", body);
-      // await this.axios.post("order/activateTable/", body);
 
       this.getWaitingOrders();
       this.getActiveOrders();
