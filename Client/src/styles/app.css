@@ -8,7 +8,10 @@
 .application {
   font-family: "Poppins", sans-serif;
   /* font-family: "Kumbh Sans", sans-serif; */
-  margin: 1em 1.5em;
+  padding: 1.5em 2em;
+  background-color: #ffffff;
+  background-image: url("https://www.transparenttextures.com/patterns/worn-dots.png");
+  background-repeat: repeat;
 }
 
 /* NAVIGATION DRAWER */
