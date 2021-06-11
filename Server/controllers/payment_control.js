@@ -26,7 +26,7 @@ paymentControl.orderTotal = (request, result) => {
 
 paymentControl.insertPayment = (request, result) => {
 	const body = request.body;
-	paymentModel.insertPayment([body.sub_ord_id, body.sub_ord_id, body.sub_ord_id, body.pag_propina, body.pag_tipo_pago], (error, rows) => {
+	paymentModel.insertPayment([body.pag_ord_id, body.pag_ord_id, body.pag_ord_id, body.pag_propina, body.pag_tipo_pago], (error, rows) => {
 		if(error) result.status(500).send({ message: error });
 		else result.status(200).send(rows);
 	});
