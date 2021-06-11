@@ -268,12 +268,6 @@ export default {
 
       await this.axios.post("order/addOrder/", this.newOrder);
 
-      // PROCEDIMIENTOS DE TRIGGERS
-      // ordenPendiente
-      // ordenPagada
-
-      // DIALOGO DE VER MESA / ORDEN / SUBORDEN
-
       this.tables = [];
       this.getWaitingOrders();
       this.getActiveOrders();
