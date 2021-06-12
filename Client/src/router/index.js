@@ -10,6 +10,11 @@ const routes = [
     redirect: "/table",
   },
   {
+    path: "/about",
+    name: "About",
+    component: () => import("../views/About.vue"),
+  },
+  {
     path: "/table",
     name: "Table",
     component: Table,
