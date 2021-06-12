@@ -79,9 +79,13 @@
                   <v-btn icon color="black">
                     <v-icon>fas fa-eye</v-icon>
                   </v-btn>
+
+                  <!-- Abrir el diálogo de pago -->
                   <v-btn icon color="black" @click="openPaymentDialog(order)">
                     <v-icon size="21">fas fa-money-bill-alt</v-icon>
                   </v-btn>
+                  <!-- Abrir el diálogo de pago -->
+
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-list dense class="container-inside" color="grey lighten-4">
@@ -169,6 +173,8 @@
           </v-row>
         </template>
       </v-data-iterator>
+
+      <!-- Diseño diálogo de pago -->
       <v-dialog
         v-model="pDialog"
         fullscreen
@@ -196,6 +202,8 @@
           </template>
         </v-card>
       </v-dialog>
+      <!-- Diseño diálogo de pago -->
+
       <v-dialog v-model="cDeleteDialog" max-width="300">
         <v-card>
           <v-card-title class="text-h5">
