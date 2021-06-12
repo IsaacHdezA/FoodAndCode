@@ -80,16 +80,16 @@
   }
 }
 
-/* Comida */
-th span {
+/* FOOD */
+.v-data-table.food_table span {
   color: black;
 }
 
-tbody {
+.v-data-table.food_table tbody {
   background-color: #fbfaf1;
 }
 
-.v-data-table-header,
-.v-data-footer {
+.v-data-table.food_table .v-data-table-header,
+.v-data-table.food_table .v-data-footer {
   background-color: #f5f5f5;
 }

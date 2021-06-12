@@ -1,11 +1,11 @@
 <template>
-  <v-container>
-    <h1>Comida</h1>
+  <v-container class="container-inside">
+    <h1 class="toolbar-title">Comida</h1>
 
     <template>
-      <v-card color="grey lighten-4" flat tile>
-        <v-toolbar flat dense color="primary" dark>
-          <v-toolbar-title>Agregar comida</v-toolbar-title>
+      <v-card color="grey lighten-4">
+        <v-toolbar dense color="primary" dark>
+          <v-toolbar-title class="toolbar-title">Agregar comida</v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
         <v-card-text>
@@ -87,11 +87,11 @@
                 <v-col cols="2">
                   <v-row justify="center">
                     <v-col cols="10">
-                      <v-btn class="px-7" color="accent" rounded @click="submit_form()">{{btn_text}}</v-btn>
+                      <v-btn class="px-7 font-weight-black" color="accent" rounded @click="submit_form()">{{btn_text}}</v-btn>
                     </v-col>
                     <v-col v-if="edit_mode" cols="10">
                       <!-- Cambiar el color del botón --> 
-                      <v-btn class="px-7" color="accent" rounded @click="cancel_edit()">Cancelar</v-btn>
+                      <v-btn class="px-7 font-weight-black" color="accent" rounded @click="cancel_edit()">Cancelar</v-btn>
                     </v-col>
                   </v-row>
                 </v-col>
@@ -104,14 +104,13 @@
 
     <template>
       <v-card class="mt-5">
-        <v-card-title>                   
-          <v-row>
-            <v-col cols="3">
+          <v-toolbar color="primary">
               <v-select
                   v-model="filters"
                   :items="categories"
                   label="Filtrar por categoria"
                   solo
+                  dense
                   multiple
                   class="mb-n6"
                   >
@@ -127,24 +126,25 @@
                     </span>
                   </template>
               </v-select>
-            </v-col>
             <v-spacer></v-spacer>
-            <v-col cols="5">
               <v-text-field
                   v-model="search"
                   append-icon="fa fa-search"
+                  dense
                   label="Buscar"
                   single-line
+                  dark
                   hide-details
                   ></v-text-field>
-            </v-col>
-          </v-row>
-        </v-card-title>
+
+        </v-toolbar>
+
         <v-data-table
             :headers="headers"
             :items="filtered_food"
             :search="search"
             dense
+            class="food_table"
             >
             <template v-slot:[`item.com_precio`]="{ item }">
               <span
