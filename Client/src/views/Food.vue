@@ -287,6 +287,7 @@ export default {
       this.get_all_foods();
       this.new_food = {};
       this.valid = true;
+      this.edit_mode = false;
     },
     edit_food(item) {
       this.edit_mode = true;
