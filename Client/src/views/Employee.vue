@@ -124,15 +124,14 @@
         </v-card-text>
       </v-card>
     </template>
-   <template>
+<template>
   <v-container fluid>
     
     <v-data-iterator
       :items="meseros"
       item-key="mro_id"
       :items-per-page="4"
-      
-    >
+      >
       <template >
         <v-row>
           <v-col
@@ -143,14 +142,24 @@
             md="4"
             lg="3"
           >
-            <v-card>
+            <v-card  v-on:click="moreinformation(item)">
               <v-card-title>
+              <v-btn
+                class="mx-1"
+                fab
+                white
+                large
+                color="white">
+                <v-icon dark>
+                  fas fa-pencil-alt
+                </v-icon>
+              </v-btn>
               <v-avatar 
                 class="profile"
             color="grey"
             size="200"
-            tile
-              >
+            tile>
+              
               
                 <img  v-bind:src="'http://localhost:3000/'+item.mro_foto" onerror="http://localhost:3000/no_user.png" >
               </v-avatar>
@@ -195,6 +204,54 @@
       </v-card>
     </v-dialog>
 </template>
+
+  
+    <v-dialog
+      v-model="dialogmore"
+      width="500"
+    >
+   
+
+      <v-card>
+        <v-card-title class="text-h5 grey lighten-2">
+          {{empleado_selected.mro_nombre}}
+        </v-card-title>
+
+        <v-card-text align-self="center">
+         <p>
+          <v-avatar 
+                
+            color="grey"
+            size="200"
+           
+            align-self="center"
+            
+            >
+              
+                <img  v-bind:src="empleado_selected.mro_foto" >
+              </v-avatar>
+         </p>
+         <p>
+
+         </p>
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            text
+            @click="dialogmore = false"
+          >
+            Ok
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+
   </v-container>
   
   
@@ -216,7 +273,17 @@ export default {
       mro_sueldo: 0.0
 
     },
+    empleado_selected:{
+       mro_nombre: "",
+      mro_direccion: "",
+      mro_correo: "",
+      mro_telefono: "",
+      mro_foto: "",
+      mro_sueldo: 0.0
+    }
+    ,
     dialog: false,
+    dialogmore: false
     
     
   }),
@@ -227,6 +294,14 @@ export default {
   },
   methods: {
 
+    moreinformation(empleado){
+    
+      this.empleado_selected=empleado;
+      this.empleado_selected.mro_foto="http://localhost:3000/"+this.empleado_selected.mro_foto;
+      this.dialogmore=true;  
+
+    }
+    ,
     getMeseros(){ 
        console.log("Hola");    
       this.axios.get("/mesero/seleccionarTodos").then(response=>{
