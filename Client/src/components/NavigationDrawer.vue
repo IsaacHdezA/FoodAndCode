@@ -46,6 +46,7 @@ export default {
         { title: "Ordenes", icon: "fas fa-list-alt", to: "Order" },
         { title: "Comida", icon: "fas fa-utensils", to: "Food" },
         { title: "Empleados", icon: "fas fa-users", to: "Employee" },
+        { title: "Estadísticas", icon: "fas fa-signal", to: "Statistic" },
       ],
       mini: true,
     };
