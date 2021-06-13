@@ -71,7 +71,7 @@ mesero_control.cambiarEstado = (req, res) => {
   }
 };
 mesero_control.actualizar = (req, res) => {
-  console.log(req);
+  console.log(req.body);
   let body = req.body;
 
   if (
@@ -114,14 +114,14 @@ mesero_control.actualizar = (req, res) => {
 
 mesero_control.actualizars = (req, res) => {
   let body = req.body;
+  console.log(body);
   if (
     body.mro_nombre &&
     body.mro_telefono &&
     body.mro_correo &&
     body.mro_sueldo &&
     body.mro_domicilio &&
-    body.mro_estado &&
-    body.mro_foto
+    body.mro_estado
   ) {
     mesero.actualizar(
       [

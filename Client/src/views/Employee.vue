@@ -293,7 +293,7 @@
                       class="mb-n5"
                       label="Seleccione su archivo"
                       filled
-                      v-model="empleado_actualizar.mro_foto"
+                      v-model="empleado_actualizar.file"
                       prepend-icon="fas fa-camera"
                       dense
                       solo
@@ -316,7 +316,12 @@
           >
           </v-switch>
           <v-spacer></v-spacer>
-          <v-btn depressed class="l-14" color="primary">
+          <v-btn
+            depressed
+            class="l-14"
+            v-on:click="actualizarEmpleado()"
+            color="primary"
+          >
             Guardar informacion
           </v-btn>
         </v-card-actions>
@@ -392,7 +397,8 @@ export default {
       mro_direccion: "",
       mro_correo: "",
       mro_telefono: "",
-      mro_foto: [],
+      file: [],
+      mro_foto: "",
       mro_sueldo: 0.0,
     },
     dialog: false,
@@ -463,12 +469,71 @@ export default {
       this.empleado_actualizar.mro_direccion = empleado.mro_domicilio;
       this.empleado_actualizar.mro_sueldo = empleado.mro_sueldo;
       this.empleado_actualizar.mro_id = empleado.mro_id;
+      this.empleado_actualizar.mro_foto = empleado.mro_foto;
       if (this.empleado_actualizar.mro_estado == "a") {
         this.editar_activo = true;
       } else {
         this.editar_activo = false;
       }
       this.dialogo_editar = true;
+    },
+    async actualizarEmpleado() {
+      this.dialog = true;
+      if (this.editar_activo) {
+        this.empleado_actualizar.mro_estado = "a";
+      } else {
+        this.empleado_actualizar.mro_estado = "i";
+      }
+
+      if (this.empleado_actualizar.file != undefined) {
+        console.log("hola");
+        let form1 = new FormData();
+        form1.append("mro_nombre", this.empleado_actualizar.mro_nombre);
+        form1.append("mro_domicilio", this.empleado_actualizar.mro_direccion);
+        form1.append("mro_correo", this.empleado_actualizar.mro_correo);
+        form1.append("mro_telefono", this.empleado_actualizar.mro_telefono);
+        form1.append("mro_sueldo", this.empleado_actualizar.mro_sueldo);
+        form1.append("mro_estado", this.empleado_actualizar.mro_estado);
+        form1.append("mro_foto", this.empleado_actualizar.mro_foto);
+        form1.append("file", this.empleado_actualizar.file);
+        form1.append("mro_id", this.empleado_actualizar.mro_id);
+        await this.axios
+          .put("/mesero/actualizar", form1, {
+            headers: {"Content-Type": "multipart/form-data"},
+          })
+          .then((response) => {
+            console.log(response.data);
+            this.getMeseros();
+            this.dialog = false;
+            this.dialogo_editar = false;
+          })
+          .catch((e) => {
+            console.log(e);
+            this.dialog = false;
+            this.dialogo_editar = false;
+          });
+      } else {
+        await this.axios
+          .put("/mesero/actualizars", {
+            mro_nombre: this.empleado_actualizar.mro_nombre,
+            mro_domicilio: this.empleado_actualizar.mro_direccion,
+            mro_correo: this.empleado_actualizar.mro_correo,
+            mro_telefono: this.empleado_actualizar.mro_telefono,
+            mro_estado: this.empleado_actualizar.mro_estado,
+            mro_sueldo: this.empleado_actualizar.mro_sueldo,
+            mro_foto: this.empleado_actualizar.mro_foto,
+            mro_id: this.empleado_actualizar.mro_id,
+          })
+          .then((response) => {
+            this.getMeseros();
+            this.dialog = false;
+            this.dialogo_editar = false;
+          })
+          .catch((e) => {
+            this.dialog = false;
+            this.dialogo_editar = false;
+          });
+      }
     },
     getMeseros() {
       this.axios

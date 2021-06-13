@@ -12,11 +12,13 @@ const payment_route = require("./routes/payment_route.js");
 const table_route = require("./routes/table_route.js");
 const statistic_route = require("./routes/statistic_route.js");
 const performance_route = require("./routes/performance");
+
 app.use(cors());
 app.use(morgan("tiny"));
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
+
 app.use(express.static(path.join(__dirname, "uploads")));
 
 app.use("/mesero", mesero_ruta);
