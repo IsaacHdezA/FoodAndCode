@@ -53,6 +53,24 @@
           </template>
         </v-card-text>
       </v-card>
+      <v-alert
+        :value="alertNewOrder"
+        icon="fas fa-check-circle"
+        transition="scale-transition"
+        class="mt-2"
+        type="success"
+      >
+        Se añadió a las órdenes pendientes
+      </v-alert>
+      <v-alert
+        :value="alertEmptyNewOrder"
+        icon="fas fa-exclamation-circle"
+        transition="scale-transition"
+        class="mt-2"
+        type="error"
+      >
+        Debes seleccionar el mesero a cargo y la mesa.
+      </v-alert>
     </template>
     <br />
     <template>
@@ -85,7 +103,6 @@
                     <v-icon size="21">fas fa-money-bill-alt</v-icon>
                   </v-btn>
                   <!-- Abrir el diálogo de pago -->
-
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-list dense class="container-inside" color="grey lighten-4">
@@ -202,9 +219,11 @@
                   color="#E5E5E5"
                   elevation="0"
                   class="pa-3"
-                  >
+                >
                   <v-toolbar dense color="primary" dark>
-                    <v-toolbar-title class="toolbar-title">Pedidos de la mesa {{ this.idTable }}</v-toolbar-title>
+                    <v-toolbar-title class="toolbar-title">
+                      Pedidos de la mesa {{ this.idTable }}
+                    </v-toolbar-title>
                     <v-spacer></v-spacer>
                   </v-toolbar>
 
@@ -220,15 +239,21 @@
 
               <!-- Ticket -->
               <v-col>
-                <v-card
-                  height="100%"
-                  color="#F5F5F5"
-                  elevation="0"
-                  class="pa-3"
-                  >
-                  <v-toolbar dense color="primary" dark>
-                  </v-toolbar>
-                </v-card>
+                <div class="container-ticket">
+                  <div class="header-ticket">
+                    <h2>Food And Code</h2>
+                    Accesibilidad, proactividad y alimentación.
+                    _________________________________________________
+                  </div>
+                  <div class="content-ticket">
+                    TABLA con lo mismo de los pedidos
+                  </div>
+                  <div class="footer-ticket">
+                    _________________________________________________
+                    <br />
+                    GRACIAS POR CONSUMIR CON NOSOTROS
+                  </div>
+                </div>
               </v-col>
               <!-- Ticket -->
             </v-row>
@@ -238,11 +263,7 @@
           <v-container>
             <v-row no-gutters>
               <v-col cols="8">
-                <v-card
-                  color="#F5F5F5"
-                  elevation="0"
-                  class="pa-3"
-                  >
+                <v-card color="#F5F5F5" elevation="0" class="pa-3">
                   <v-card-text>
                     <v-row>
                       <h3>Subtotal:</h3>
@@ -259,12 +280,7 @@
               </v-col>
 
               <v-col cols="4">
-                <v-card
-                  color="third"
-                  elevation="0"
-                  class="pa-3"
-                  height="100%"
-                  >
+                <v-card color="third" elevation="0" class="pa-3" height="100%">
                   <v-btn
                     class="px-7 font-weight-black"
                     color="accent"
@@ -272,15 +288,13 @@
                     width="100%"
                     height="100%"
                   >
-                    Realizar pago
+                    Imprimir ticket y pagar
                   </v-btn>
                 </v-card>
-
               </v-col>
             </v-row>
           </v-container>
           <!-- Subtotal y pago -->
-
         </v-card>
       </v-dialog>
       <!-- Diseño diálogo de pago -->
@@ -329,9 +343,10 @@ export default {
     },
     pDialog: false,
     cDeleteDialog: false,
+    alertNewOrder: false,
+    alertEmptyNewOrder: false,
     loader: null,
     loadingAddOrder: false,
-
     // PAYMENTS
     headers: [
       { text: "Comida", align: "center", value: "com_nombre" },
@@ -352,16 +367,29 @@ export default {
   }),
 
   watch: {
+    // ORDERS
+    alertNewOrder(value) {
+      if (!value) return;
+
+      setTimeout(() => (this.alertNewOrder = false), 3000);
+    },
+
+    alertEmptyNewOrder(value) {
+      if (!value) return;
+
+      setTimeout(() => (this.alertEmptyNewOrder = false), 3000);
+    },
+
+    cDeleteDialog(isOpen) {
+      if (!isOpen) this.order = [];
+    },
+
     // PAYMENTS
     pDialog(isOpen) {
       if (!isOpen) {
         this.newPayment = {};
         this.subOrders = [];
       }
-    },
-
-    cDeleteDialog(isOpen) {
-      if (!isOpen) this.order = [];
     },
   },
 
@@ -414,14 +442,19 @@ export default {
       this.loader = "loadingAddOrder";
       this.loadingAddOrder = true;
 
-      await this.axios.post("order/addOrder/", this.newOrder);
+      if (
+        typeof this.newOrder.mro_id !== "undefined" &&
+        typeof this.newOrder.mes_id !== "undefined"
+      ) {
+        await this.axios.post("order/addOrder/", this.newOrder);
+        this.alertNewOrder = true;
+        this.cancelAddOrder();
+      } else this.alertEmptyNewOrder = true;
 
       this.tables = [];
       this.getWaitingOrders();
       this.getActiveOrders();
       this.getActiveTables();
-      this.cancelAddOrder();
-
       this.loader = null;
       this.loadingAddOrder = false;
     },
@@ -461,12 +494,16 @@ export default {
     },
 
     async showOrderTotal(idOrder) {
-      const apiData = await this.axios.get("/payment/orderTotal/" + idOrder.toString());
+      const apiData = await this.axios.get(
+        "/payment/orderTotal/" + idOrder.toString()
+      );
       this.subtotal = apiData.data[0].total_orden;
     },
 
     async showOrderTotalIVA(idOrder) {
-      const apiData = await this.axios.get("/payment/orderTotalIVA/" + idOrder.toString());
+      const apiData = await this.axios.get(
+        "/payment/orderTotalIVA/" + idOrder.toString()
+      );
       this.total = apiData.data[0].total_orden;
     },
 
