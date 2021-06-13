@@ -21,4 +21,6 @@ var uploadS = multer({storage: storage}).single("file");
 router.post("/nuevo", uploadS, mesero_control.nuevo);
 router.get("/seleccionarTodos", mesero_control.seleccionarTodos);
 router.put("/cambiarEstado", mesero_control.cambiarEstado);
+router.put("/actualizar", mesero_control.actualizar);
+
 module.exports = router;
