@@ -145,7 +145,13 @@
                 <v-card align="center" align-content="center" justify="center">
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn class="ma-1 " white icon color="dark">
+                    <v-btn
+                      class="ma-1 "
+                      v-on:click="lanzarEditable(item)"
+                      white
+                      icon
+                      color="dark"
+                    >
                       <v-icon dark>
                         fas fa-pencil-alt
                       </v-icon>
@@ -155,6 +161,7 @@
                   <v-card-text align="center" justify="center">
                     <p align-self="center">
                       <v-avatar
+                        class="hgcursor"
                         align-self="center"
                         size="200"
                         v-on:click="moreinformation(item)"
@@ -193,11 +200,133 @@
       </v-dialog>
     </template>
 
-    <v-dialog v-model="dialogmore" max-width="300">
+    <v-dialog v-model="dialogo_editar" max-width="800">
+      <v-card>
+        <v-toolbar dark class="mb-2 text-h5" color="primary">
+          <v-toolbar-title>Editar empleado</v-toolbar-title>
+        </v-toolbar>
+        <v-card-text>
+          <template>
+            <v-row>
+              <v-col cols="12">
+                <v-row>
+                  <v-col cols="3" class="text-right mt-3">
+                    <h3 class="black--text">Nombre</h3>
+                  </v-col>
+                  <v-col cols="9">
+                    <v-text-field
+                      class="mb-n8"
+                      v-model="empleado_actualizar.mro_nombre"
+                      background-color="white"
+                      label="Nombre"
+                      solo
+                      outlined
+                      dense
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="3" class="text-right mt-3">
+                    <h3 class="black--text">Dirección</h3>
+                  </v-col>
+                  <v-col cols="9">
+                    <v-text-field
+                      class="mb-n8"
+                      v-model="empleado_actualizar.mro_direccion"
+                      background-color="white"
+                      label="Direccion"
+                      solo
+                      outlined
+                      dense
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="3" class="text-right mt-3">
+                    <h3 class="black--text">Correo electrónico</h3>
+                  </v-col>
+                  <v-col cols="9">
+                    <v-text-field
+                      class="mb-n8"
+                      v-model="empleado_actualizar.mro_correo"
+                      background-color="white"
+                      label="Correo"
+                      solo
+                      outlined
+                      dense
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="3" class="text-right mt-3">
+                    <h3 class="black--text">Numéro de teléfono</h3>
+                  </v-col>
+                  <v-col cols="9">
+                    <v-text-field
+                      class="mb-n8"
+                      v-model="empleado_actualizar.mro_telefono"
+                      background-color="white"
+                      label="Telefono"
+                      solo
+                      outlined
+                      dense
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="3" class="text-right mt-3">
+                    <h3 class="black--text">Sueldo</h3>
+                  </v-col>
+                  <v-col cols="9">
+                    <v-text-field
+                      class="mb-n8"
+                      v-model="empleado_actualizar.mro_sueldo"
+                      background-color="white"
+                      label="0.00"
+                      solo
+                      outlined
+                      dense
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="3" class="text-right mt-3">
+                    <h3 class="black--text">Foto</h3>
+                  </v-col>
+                  <v-col cols="9">
+                    <v-file-input
+                      class="mb-n5"
+                      label="Seleccione su archivo"
+                      filled
+                      v-model="empleado_actualizar.mro_foto"
+                      prepend-icon="fas fa-camera"
+                      dense
+                      solo
+                      outlined
+                    ></v-file-input>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+          </template>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-switch
+            v-model="editar_activo"
+            label="Activo"
+            key="editar"
+            color="success"
+            hide-details
+          >
+          </v-switch>
+          <v-spacer></v-spacer>
+          <v-btn depressed class="l-14" color="primary">
+            Guardar informacion
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogmore" max-width="300" max-height="300">
       <v-card align="center" align-content="center" justify="center">
-        <v-card-title class="text-h5 grey lighten-2">
-          {{ empleado_selected.mro_nombre }}
-        </v-card-title>
+        <v-toolbar dark class="mb-2 text-h5" color="primary">
+          <v-toolbar-title>{{ empleado_selected.mro_nombre }}</v-toolbar-title>
+        </v-toolbar>
 
         <v-card-text align-self="center">
           <p>
@@ -258,9 +387,19 @@ export default {
       mro_foto: "",
       mro_sueldo: 0.0,
     },
+    empleado_actualizar: {
+      mro_nombre: "",
+      mro_direccion: "",
+      mro_correo: "",
+      mro_telefono: "",
+      mro_foto: [],
+      mro_sueldo: 0.0,
+    },
     dialog: false,
     dialogmore: false,
     activo_inactivo: true,
+    dialogo_editar: true,
+    editar_activo: true,
   }),
 
   created() {
@@ -315,6 +454,21 @@ export default {
           console.log(e);
           this.dialogmore = false;
         });
+    },
+    lanzarEditable(empleado) {
+      this.empleado_actualizar.mro_nombre = empleado.mro_nombre;
+      this.empleado_actualizar.mro_telefono = empleado.mro_telefono;
+      this.empleado_actualizar.mro_correo = empleado.mro_correo;
+      this.empleado_actualizar.mro_estado = empleado.mro_estado;
+      this.empleado_actualizar.mro_direccion = empleado.mro_domicilio;
+      this.empleado_actualizar.mro_sueldo = empleado.mro_sueldo;
+      this.empleado_actualizar.mro_id = empleado.mro_id;
+      if (this.empleado_actualizar.mro_estado == "a") {
+        this.editar_activo = true;
+      } else {
+        this.editar_activo = false;
+      }
+      this.dialogo_editar = true;
     },
     getMeseros() {
       console.log("Hola");

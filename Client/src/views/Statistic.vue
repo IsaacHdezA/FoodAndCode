@@ -3,7 +3,14 @@
     <h1>Estadísticas</h1>
     <br />
     <v-container>
-      <v-row> </v-row>
+      <div class="container-grid">
+        <div class="container-earned-today"></div>
+        <div class="container-profits"></div>
+        <div class="container-orders-date"></div>
+        <div class="container-sales-date"></div>
+        <div class="container-orders-table"></div>
+        <div class="container-orders-employee"></div>
+      </div>
     </v-container>
   </v-container>
 </template>
