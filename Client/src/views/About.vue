@@ -32,7 +32,7 @@
               >
               <v-card-text>
                 <div class="container-inside">
-                  Si compila esta bien, si arranca es perfecto.
+                  Si compila, está bien. Si arranca, es perfecto.
                 </div>
               </v-card-text>
             </v-card>
@@ -48,7 +48,7 @@
               >
               <v-card-text>
                 <div class="container-inside">
-                  Genio, millonario, playboy, filántropo
+                  Genio, millonario, playboy, filántropo.
                 </div>
               </v-card-text>
             </v-card>
@@ -81,7 +81,8 @@
               >
               <v-card-text>
                 <div class="container-inside">
-                  El riesgo más grande es no tomar ninguno.
+                  <strong>T O R C I D O <br /></strong>
+                  <strong>T O R C I D O</strong>
                 </div>
               </v-card-text>
             </v-card>
@@ -97,7 +98,7 @@
               >
               <v-card-text>
                 <div class="container-inside">
-                  Cuamndo yo la vi, dimje: "Si esa mumjer fueram para mi".
+                  Cuamndo yo la vi, dimje: "Si esa mumjer fueram para mí"
                 </div>
               </v-card-text>
             </v-card>
