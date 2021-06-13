@@ -155,6 +155,7 @@
                   <v-card-text align="center" justify="center">
                     <p align-self="center">
                       <v-avatar
+                        class="hgcursor"
                         align-self="center"
                         size="200"
                         v-on:click="moreinformation(item)"
