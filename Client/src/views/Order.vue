@@ -256,13 +256,13 @@
 
               <!-- Ticket -->
               <v-col>
-                <div class="container-ticket">
+                <div class="container-ticket" id="ticket">
                   <div class="header-ticket">
                     <v-icon size="40" color="black">fas fa-code</v-icon>
                     <h2>Food And Code</h2>
                     Accesibilidad, proactividad y alimentación.<br />
                     ------------------------------------------------- <br />
-                    Atendido por: {{ this.employeeName }} -
+                    Atendido por: {{ this.employeeName }}
                   </div>
                   <div class="content-ticket">
                     <v-row>
@@ -389,7 +389,7 @@
             <v-btn color="primary darken-1" text @click="cancelPayment()">
               Cancelar
             </v-btn>
-            <v-btn color="success" text @click="insertPayment()">
+            <v-btn color="success" text @click="printPageArea()">
               Confirmar
             </v-btn>
           </v-card-actions>
@@ -624,8 +624,19 @@ export default {
       this.pDialog = true;
     },
 
+    printPageArea() {
+      var printContent = document.getElementById("ticket");
+      var WinPrint = window.open("", "", "width=900,height=650");
+      WinPrint.document.write(printContent.innerHTML);
+      WinPrint.document.close();
+      WinPrint.focus();
+      WinPrint.print();
+      WinPrint.close();
+    },
+
     openCPaymentDialog() {
       this.cPaymentDialog = true;
+      this.printPageArea();
     },
 
     cancelPayment() {
