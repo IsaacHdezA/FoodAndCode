@@ -26,7 +26,11 @@
             @click="sub_dialog = true"
           >
             Mesa 1 <br />
-            {{ this.spaces[0]["value"] }}/8
+            {{
+              typeof this.spaces[0] !== "undefined"
+                ? this.spaces[0]["value"]
+                : "0"
+            }}/8
           </v-btn>
         </v-col>
 
@@ -43,7 +47,11 @@
                 @click="sub_dialog = true"
               >
                 Mesa 2 <br />
-                {{ this.spaces[1]["value"] }}/4
+                {{
+                  typeof this.spaces[0] !== "undefined"
+                    ? this.spaces[1]["value"]
+                    : "0"
+                }}/4
               </v-btn>
             </v-col>
             <v-col cols="6">
@@ -57,7 +65,11 @@
                 @click="sub_dialog = true"
               >
                 Mesa 3 <br />
-                {{ this.spaces[2]["value"] }}/4
+                {{
+                  typeof this.spaces[0] !== "undefined"
+                    ? this.spaces[2]["value"]
+                    : "0"
+                }}/4
               </v-btn>
             </v-col>
           </v-row>
@@ -73,7 +85,11 @@
                 @click="sub_dialog = true"
               >
                 Mesa 4 <br />
-                {{ this.spaces[3]["value"] }}/4
+                {{
+                  typeof this.spaces[0] !== "undefined"
+                    ? this.spaces[3]["value"]
+                    : "0"
+                }}/4
               </v-btn>
             </v-col>
             <v-col cols="6">
@@ -87,7 +103,11 @@
                 @click="sub_dialog = true"
               >
                 Mesa 5 <br />
-                {{ this.spaces[4]["value"] }}/4
+                {{
+                  typeof this.spaces[0] !== "undefined"
+                    ? this.spaces[4]["value"]
+                    : "0"
+                }}/4
               </v-btn>
             </v-col>
           </v-row>
@@ -104,7 +124,11 @@
             @click="sub_dialog = true"
           >
             Mesa 6 <br />
-            {{ this.spaces[5]["value"] }}/8
+            {{
+              typeof this.spaces[0] !== "undefined"
+                ? this.spaces[5]["value"]
+                : "0"
+            }}/8
           </v-btn>
         </v-col>
       </v-row>
@@ -123,7 +147,11 @@
                 @click="sub_dialog = true"
               >
                 Mesa 7 <br />
-                {{ this.spaces[6]["value"] }}/4
+                {{
+                  typeof this.spaces[0] !== "undefined"
+                    ? this.spaces[6]["value"]
+                    : "0"
+                }}/4
               </v-btn>
             </v-col>
             <v-col cols="6">
@@ -137,7 +165,11 @@
                 @click="sub_dialog = true"
               >
                 Mesa 8 <br />
-                {{ this.spaces[7]["value"] }}/4
+                {{
+                  typeof this.spaces[0] !== "undefined"
+                    ? this.spaces[7]["value"]
+                    : "0"
+                }}/4
               </v-btn>
             </v-col>
           </v-row>
@@ -153,7 +185,11 @@
                 @click="sub_dialog = true"
               >
                 Mesa 9 <br />
-                {{ this.spaces[8]["value"] }}/4
+                {{
+                  typeof this.spaces[0] !== "undefined"
+                    ? this.spaces[8]["value"]
+                    : "0"
+                }}/4
               </v-btn>
             </v-col>
             <v-col cols="6">
@@ -167,7 +203,11 @@
                 @click="sub_dialog = true"
               >
                 Mesa 10 <br />
-                {{ this.spaces[9]["value"] }}/4
+                {{
+                  typeof this.spaces[0] !== "undefined"
+                    ? this.spaces[9]["value"]
+                    : "0"
+                }}/4
               </v-btn>
             </v-col>
           </v-row>
@@ -184,7 +224,11 @@
             @click="sub_dialog = true"
           >
             Mesa 11 <br />
-            {{ this.spaces[10]["value"] }}/8
+            {{
+              typeof this.spaces[0] !== "undefined"
+                ? this.spaces[10]["value"]
+                : "0"
+            }}/8
           </v-btn>
         </v-col>
 
@@ -201,7 +245,11 @@
                 @click="sub_dialog = true"
               >
                 Mesa 12 <br />
-                {{ this.spaces[11]["value"] }}/4
+                {{
+                  typeof this.spaces[0] !== "undefined"
+                    ? this.spaces[11]["value"]
+                    : "0"
+                }}/4
               </v-btn>
             </v-col>
             <v-col cols="6">
@@ -215,7 +263,11 @@
                 @click="sub_dialog = true"
               >
                 Mesa 13 <br />
-                {{ this.spaces[12]["value"] }}/4
+                {{
+                  typeof this.spaces[0] !== "undefined"
+                    ? this.spaces[12]["value"]
+                    : "0"
+                }}/4
               </v-btn>
             </v-col>
           </v-row>
@@ -231,7 +283,11 @@
                 @click="sub_dialog = true"
               >
                 Mesa 14 <br />
-                {{ this.spaces[13]["value"] }}/4
+                {{
+                  typeof this.spaces[0] !== "undefined"
+                    ? this.spaces[13]["value"]
+                    : "0"
+                }}/4
               </v-btn>
             </v-col>
             <v-col cols="6">
@@ -245,7 +301,11 @@
                 @click="sub_dialog = true"
               >
                 Mesa 15 <br />
-                {{ this.spaces[14]["value"] }}/4
+                {{
+                  typeof this.spaces[0] !== "undefined"
+                    ? this.spaces[14]["value"]
+                    : "0"
+                }}/4
               </v-btn>
             </v-col>
           </v-row>
@@ -323,8 +383,8 @@ export default {
   },
 
   created() {
-    this.getActiveTables();
     this.getSpacesTables();
+    this.getActiveTables();
     this.getSuborders();
   },
 
