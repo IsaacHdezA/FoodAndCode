@@ -10,92 +10,99 @@
         </v-toolbar>
         <v-card-text>
           <template>
-            <v-form v-model="valid">
-              <v-row align="center" align-content="center" justify="center">
-                <v-col cols="5">
-                  <v-row justify="center" align="center" align-content="center">
-                    <v-col cols="3" class="text-right mt-n3">
-                      <h3 class="black--text">Nombre</h3>
-                    </v-col>
-                    <v-col cols="9">
-                      <v-text-field
-                        class="mb-n3"
-                        v-model="new_food.com_nombre"
-                        background-color="white"
-                        label="Nombre"
-                        solo
-                        outlined
-                        dense
-                        required
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="3" class="text-right mt-n6">
-                      <h3 class="black--text">Categoría</h3>
-                    </v-col>
-                    <v-col cols="9">
-                      <v-select
-                        class="my-n4"
-                        v-model="new_food.com_cat_id"
-                        :items="categories"
-                        label="Seleccionar categoria"
-                        solo
-                        background-color="white"
-                        outlined
-                        dense
-                      ></v-select>
-                    </v-col>
-                    <v-col cols="3" class="text-right mt-n6">
-                      <h3 class="black--text">Precio</h3>
-                    </v-col>
-                    <v-col cols="9">
-                      <v-text-field
-                        class="mt-n3 mb-n6 pb-n6"
-                        v-model="new_food.com_precio"
-                        :rules="precio_rules"
-                        prefix="$"
-                        label="Precio de la comida"
-                        solo
-                        background-color="white"
-                        outlined
-                        dense
-                        required
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                </v-col>
+            <v-form
+                ref="form"
+                v-model="valid"
+                lazy-validation
+                >
+                <v-row align="center" align-content="center" justify="center">
+                  <v-col cols="5">
+                    <v-row justify="center" align="center" align-content="center">
+                      <v-col cols="3" class="text-right mt-n3">
+                        <h3 class="black--text">Nombre</h3>
+                      </v-col>
+                      <v-col cols="9">
+                        <v-text-field
+                            class="mb-n3"
+                            v-model="new_food.com_nombre"
+                            :rules="[v => !!v || 'El nombre es obligatorio']"
+                            background-color="white"
+                            label="Nombre"
+                            solo
+                            outlined
+                            dense
+                            required
+                            ></v-text-field>
+                      </v-col>
+                      <v-col cols="3" class="text-right mt-n6">
+                        <h3 class="black--text">Categoría</h3>
+                      </v-col>
+                      <v-col cols="9">
+                        <v-select
+                            class="my-n4"
+                            v-model="new_food.com_cat_id"
+                            :items="categories"
+                            :rules="[v => !!v || 'Debe seleccionar una categoria']"
+                            label="Seleccionar categoria"
+                            solo
+                            background-color="white"
+                            outlined
+                            dense
+                            required
+                            ></v-select>
+                      </v-col>
+                      <v-col cols="3" class="text-right mt-n6">
+                        <h3 class="black--text">Precio</h3>
+                      </v-col>
+                      <v-col cols="9">
+                        <v-text-field
+                            class="mt-n3 mb-n6 pb-n6"
+                            v-model="new_food.com_precio"
+                            :rules="precio_rules"
+                            prefix="$"
+                            label="Precio de la comida"
+                            solo
+                            background-color="white"
+                            outlined
+                            dense
+                            required
+                            ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-col>
 
-                <v-col cols="5">
-                  <v-row>
-                    <v-col cols="4" class="text-right mt-3">
-                      <h3 class="black--text">Descripción</h3>
-                    </v-col>
-                    <v-col cols="8">
-                      <v-textarea
-                        outlined
-                        rows="5"
-                        label="Descripción"
-                        solo
-                        v-model="new_food.com_descripcion"
-                        background-color="white"
-                        class="mb-n6 pb-n6"
-                        no-resize
-                      ></v-textarea>
-                    </v-col>
-                  </v-row>
-                </v-col>
+                  <v-col cols="5">
+                    <v-row>
+                      <v-col cols="4" class="text-right mt-3">
+                        <h3 class="black--text">Descripción</h3>
+                      </v-col>
+                      <v-col cols="8">
+                        <v-textarea
+                            outlined
+                            rows="5"
+                            label="Descripción"
+                            solo
+                            v-model="new_food.com_descripcion"
+                            background-color="white"
+                            class="mb-n6 pb-n6"
+                            no-resize
+                            ></v-textarea>
+                      </v-col>
+                    </v-row>
+                  </v-col>
 
-                <v-col cols="2">
-                  <v-row justify="center">
-                    <v-col cols="10">
-                      <v-btn class="px-7 font-weight-black" color="accent" rounded @click="submit_form()">{{btn_text}}</v-btn>
-                    </v-col>
-                    <v-col v-if="edit_mode" cols="10">
-                      <!-- Cambiar el color del botón --> 
-                      <v-btn class="px-7 font-weight-black" color="accent" rounded @click="cancel_edit()">Cancelar</v-btn>
-                    </v-col>
-                  </v-row>
-                </v-col>
-              </v-row>
+                  <v-col cols="2">
+                    <v-row justify="center">
+                      <v-col cols="10">
+                        <v-btn class="px-7 font-weight-black" color="accent" rounded @click="submit_form()">{{btn_text}}</v-btn>
+                      </v-col>
+                      <v-col v-if="edit_mode" cols="10">
+                        <!-- Cambiar el color del botón --> 
+                        <v-btn class="px-7 font-weight-black" color="accent" rounded @click="cancel_edit()">Cancelar</v-btn>
+                      </v-col>
+                    </v-row>
+                  </v-col>
+                </v-row>
             </v-form>
           </template>
         </v-card-text>
@@ -104,38 +111,48 @@
 
     <template>
       <v-card class="mt-5">
-          <v-toolbar color="primary">
-              <v-select
-                  v-model="filters"
-                  :items="categories"
-                  label="Filtrar por categoria"
-                  solo
-                  dense
-                  multiple
-                  class="mb-n6"
-                  >
-                  <template v-slot:selection="{ item, index }">
-                    <v-chip v-if="index === 0" dense>
-                      <span>{{ item.text }}</span>
-                    </v-chip>
-                    <span
-                        v-if="index === 1"
-                        class="grey--text text-caption"
-                        >
-                        (+{{ filters.length - 1 }} más)
-                    </span>
-                  </template>
-              </v-select>
-            <v-spacer></v-spacer>
-              <v-text-field
-                  v-model="search"
-                  append-icon="fa fa-search"
-                  dense
-                  label="Buscar"
-                  single-line
-                  dark
-                  hide-details
-                  ></v-text-field>
+        <v-toolbar color="primary">
+          <v-select
+              v-model="filters"
+              :items="categories"
+              label="Filtrar por categoria"
+              solo
+              dense
+              multiple
+              class="mb-n6"
+              >
+              <template v-slot:selection="{ item, index }">
+                <v-chip v-if="index === 0" dense>
+                  <span>{{ item.text }}</span>
+                </v-chip>
+                <span
+                    v-if="index === 1"
+                    class="grey--text text-caption"
+                    >
+                    (+{{ filters.length - 1 }} más)
+                </span>
+              </template>
+          </v-select>
+
+          <v-select
+              v-model="showed"
+              :items="show"
+              label="Filtrar por estado"
+              solo
+              dense
+              class="mb-n6 mx-8"
+              >
+          </v-select>
+
+            <v-text-field
+                v-model="search"
+                append-icon="fa fa-search"
+                dense
+                label="Buscar"
+                single-line
+                dark
+                hide-details
+                ></v-text-field>
 
         </v-toolbar>
 
@@ -168,7 +185,7 @@
             <v-icon small class="mr-3" @click="edit_food(item)">
               fas fa-pen
             </v-icon>
-            <v-icon small @click="delete_food(item)">
+            <v-icon small @click="open_delete_dialog(item)">
               fas fa-trash
             </v-icon>
           </template>
@@ -176,51 +193,26 @@
       </v-card>
     </template>
 
-    <!--<template>
-      <v-row justify="center">
-      <v-dialog
-      v-model="dialog"
-      persistent
-      max-width="290"
-      >
-      <v-card color="primary">
-      <v-card-title class="subheading font-weight-bold">
-      ¿Eliminar?
-      </v-card-title>
-      <v-divider></v-divider>
-      <v-list dense class="container-inside" color="grey lighten-4">
-      <v-list-item>
-      <v-list-item-content>Comida:</v-list-item-content>
-      <v-list-item-content class="align-end">
-      Mesero
-      </v-list-item-content>
-      </v-list-item>
-      <v-list-item>
-      <v-list-item-content>Precio</v-list-item-content>
-      <v-list-item-content class="align-end">
-      Fecha y hora
-      </v-list-item-content>
-      </v-list-item>
-      </v-list>
-      <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn
-      text
-      @click="dialog = false"
-      >
-      Disagree
-      </v-btn>
-      <v-btn
-      text
-      @click="dialog = false"
-      >
-      Agree
-      </v-btn>
-      </v-card-actions>
-      </v-card>
+      <v-dialog v-model="delete_dialog" max-width="300">
+        <v-card>
+          <v-card-title class="text-h5">
+            ¿Estás seguro?
+          </v-card-title>
+          <v-card-text>
+            Esta acción es irreversible.
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary darken-1" text @click="cancel_delete_dialog()">
+              Cancelar
+            </v-btn>
+            <v-btn color="red darken-1" text @click="delete_food()">
+              Eliminar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
       </v-dialog>
-      </v-row>
-      </template> -->
+
   </v-container>
 </template>
 
@@ -231,6 +223,8 @@ export default {
     valid: false,
     dialog: false,
     edit_mode: false,
+    delete_dialog: false,
+    d_food: {},
     precio_rules: [
       (v) =>
       /^[+]?([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$/.test(v) ||
@@ -249,6 +243,12 @@ export default {
     foods: [],
     filters: [],
     categories: [],
+    show: [
+      { text: "Todos", value: "all" },
+      { text: "Activos", value: "a" },
+      { text: "Inactivos", value: "i" }
+    ],
+    showed: 'a',
     new_food: {},
   }),
   created() {
@@ -269,25 +269,27 @@ export default {
         });
       });
     },
-    async delete_food(item) {
+    async delete_food() {
       const body = {
-        com_id: item.com_id,
+        com_id: this.d_food.com_id,
       };
-      await this.axios.post("/food/delete_food", body);
+      if (this.d_food.com_estado == 'a') await this.axios.post("/food/inactive_food", body);
+      else await this.axios.post("/food/delete_food", body);
+      this.delete_dialog = false;
       this.get_all_foods();
     },
     async save_food() {
       await this.axios.post("/food/new_food", this.new_food);
       this.get_all_foods();
       this.new_food = {};
-      this.valid = true;
+      this.$refs.form.reset();
     },
     async update_food() {
       await this.axios.post("/food/update_food", this.new_food);
       this.get_all_foods();
       this.new_food = {};
-      this.valid = true;
       this.edit_mode = false;
+      this.$refs.form.reset();
     },
     edit_food(item) {
       this.edit_mode = true;
@@ -296,10 +298,22 @@ export default {
     cancel_edit() {
       this.edit_mode = false;
       this.new_food = {};
+      this.$refs.form.reset();
     },
     submit_form() {
-      this.edit_mode ? this.update_food() : this.save_food();
-    }
+      console.log(this.$refs.form.validate());
+      if (this.$refs.form.validate()) {
+        this.edit_mode ? this.update_food() : this.save_food();
+      }
+    },
+    open_delete_dialog(item) {
+      this.d_food= item;
+      this.delete_dialog = true;
+    },
+    cancel_delete_dialog() {
+      this.delete_dialog = false;
+      this.d_food= false;
+    },
   },
   computed: {
     filtered_food: function() {
@@ -311,6 +325,14 @@ export default {
               res = true;
             }
           });
+        } else {
+          res = true;
+        }
+        return res;
+      }).filter(food => {
+        let res = false;
+        if(this.showed != 'all') {
+          if(this.showed == food.com_estado) res = true;
         } else {
           res = true;
         }
