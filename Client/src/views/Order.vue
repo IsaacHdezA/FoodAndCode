@@ -492,6 +492,7 @@ export default {
 
     async getActiveEmployees() {
       const apiData = await this.axios.get("order/allActiveEmployees/");
+
       apiData.data.forEach((employee) =>
         this.employees.push({
           text: employee.mro_nombre,
@@ -502,7 +503,6 @@ export default {
 
     async getActiveTables() {
       const apiData = await this.axios.get("order/allActiveTables/");
-      apiData.data.sort((a, b) => a - b);
 
       apiData.data.forEach((table) =>
         this.tables.push({
