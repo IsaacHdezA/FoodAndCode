@@ -261,7 +261,11 @@
                     <v-icon size="40" color="black">fas fa-code</v-icon>
                     <h2>Food And Code</h2>
                     Accesibilidad, proactividad y alimentación.<br />
-                    -------------------------------------------------
+                    ------------------------------------------------- <br />
+                    Atendido por: {{ this.employeeName }} -
+                    {{
+                      Date.day() + "/" + Date.month() + "/" + Date.year() + "/"
+                    }}
                   </div>
                   <div class="content-ticket">
                     <v-row>
@@ -275,9 +279,11 @@
                     >
                       <v-col>{{ suborder.cant_total_comida }}</v-col>
                       <v-col>{{ suborder.com_nombre }}</v-col>
-                      <v-col>{{
-                        parseFloat(suborder.total_neto).toFixed(2)
-                      }}</v-col>
+                      <v-col
+                        >${{
+                          parseFloat(suborder.total_neto).toFixed(2)
+                        }}</v-col
+                      >
                     </v-row>
                   </div>
                   <div class="footer-ticket">
@@ -357,23 +363,29 @@
             Selecciona un método de pago
           </v-card-text>
 
-          <v-text-field
-            label="Propina"
-            placeholder="¿Hubo propina?"
-            filled
-            dense
-            class="pl-3 pr-3"
-          ></v-text-field>
+          <v-form>
+            <v-text-field
+              v-model="newPayment.pag_propina"
+              :rule="propinaRules"
+              label="Propina"
+              placeholder="¿Hubo propina?"
+              filled
+              dense
+              class="pl-3 pr-3"
+              required
+            ></v-text-field>
 
-          <v-select
-            flat
-            solo-inverted
-            hide-details
-            :items="paymentMethods"
-            label="Método de pago"
-            class="pl-3 pr-3 pb-3"
-          >
-          </v-select>
+            <v-select
+              v-model="newPayment.pag_tipo_pago"
+              flat
+              solo-inverted
+              hide-details
+              :items="paymentMethods"
+              label="Método de pago"
+              class="pl-3 pr-3 pb-3"
+            >
+            </v-select>
+          </v-form>
 
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -410,7 +422,6 @@ export default {
       mro_id: "",
       mes_id: "",
     },
-    pDialog: false,
     cDeleteDialog: false,
     alertNewOrder: false,
     alertEmptyNewOrder: false,
@@ -425,12 +436,20 @@ export default {
     ],
 
     paymentMethods: [{ text: "Efectivo" }, { text: "Tarjeta de crédito" }],
+    propinaRules: [
+      (v) =>
+        /^[+]?([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$/.test(v) ||
+        "Introduce un número",
+    ],
 
+    pDialog: false,
     cPaymentDialog: false,
     subOrders: [],
     subtotal: "",
     total: "",
     idTable: "",
+    idOrder: "",
+    employeeName: "",
     newPayment: {
       pag_ord_id: "",
       pag_subtotal: "",
@@ -571,6 +590,7 @@ export default {
       const apiData = await this.axios.get(
         "/payment/orderTotal/" + idOrder.toString()
       );
+      this.idOrder = idOrder;
       this.subtotal = parseFloat(apiData.data[0].total_orden).toFixed(2);
     },
 
@@ -578,16 +598,20 @@ export default {
       const apiData = await this.axios.get(
         "/payment/orderTotalIVA/" + idOrder.toString()
       );
+      this.idOrder = idOrder;
       this.total = parseFloat(apiData.data[0].total_orden).toFixed(2);
     },
 
-    async insertPayment(item) {
-      const body = {
-        pag_ord_id: item.pag_ord_id,
-        pag_propina: item.pag_propina,
-        pag_tipo_pago: item.pag_tipo_pago,
-      };
-      await this.axios.post("/payment/insertPayment", body);
+    async insertPayment() {
+      this.newPayment.pag_ord_id = this.idOrder;
+      this.newPayment.pag_subtotal = this.subtotal;
+      this.newPayment.pag_total = this.total;
+
+      await this.axios.post("/payment/insertPayment", this.newPayment);
+
+      this.newPayment = [];
+      this.cPaymentDialog = false;
+      this.pDialog = false;
     },
 
     cancelPayment() {
@@ -599,6 +623,7 @@ export default {
       this.showOrderTotal(order.ord_id);
       this.showOrderTotalIVA(order.ord_id);
       this.idTable = order.mes_id;
+      this.employeeName = order.mro_nombre;
       this.pDialog = true;
     },
 
