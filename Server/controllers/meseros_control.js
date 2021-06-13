@@ -53,8 +53,7 @@ mesero_control.seleccionarTodos = (req, res) => {
 
 mesero_control.cambiarEstado = (req, res) => {
   let body = req.body;
-  console.log(req.body);
-  console.log(body);
+
   if (body.mro_estado && body.mro_id) {
     mesero.cambiarEstado([body.mro_estado, body.mro_id], (err, rows) => {
       if (err) {
@@ -74,6 +73,7 @@ mesero_control.cambiarEstado = (req, res) => {
 mesero_control.actualizar = (req, res) => {
   console.log(req.file.filename);
   let body = req.body;
+  let foto = req.file.filename;
   console.log(body);
   if (
     body.mro_nombre &&
@@ -89,7 +89,8 @@ mesero_control.actualizar = (req, res) => {
         body.mro_correo,
         body.mro_sueldo,
         body.mro_domicilio,
-        req.file.filename,body.mro_id
+        req.file.filename,
+        body.mro_id,
       ],
       (err, rows) => {
         if (err) {
