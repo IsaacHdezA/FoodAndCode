@@ -1,9 +1,9 @@
 const statisticModel = require("../models/statistic_model.js");
 const statisticControl = () => {};
 
-statisticControl.todayProfits = (request, result) => {
-  const ord_fecha_hora = request.params.ord_fecha_hora;
-  statisticModel.todayProfits([ord_fecha_hora], (error, rows) =>
+statisticControl.todayProfit = (request, result) => {
+  const fecha = request.params.fecha;
+  statisticModel.todayProfit([fecha], (error, rows) =>
     error
       ? result.status(500).send({ message: error })
       : result.status(200).send(rows)
@@ -42,8 +42,8 @@ statisticControl.countOrdersPerEmployee = (request, result) => {
 };
 
 statisticControl.countSalesPerDate = (request, result) => {
-  const fecha_hora = request.params.fecha_hora;
-  statisticModel.countSalesPerDate([fecha_hora], (error, rows) => {
+  const fecha = request.params.fecha;
+  statisticModel.countSalesPerDate([fecha], (error, rows) => {
     if (error) result.status(500).send({ message: error });
     else result.status(200).send(rows);
   });
