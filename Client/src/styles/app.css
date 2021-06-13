@@ -145,7 +145,9 @@
 .hgbold {
   font-weight: bold !important;
 }
-
+.hgcursor {
+  cursor: pointer !important;
+}
 .hgcentrado {
   justify-content: center !important;
   align-items: center !important;
