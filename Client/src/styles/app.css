@@ -98,6 +98,27 @@
   }
 }
 
+/* PAYMENT */
+.container-ticket {
+  background-color: white;
+  padding: 20px;
+  font-family: Consolas, sans-serif;
+  border: 1px solid black;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.header-ticket {
+  text-align: center;
+}
+
+.content-ticket {
+}
+
+.footer-ticket {
+  text-align: center;
+}
+
 /* FOOD */
 
 .v-data-table.food_table span {
