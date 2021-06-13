@@ -17,8 +17,16 @@ paymentControl.showOrdersPerTable = (request, result) => {
 };
 
 paymentControl.orderTotal = (request, result) => {
-  const body = request.body;
-  paymentModel.orderTotal([body.sub_ord_id], (error, rows) => {
+  const sub_ord_id = request.params.sub_ord_id;
+  paymentModel.orderTotal([sub_ord_id], (error, rows) => {
+    if (error) result.status(500).send({ message: error });
+    else result.status(200).send(rows);
+  });
+};
+
+paymentControl.orderTotalIVA = (request, result) => {
+  const sub_ord_id = request.params.sub_ord_id;
+  paymentModel.orderTotalIVA([sub_ord_id], (error, rows) => {
     if (error) result.status(500).send({ message: error });
     else result.status(200).send(rows);
   });
