@@ -192,14 +192,72 @@
             </v-toolbar-title>
             <v-spacer></v-spacer>
           </v-toolbar>
-          <template>
-            <v-data-table
-              :headers="headers"
-              :items="subOrders"
-              class="elevation-1 container-inside"
-            >
-            </v-data-table>
-          </template>
+
+          <v-container>
+            <v-row>
+              <!-- Tabla suborden -->
+              <v-col cols="8">
+                <v-card>
+                  <v-toolbar dense color="primary" dark>
+                    <v-toolbar-title class="toolbar-title">Pedidos de la mesa {{ this.idTable }}</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                  </v-toolbar>
+
+                  <v-data-table
+                    :headers="headers"
+                    :items="subOrders"
+                    class="elevation-1 container-inside"
+                  >
+                  </v-data-table>
+                </v-card>
+              </v-col>
+              <!-- Tabla suborden -->
+
+              <!-- Ticket -->
+              <v-col>
+                <v-card height="100%">
+                  <v-toolbar dense color="primary" dark>
+                  </v-toolbar>
+                </v-card>
+              </v-col>
+              <!-- Ticket -->
+            </v-row>
+          </v-container>
+
+          <!-- Subtotal y pago -->
+          <v-container>
+            <v-row>
+              <v-col cols="8">
+                <v-card-text>
+                  <v-row>
+                    <h2>Subtotal</h2>
+                    <v-spacer></v-spacer>
+                    <h2>${{ this.subtotal }}</h2>
+                  </v-row>
+                  <v-row>
+                    <h2>Total (10% IVA):</h2>
+                    <v-spacer></v-spacer>
+                    <h2>${{ this.total }}</h2>
+                  </v-row>
+                </v-card-text>
+              </v-col>
+
+              <v-col cols="4">
+                <v-btn
+                  class="px-7 font-weight-black"
+                  color="accent"
+                  rounded
+                  width="100%"
+                  height="100%"
+                >
+                  Realizar pago
+                </v-btn>
+
+              </v-col>
+            </v-row>
+          </v-container>
+          <!-- Subtotal y pago -->
+
         </v-card>
       </v-dialog>
       <!-- Diseño diálogo de pago -->
@@ -258,6 +316,9 @@ export default {
       { text: "Total", align: "center", value: "total_neto" },
     ],
     subOrders: [],
+    subtotal: "",
+    total: "",
+    idTable: "",
     newPayment: {
       pag_ord_id: "",
       pag_subtotal: "",
@@ -376,6 +437,16 @@ export default {
       this.subOrders = apiData.data;
     },
 
+    async showOrderTotal(idOrder) {
+      const apiData = await this.axios.get("/payment/orderTotal/" + idOrder.toString());
+      this.subtotal = apiData.data[0].total_orden;
+    },
+
+    async showOrderTotalIVA(idOrder) {
+      const apiData = await this.axios.get("/payment/orderTotalIVA/" + idOrder.toString());
+      this.total = apiData.data[0].total_orden;
+    },
+
     async insertPayment(item) {
       const body = {
         pag_ord_id: item.pag_ord_id,
@@ -391,6 +462,9 @@ export default {
 
     openPaymentDialog(order) {
       this.showOrdersPerTable(order.ord_id);
+      this.showOrderTotal(order.ord_id);
+      this.showOrderTotalIVA(order.ord_id);
+      this.idTable = order.mes_id;
       this.pDialog = true;
     },
   },
