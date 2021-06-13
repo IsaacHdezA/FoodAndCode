@@ -143,24 +143,28 @@
                 lg="3"
               >
                 <v-card align="center" align-content="center" justify="center">
-                  <v-card-title class="d-flex justify-end mb-6">
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn class="ma-1 " white icon color="dark">
+                      <v-icon dark>
+                        fas fa-pencil-alt
+                      </v-icon>
+                    </v-btn>
+                  </v-card-actions>
+                  <v-card-title>
                     <p>
-                      <v-btn class="ma-1 " white icon color="dark">
-                        <v-icon dark>
-                          fas fa-pencil-alt
-                        </v-icon>
-                      </v-btn>
+                      <v-avatar
+                        size="200"
+                        tile
+                        v-on:click="moreinformation(item)"
+                      >
+                        <img
+                          v-bind:src="'http://localhost:3000/' + item.mro_foto"
+                          onerror="http://localhost:3000/no_user.png"
+                        />
+                      </v-avatar>
                     </p>
-                    <v-avatar
-                      size="200"
-                      tile
-                      v-on:click="moreinformation(item)"
-                    >
-                      <img
-                        v-bind:src="'http://localhost:3000/' + item.mro_foto"
-                        onerror="http://localhost:3000/no_user.png"
-                      />
-                    </v-avatar>
+
                     <v-card-text align="center" justify="center">
                       <h4>{{ item.mro_nombre }}</h4>
                       <p>{{ item.mro_telefono }}</p>
