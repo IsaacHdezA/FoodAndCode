@@ -160,8 +160,8 @@
                  <h4 >{{ item.mro_nombre }}</h4>
                  <p >{{item.mro_telefono}}</p>
                  <p>
-                    <h3 v-if="item.mro_estado === 'a'"> Activo</h3>
-                    <h3 v-if="item.mro_estado === 'i'">Inactivo</h3>
+                    <h3 class="green--text" v-if="item.mro_estado === 'a'"> Activo</h3>
+                    <h3 v-else class="red--text">Inactivo</h3>
                  </p>
               </v-card-text>
                
