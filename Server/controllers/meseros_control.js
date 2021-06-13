@@ -71,5 +71,42 @@ mesero_control.cambiarEstado = (req, res) => {
     res.status(400).send({message: "Peticion incorrecta"});
   }
 };
-
+mesero_control.actualizar = (req, res) => {
+  console.log(req.file.filename);
+  let body = req.body;
+  console.log(body);
+  if (
+    body.mro_nombre &&
+    body.mro_telefono &&
+    body.mro_correo &&
+    body.mro_sueldo &&
+    body.mro_domicilio
+  ) {
+    mesero.actualizar(
+      [
+        body.mro_nombre,
+        body.mro_telefono,
+        body.mro_correo,
+        body.mro_sueldo,
+        body.mro_domicilio,
+        req.file.filename,body.mro_id
+      ],
+      (err, rows) => {
+        if (err) {
+          console.log(err);
+          res.status(500).send({message: err});
+        } else {
+          if (rows.affectedRows > 0) {
+            res.status(202).send({message: "Se registro el nuevo mesero"});
+          } else {
+            console.log(rows);
+            res.status(500).send({message: "No se registro el mesero"});
+          }
+        }
+      }
+    );
+  } else {
+    res.status(401).send({message: "Peticion incorrecta"});
+  }
+};
 module.exports = mesero_control;
