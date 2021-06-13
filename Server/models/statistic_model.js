@@ -1,7 +1,7 @@
 const connection = require("./connection.js");
 const statistic = () => {};
 
-statistic.todayProfits = (data, callback) =>
+statistic.todayProfit = (data, callback) =>
   connection.query(
     "SELECT DATE_FORMAT(pag_fecha_pago, '%Y-%m-%d') AS pag_ganancia_fecha, SUM(pag_total) AS pag_ganancia FROM pago GROUP BY pag_ganancia_fecha HAVING pag_ganancia_fecha = ?",
     data,
