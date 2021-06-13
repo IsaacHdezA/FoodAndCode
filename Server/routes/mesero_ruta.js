@@ -18,9 +18,17 @@ var storage = multer.diskStorage({
 });
 var uploadS = multer({storage: storage}).single("file");
 
+var valida = (req, res) => {
+  if (req.file) {
+    next();
+  } else {
+    mesero_control.actualizars(req, res);
+  }
+};
+
 router.post("/nuevo", uploadS, mesero_control.nuevo);
 router.get("/seleccionarTodos", mesero_control.seleccionarTodos);
 router.put("/cambiarEstado", mesero_control.cambiarEstado);
-router.put("/actualizar", mesero_control.actualizar);
+router.put("/actualizar", valida, uploadS, mesero_control.actualizar);
 
 module.exports = router;
