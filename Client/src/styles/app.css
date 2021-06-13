@@ -4,7 +4,6 @@
 
 /* GENERAL */
 
-/* APP */
 .application {
   font-family: "Poppins", sans-serif;
   /* font-family: "Kumbh Sans", sans-serif; */
@@ -26,6 +25,12 @@
 
 .list-item-icon {
   padding: 30px 0;
+}
+
+/* ABOUT */
+
+.card-title-size {
+  font-size: 0.7em;
 }
 
 /* ORDER */
@@ -81,6 +86,7 @@
 }
 
 /* FOOD */
+
 .v-data-table.food_table span {
   color: black;
 }

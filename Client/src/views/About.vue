@@ -3,80 +3,76 @@
     <h1>Acerca de</h1>
     <br />
     <template>
-      <v-row align="center" align-content="center" justify="center"></v-row>
+      <v-row align="center" align-content="center" justify="center">
+        <v-col cols="12"></v-col>
+      </v-row>
       <v-row align="center" align-content="center" justify="center">
         <v-col cols="12" sm="12" md="6" lg="2">
           <v-card>
-            <v-img
-              height="250"
-              src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
-            ></v-img>
-            <v-card-title>Aldo Isaac Hernández Antonio</v-card-title>
+            <v-img height="250" src="../assets/aiha.jpg"></v-img>
+            <v-card-title
+              >Aldo Isaac <br />
+              Hernández Antonio</v-card-title
+            >
             <v-card-text>
               <div class="container-inside">
-                Small plates, salads & sandwiches - an intimate setting with 12
-                indoor seats plus patio seating.
+                Si compila esta bien, si arranca es perfecto.
               </div>
             </v-card-text>
           </v-card>
         </v-col>
         <v-col cols="12" sm="12" md="6" lg="2">
           <v-card>
-            <v-img
-              height="250"
-              src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
-            ></v-img>
-            <v-card-title>Braulio José Baca Barbosa</v-card-title>
+            <v-img height="250" src="../assets/bjbb.jpg"></v-img>
+            <v-card-title
+              >Braulio José <br />
+              Baca Barbosa</v-card-title
+            >
             <v-card-text>
               <div class="container-inside">
-                Small plates, salads & sandwiches - an intimate setting with 12
-                indoor seats plus patio seating.
+                Genio, millonario, playboy, filántropo
               </div>
             </v-card-text>
           </v-card>
         </v-col>
         <v-col cols="12" sm="12" md="6" lg="2">
           <v-card>
-            <v-img
-              height="250"
-              src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
-            ></v-img>
-            <v-card-title>Diego Armando Gutiérrez Ayala</v-card-title>
+            <v-img height="250" src="../assets/daga.jpg"></v-img>
+            <v-card-title
+              >Diego Armando <br />
+              Gutiérrez Ayala</v-card-title
+            >
             <v-card-text>
               <div class="container-inside">
-                Small plates, salads & sandwiches - an intimate setting with 12
-                indoor seats plus patio seating.
+                Para ganar a lo grande, a veces necesitas tomar grandes riesgos.
               </div>
             </v-card-text>
           </v-card>
         </v-col>
         <v-col cols="12" sm="12" md="6" lg="2">
           <v-card>
-            <v-img
-              height="250"
-              src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
-            ></v-img>
-            <v-card-title>Héctor Guevara Mosqueda</v-card-title>
+            <v-img height="250" src="../assets/hgm.jpg"></v-img>
+            <v-card-title
+              >Héctor <br />
+              Guevara Mosqueda</v-card-title
+            >
             <v-card-text>
               <div class="container-inside">
-                Small plates, salads & sandwiches - an intimate setting with 12
-                indoor seats plus patio seating.
+                El riesgo más grande es no tomar ninguno.
               </div>
             </v-card-text>
           </v-card>
         </v-col>
         <v-col cols="12" sm="12" md="6" lg="2">
           <v-card>
-            <v-img
-              height="250"
-              src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
-            ></v-img>
-            <v-card-title>Misael Ramírez Ramírez</v-card-title>
-            <v-card-text
-              >s
+            <v-img height="250" src="../assets/mrr.jpg"></v-img>
+            <v-card-title
+              >Misael <br />
+              Ramírez Ramírez</v-card-title
+            >
+            <v-card-text>
               <div class="container-inside">
-                Small plates, salads & sandwiches - an intimate setting with 12
-                indoor seats plus patio seating.
+                Cuamndo yo la vi, dimje: "Si esa mumjer fueram para mi".
               </div>
             </v-card-text>
           </v-card>
