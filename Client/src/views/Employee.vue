@@ -5,8 +5,8 @@
       <v-card color="grey lighten-4">
         <v-toolbar dense color="primary" dark>
           <v-toolbar-title class="toolbar-title"
-            >Agregar empleado</v-toolbar-title
-          >
+            >Agregar empleado
+          </v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
         <v-card-text>
@@ -194,10 +194,18 @@
             </v-avatar>
           </p>
           <p></p>
+          <p>
+            <v-switch
+              v-model="activo_inactivo"
+              label="Activo"
+              color="success"
+              hide-details
+              @click="cambiarEstado()"
+            >
+            </v-switch>
+          </p>
         </v-card-text>
-
         <v-divider></v-divider>
-
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="primary" text @click="dialogmore = false">
@@ -208,7 +216,6 @@
     </v-dialog>
   </v-container>
 </template>
-
 <script>
 export default {
   name: "Employee",
@@ -233,6 +240,7 @@ export default {
     },
     dialog: false,
     dialogmore: false,
+    activo_inactivo: true,
   }),
 
   created() {
@@ -246,9 +254,47 @@ export default {
       this.empleado_selected.mro_estado = empleado.mro_estado;
       this.empleado_selected.mro_domicilio = empleado.mro_domicilio;
       this.empleado_selected.mro_sueldo = empleado.mro_sueldo;
+      this.empleado_selected.mro_id = empleado.mro_id;
       this.empleado_selected.mro_foto =
         "http://localhost:3000/" + empleado.mro_foto;
+      if (this.empleado_selected.mro_estado == "a") {
+        this.activo_inactivo = true;
+      } else {
+        this.activo_inactivo = false;
+      }
       this.dialogmore = true;
+    },
+    limpiarEmpeladoSe() {
+      this.empleado_selected.mro_nombre = "";
+      this.empleado_selected.mro_telefono = "";
+      this.empleado_selected.mro_correo = "";
+      this.empleado_selected.mro_estado = "";
+      this.empleado_selected.mro_domicilio = "";
+      this.empleado_selected.mro_sueldo = "";
+      this.empleado_selected.mro_id = "";
+      this.empleado_selected.mro_foto = "";
+    },
+    cambiarEstado() {
+      let estado = "";
+      if (this.empleado_selected.mro_estado == "a") {
+        estado = "i";
+      } else {
+        estado = "a";
+      }
+
+      this.axios
+        .put("/mesero/cambiarEstado", {
+          mro_id: this.empleado_selected.mro_id,
+          mro_estado: estado,
+        })
+        .then((response) => {
+          this.getMeseros();
+          this.dialogmore = false;
+        })
+        .catch((e) => {
+          console.log(e);
+          this.dialogmore = false;
+        });
     },
     getMeseros() {
       console.log("Hola");
@@ -262,12 +308,10 @@ export default {
           console.log(e);
         });
     },
+
     async submit() {
       this.dialog = true;
-      let data = {
-        mro_nombre: this.nuevo_mesero.mro_nombre,
-        mro_foto: this.nuevo_mesero.mro_foto,
-      };
+
       const form = new FormData();
       form.append("mro_nombre", this.nuevo_mesero.mro_nombre);
       form.append("mro_domicilio", this.nuevo_mesero.mro_direccion);

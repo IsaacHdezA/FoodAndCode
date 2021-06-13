@@ -1,14 +1,20 @@
-const conn=require('./connection');
+const conn = require("./connection");
 
-let mesero=()=>{};
+let mesero = () => {};
 
-
-mesero.crearNuevo=(datos,cb)=>{
-     conn.query('INSERT INTO mesero (mro_nombre,mro_telefono,mro_correo,mro_sueldo,mro_domicilio, mro_foto) VALUES (?,?,?,?,?,?) ',
-     datos,cb);
+mesero.crearNuevo = (datos, cb) => {
+  conn.query(
+    "INSERT INTO mesero (mro_nombre,mro_telefono,mro_correo,mro_sueldo,mro_domicilio, mro_foto) VALUES (?,?,?,?,?,?) ",
+    datos,
+    cb
+  );
 };
 
-mesero.seleccionarTodos=(datos,cb)=>{
-     conn.query("SELECT * FROM mesero",[],cb);
+mesero.seleccionarTodos = (datos, cb) => {
+  conn.query("SELECT * FROM mesero", [], cb);
 };
-module.exports=mesero;
+
+mesero.cambiarEstado = (datos, cb) => {
+  conn.query("UPDATE mesero SET mro_estado=? WHERE mro_id=?", datos, cb);
+};
+module.exports = mesero;
