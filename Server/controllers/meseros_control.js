@@ -10,10 +10,11 @@ mesero_control.nuevo= (req,res)=>{
     let body=req.body;
     console.log(body);
     if(body.mro_nombre && body.mro_telefono && body.mro_correo && 
-        body.mro_sueldo && body.mro_domicilio && body.mro_foto){
+        body.mro_sueldo && body.mro_domicilio ){
             mesero.crearNuevo([body.mro_nombre,body.mro_telefono,body.mro_correo,body.mro_sueldo,
             body.mro_domicilio,req.file.filename],(err,rows)=>{
                 if(err){
+                    console.log(err);
                     res.status(500).send({message:err});
                 }
                 else{
@@ -21,6 +22,7 @@ mesero_control.nuevo= (req,res)=>{
                             res.status(202).send({message:"Se registro el nuevo mesero"});
                         }
                         else{
+                            console.log(rows);
                             res.status(500).send({message:"No se registro el mesero"});
                         }
                 }
@@ -43,4 +45,7 @@ mesero_control.seleccionarTodos=(req,res)=>{
 
     });
 };
+
+
+
 module.exports=mesero_control;
