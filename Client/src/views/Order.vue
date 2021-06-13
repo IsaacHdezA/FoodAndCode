@@ -127,7 +127,7 @@
                   <v-list-item>
                     <v-list-item-content>Cuenta:</v-list-item-content>
                     <v-list-item-content class="align-end">
-                      ${{ order.ord_precio }}
+                      ${{ parseFloat(order.ord_precio).toFixed(2) }}
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
@@ -389,7 +389,7 @@
             <v-btn color="primary darken-1" text @click="cancelPayment()">
               Cancelar
             </v-btn>
-            <v-btn color="success" text @click="printPageArea()">
+            <v-btn color="success" text @click="confirmPayment()">
               Confirmar
             </v-btn>
           </v-card-actions>
@@ -432,7 +432,7 @@ export default {
       { text: "Total", align: "center", value: "total_neto" },
     ],
 
-    paymentMethods: [{ text: "Efectivo" }, { text: "Tarjeta de crédito" }],
+    paymentMethods: [{ text: "Efectivo" }, { text: "Tarjeta" }],
     propinaRules: [
       (v) =>
         /^[+]?([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$/.test(v) ||
@@ -451,8 +451,8 @@ export default {
       pag_ord_id: "",
       pag_subtotal: "",
       pag_total: "",
-      pag_propina: "",
-      pag_tipo_pago: "",
+      pag_propina: 0,
+      pag_tipo_pago: "Efectivo",
     },
   }),
 
@@ -607,8 +607,6 @@ export default {
       await this.axios.post("/payment/insertPayment", this.newPayment);
 
       this.newPayment = [];
-      this.cPaymentDialog = false;
-      this.pDialog = false;
     },
 
     cancelPayment() {
@@ -636,14 +634,21 @@ export default {
 
     openCPaymentDialog() {
       this.cPaymentDialog = true;
-      this.printPageArea();
     },
 
     cancelPayment() {
       this.cPaymentDialog = false;
     },
 
-    confirmPayment() {},
+    confirmPayment() {
+      this.printPageArea();
+      this.insertPayment();
+      this.cPaymentDialog = false;
+      this.pDialog = false;
+      this.getWaitingOrders();
+      this.getActiveOrders();
+      this.getActiveTables();
+    },
   },
 
   components: {},
