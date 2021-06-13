@@ -397,7 +397,7 @@ export default {
       mro_direccion: "",
       mro_correo: "",
       mro_telefono: "",
-      file: [],
+      file: undefined,
       mro_foto: "",
       mro_sueldo: 0.0,
     },
