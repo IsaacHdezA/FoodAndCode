@@ -120,6 +120,13 @@
   text-align: center;
 }
 
+@media print {
+  body {
+    width: 900px;
+    height: 650px;
+  }
+}
+
 /* FOOD */
 
 .v-data-table.food_table span {
@@ -162,6 +169,8 @@
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 10px;
   grid-auto-rows: minmax(100px, auto);
+  max-width: 80%;
+  margin: 0 auto;
 }
 
 .block {
