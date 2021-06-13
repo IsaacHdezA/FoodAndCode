@@ -108,7 +108,7 @@
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
-                    <v-list-item-content>Precio:</v-list-item-content>
+                    <v-list-item-content>Cuenta:</v-list-item-content>
                     <v-list-item-content class="align-end">
                       ${{ order.ord_precio }}
                     </v-list-item-content>
@@ -197,7 +197,12 @@
             <v-row>
               <!-- Tabla suborden -->
               <v-col cols="8">
-                <v-card>
+                <v-card
+                  height="100%"
+                  color="#E5E5E5"
+                  elevation="0"
+                  class="pa-3"
+                  >
                   <v-toolbar dense color="primary" dark>
                     <v-toolbar-title class="toolbar-title">Pedidos de la mesa {{ this.idTable }}</v-toolbar-title>
                     <v-spacer></v-spacer>
@@ -206,7 +211,7 @@
                   <v-data-table
                     :headers="headers"
                     :items="subOrders"
-                    class="elevation-1 container-inside"
+                    hide-default-footer
                   >
                   </v-data-table>
                 </v-card>
@@ -215,7 +220,12 @@
 
               <!-- Ticket -->
               <v-col>
-                <v-card height="100%">
+                <v-card
+                  height="100%"
+                  color="#F5F5F5"
+                  elevation="0"
+                  class="pa-3"
+                  >
                   <v-toolbar dense color="primary" dark>
                   </v-toolbar>
                 </v-card>
@@ -226,32 +236,45 @@
 
           <!-- Subtotal y pago -->
           <v-container>
-            <v-row>
+            <v-row no-gutters>
               <v-col cols="8">
-                <v-card-text>
-                  <v-row>
-                    <h2>Subtotal</h2>
-                    <v-spacer></v-spacer>
-                    <h2>${{ this.subtotal }}</h2>
-                  </v-row>
-                  <v-row>
-                    <h2>Total (10% IVA):</h2>
-                    <v-spacer></v-spacer>
-                    <h2>${{ this.total }}</h2>
-                  </v-row>
-                </v-card-text>
+                <v-card
+                  color="#F5F5F5"
+                  elevation="0"
+                  class="pa-3"
+                  >
+                  <v-card-text>
+                    <v-row>
+                      <h3>Subtotal:</h3>
+                      <v-spacer></v-spacer>
+                      <h3>${{ this.subtotal }}</h3>
+                    </v-row>
+                    <v-row>
+                      <h2>Total (10% IVA):</h2>
+                      <v-spacer></v-spacer>
+                      <h2>${{ this.total }}</h2>
+                    </v-row>
+                  </v-card-text>
+                </v-card>
               </v-col>
 
               <v-col cols="4">
-                <v-btn
-                  class="px-7 font-weight-black"
-                  color="accent"
-                  rounded
-                  width="100%"
+                <v-card
+                  color="third"
+                  elevation="0"
+                  class="pa-3"
                   height="100%"
-                >
-                  Realizar pago
-                </v-btn>
+                  >
+                  <v-btn
+                    class="px-7 font-weight-black"
+                    color="accent"
+                    rounded
+                    width="100%"
+                    height="100%"
+                  >
+                    Realizar pago
+                  </v-btn>
+                </v-card>
 
               </v-col>
             </v-row>

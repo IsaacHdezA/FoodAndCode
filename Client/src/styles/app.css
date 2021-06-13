@@ -33,6 +33,19 @@
   font-size: 0.7em;
 }
 
+.text-black {
+  color: black;
+}
+
+.text-black h1 {
+  font-size: 5em;
+}
+
+.text-black h3 {
+  font-size: 1.2em;
+  font-family: "Kumbh Sans", sans-serif;
+}
+
 /* ORDER */
 
 .container-inside {
