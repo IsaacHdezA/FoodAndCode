@@ -341,11 +341,13 @@ export default {
     async getMonthProfits() {
       const apiData = await this.axios.get("statistic/monthProfits/");
 
-      for (let i = 0; i < Object.keys(apiData.data).length; i++)
-        for (let j = 0; j < 12; j++)
-          if (j == parseInt(apiData.data[i]["pag_ganancia_mes"]) - 1)
-            this.monthProfits[j] = parseFloat(apiData.data[i]["pag_ganancia"]);
-          else this.monthProfits[j] = 0;
+      for (let i = 0; i < 12; i++) {
+        for (let j = 0; j < Object.keys(apiData.data).length; j++)
+          if (i == parseInt(apiData.data[j]["pag_ganancia_mes"]) - 1)
+            this.monthProfits[i] = parseFloat(apiData.data[j]["pag_ganancia"]);
+        if (typeof this.monthProfits[i] === "undefined")
+          this.monthProfits[i] = 0;
+      }
       this.thereProfits = true;
     },
 
