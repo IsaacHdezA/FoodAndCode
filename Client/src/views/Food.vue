@@ -182,36 +182,52 @@
           </template>
 
           <template v-slot:[`item.actions`]="{ item }">
-            <v-icon small class="mr-3" @click="edit_food(item)">
-              fas fa-pen
-            </v-icon>
-            <v-icon small @click="open_delete_dialog(item)">
-              fas fa-trash
-            </v-icon>
+            <v-row align="center" align-content="center">
+              <v-col cols="2" class="mx-0 my-n5">
+                <v-icon small @click="edit_food(item)">
+                  fas fa-pen
+                </v-icon>
+              </v-col>
+              <v-col cols="2" class="mx-0 my-n5">
+                <v-icon small @click="open_delete_dialog(item)">
+                  fas fa-trash
+                </v-icon>
+              </v-col>
+              <v-col cols="2" class="mx-0 my-n5">
+                <v-switch
+                    v-model="item.com_estado"
+                    color="success"
+                    false-value="i"
+                    true-value="a"
+                    dense
+                    @change="change_state_food(item)"
+                    ></v-switch>
+              </v-col>
+            </v-row>
           </template>
         </v-data-table>
       </v-card>
     </template>
 
-      <v-dialog v-model="delete_dialog" max-width="300">
-        <v-card>
-          <v-card-title class="text-h5">
-            ¿Estás seguro?
-          </v-card-title>
-          <v-card-text>
-            Esta acción es irreversible.
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="primary darken-1" text @click="cancel_delete_dialog()">
-              Cancelar
-            </v-btn>
-            <v-btn color="red darken-1" text @click="delete_food()">
-              Eliminar
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+    <v-dialog v-model="delete_dialog" max-width="300">
+      <v-card>
+        <v-card-title class="text-h5">
+          ¿Estás seguro?
+        </v-card-title>
+        <v-card-text>
+          Esta acción es irreversible.
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary darken-1" text @click="cancel_delete_dialog()">
+            Cancelar
+          </v-btn>
+          <v-btn color="red darken-1" text @click="delete_food()">
+            Eliminar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
   </v-container>
 </template>
@@ -248,7 +264,7 @@ export default {
       { text: "Activos", value: "a" },
       { text: "Inactivos", value: "i" }
     ],
-    showed: 'a',
+    showed: 'all',
     new_food: {},
   }),
   created() {
@@ -273,8 +289,7 @@ export default {
       const body = {
         com_id: this.d_food.com_id,
       };
-      if (this.d_food.com_estado == 'a') await this.axios.post("/food/inactive_food", body);
-      else await this.axios.post("/food/delete_food", body);
+      await this.axios.post("/food/delete_food", body);
       this.delete_dialog = false;
       this.get_all_foods();
     },
@@ -290,6 +305,14 @@ export default {
       this.new_food = {};
       this.edit_mode = false;
       this.$refs.form.reset();
+    },
+    async change_state_food(item) {
+      const body = {
+        com_id: item.com_id
+      };
+      if (item.com_estado == "i") await this.axios.post("/food/inactive_food", body);
+      else await this.axios.post("/food/active_food", body);
+      this.get_all_foods();
     },
     edit_food(item) {
       this.edit_mode = true;
