@@ -151,11 +151,12 @@
                       </v-icon>
                     </v-btn>
                   </v-card-actions>
-                  <v-card-title>
-                    <p>
+
+                  <v-card-text align="center" justify="center">
+                    <p align-self="center">
                       <v-avatar
+                        align-self="center"
                         size="200"
-                        tile
                         v-on:click="moreinformation(item)"
                       >
                         <img
@@ -164,17 +165,14 @@
                         />
                       </v-avatar>
                     </p>
+                    <h4>{{ item.mro_nombre }}</h4>
+                    <p>{{ item.mro_telefono }}</p>
 
-                    <v-card-text align="center" justify="center">
-                      <h4>{{ item.mro_nombre }}</h4>
-                      <p>{{ item.mro_telefono }}</p>
-
-                      <h3 class="green--text" v-if="item.mro_estado === 'a'">
-                        Activo
-                      </h3>
-                      <h3 v-else class="red--text">Inactivo</h3>
-                    </v-card-text>
-                  </v-card-title>
+                    <h3 class="green--text" v-if="item.mro_estado === 'a'">
+                      Activo
+                    </h3>
+                    <h3 v-else class="red--text">Inactivo</h3>
+                  </v-card-text>
                 </v-card>
               </v-col>
             </v-row>
