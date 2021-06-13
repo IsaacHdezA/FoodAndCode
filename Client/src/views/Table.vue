@@ -22,11 +22,11 @@
             color="primary"
             height="200px"
             width="200px"
-            :disabled="viewActivityTables(1, tables)"
+            :disabled="viewActivityTables(1, this.tables)"
             @click="sub_dialog = true"
           >
             Mesa 1 <br />
-            {{ Object.values(this.spaces)[0]["value"] }}/8
+            {{ this.spaces[0]["value"] }}/8
           </v-btn>
         </v-col>
 
@@ -39,11 +39,11 @@
                 color="primary"
                 height="100px"
                 width="100px"
-                :disabled="viewActivityTables(2, tables)"
+                :disabled="viewActivityTables(2, this.tables)"
                 @click="sub_dialog = true"
               >
                 Mesa 2 <br />
-                {{ Object.values(this.spaces)[1]["value"] }}/4
+                {{ this.spaces[1]["value"] }}/4
               </v-btn>
             </v-col>
             <v-col cols="6">
@@ -53,11 +53,11 @@
                 color="primary"
                 height="100px"
                 width="100px"
-                :disabled="viewActivityTables(3, tables)"
+                :disabled="viewActivityTables(3, this.tables)"
                 @click="sub_dialog = true"
               >
                 Mesa 3 <br />
-                {{ Object.values(this.spaces)[2]["value"] }}/4
+                {{ this.spaces[2]["value"] }}/4
               </v-btn>
             </v-col>
           </v-row>
@@ -69,11 +69,11 @@
                 color="primary"
                 height="100px"
                 width="100px"
-                :disabled="viewActivityTables(4, tables)"
+                :disabled="viewActivityTables(4, this.tables)"
                 @click="sub_dialog = true"
               >
                 Mesa 4 <br />
-                {{ Object.values(this.spaces)[3]["value"] }}/4
+                {{ this.spaces[3]["value"] }}/4
               </v-btn>
             </v-col>
             <v-col cols="6">
@@ -83,11 +83,11 @@
                 color="primary"
                 height="100px"
                 width="100px"
-                :disabled="viewActivityTables(5, tables)"
+                :disabled="viewActivityTables(5, this.tables)"
                 @click="sub_dialog = true"
               >
                 Mesa 5 <br />
-                {{ Object.values(this.spaces)[4]["value"] }}/4
+                {{ this.spaces[4]["value"] }}/4
               </v-btn>
             </v-col>
           </v-row>
@@ -100,11 +100,11 @@
             color="primary"
             height="200px"
             width="200px"
-            :disabled="viewActivityTables(6, tables)"
+            :disabled="viewActivityTables(6, this.tables)"
             @click="sub_dialog = true"
           >
             Mesa 6 <br />
-            {{ Object.values(this.spaces)[5]["value"] }}/8
+            {{ this.spaces[5]["value"] }}/8
           </v-btn>
         </v-col>
       </v-row>
@@ -119,11 +119,11 @@
                 color="primary"
                 height="100px"
                 width="100px"
-                :disabled="viewActivityTables(7, tables)"
+                :disabled="viewActivityTables(7, this.tables)"
                 @click="sub_dialog = true"
               >
                 Mesa 7 <br />
-                {{ Object.values(this.spaces)[6]["value"] }}/4
+                {{ this.spaces[6]["value"] }}/4
               </v-btn>
             </v-col>
             <v-col cols="6">
@@ -133,11 +133,11 @@
                 color="primary"
                 height="100px"
                 width="100px"
-                :disabled="viewActivityTables(8, tables)"
+                :disabled="viewActivityTables(8, this.tables)"
                 @click="sub_dialog = true"
               >
                 Mesa 8 <br />
-                {{ Object.values(this.spaces)[7]["value"] }}/4
+                {{ this.spaces[7]["value"] }}/4
               </v-btn>
             </v-col>
           </v-row>
@@ -149,11 +149,11 @@
                 color="primary"
                 height="100px"
                 width="100px"
-                :disabled="viewActivityTables(9, tables)"
+                :disabled="viewActivityTables(9, this.tables)"
                 @click="sub_dialog = true"
               >
                 Mesa 9 <br />
-                {{ Object.values(this.spaces)[8]["value"] }}/4
+                {{ this.spaces[8]["value"] }}/4
               </v-btn>
             </v-col>
             <v-col cols="6">
@@ -163,11 +163,11 @@
                 color="primary"
                 height="100px"
                 width="100px"
-                :disabled="viewActivityTables(10, tables)"
+                :disabled="viewActivityTables(10, this.tables)"
                 @click="sub_dialog = true"
               >
                 Mesa 10 <br />
-                {{ Object.values(this.spaces)[9]["value"] }}/4
+                {{ this.spaces[9]["value"] }}/4
               </v-btn>
             </v-col>
           </v-row>
@@ -180,11 +180,11 @@
             color="primary"
             height="200px"
             width="200px"
-            :disabled="viewActivityTables(11, tables)"
+            :disabled="viewActivityTables(11, this.tables)"
             @click="sub_dialog = true"
           >
             Mesa 11 <br />
-            {{ Object.values(this.spaces)[10]["value"] }}/8
+            {{ this.spaces[10]["value"] }}/8
           </v-btn>
         </v-col>
 
@@ -197,11 +197,11 @@
                 color="primary"
                 height="100px"
                 width="100px"
-                :disabled="viewActivityTables(12, tables)"
+                :disabled="viewActivityTables(12, this.tables)"
                 @click="sub_dialog = true"
               >
                 Mesa 12 <br />
-                {{ Object.values(this.spaces)[11]["value"] }}/4
+                {{ this.spaces[11]["value"] }}/4
               </v-btn>
             </v-col>
             <v-col cols="6">
@@ -211,11 +211,11 @@
                 color="primary"
                 height="100px"
                 width="100px"
-                :disabled="viewActivityTables(13, tables)"
+                :disabled="viewActivityTables(13, this.tables)"
                 @click="sub_dialog = true"
               >
                 Mesa 13 <br />
-                {{ Object.values(this.spaces)[12]["value"] }}/4
+                {{ this.spaces[12]["value"] }}/4
               </v-btn>
             </v-col>
           </v-row>
@@ -227,11 +227,11 @@
                 color="primary"
                 height="100px"
                 width="100px"
-                :disabled="viewActivityTables(14, tables)"
+                :disabled="viewActivityTables(14, this.tables)"
                 @click="sub_dialog = true"
               >
                 Mesa 14 <br />
-                {{ Object.values(this.spaces)[13]["value"] }}/4
+                {{ this.spaces[13]["value"] }}/4
               </v-btn>
             </v-col>
             <v-col cols="6">
@@ -241,11 +241,11 @@
                 color="primary"
                 height="100px"
                 width="100px"
-                :disabled="viewActivityTables(15, tables)"
+                :disabled="viewActivityTables(15, this.tables)"
                 @click="sub_dialog = true"
               >
                 Mesa 15 <br />
-                {{ Object.values(this.spaces)[14]["value"] }}/4
+                {{ this.spaces[14]["value"] }}/4
               </v-btn>
             </v-col>
           </v-row>
@@ -349,9 +349,6 @@ export default {
           value: space.cupo,
         })
       );
-      for (let i = 0; i < 15; i++) {
-        console.log(Object.values(this.spaces)[i]["value"]);
-      }
     },
 
     async getSuborders() {
