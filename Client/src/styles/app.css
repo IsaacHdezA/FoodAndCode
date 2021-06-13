@@ -133,3 +133,18 @@
 .v-data-table.food_table .v-data-footer {
   background-color: #f5f5f5;
 }
+
+/*meseros*/
+
+.hgcontenedor {
+  display: flex !important;
+  flex-direction: row;
+}
+
+.hgbold {
+  font-weight: bold !important;
+}
+.hgcentrado {
+  justify-content: center !important;
+  align-items: center !important;
+}
