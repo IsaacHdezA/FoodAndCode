@@ -248,6 +248,7 @@
                     :headers="headers"
                     :items="subOrders"
                     hide-default-footer
+                    class="container-inside"
                   >
                   </v-data-table>
                 </v-card>

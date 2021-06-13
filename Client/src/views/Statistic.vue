@@ -22,7 +22,11 @@
               <v-col>
                 <h1>Ganancias</h1>
                 <br />
-                <v-sheet v-if="thereProfits" color="third" class="sheet">
+                <v-sheet
+                  v-if="thereProfits"
+                  color="third"
+                  class="container-inside"
+                >
                   <v-sparkline
                     :value="monthProfits"
                     :labels="months"
@@ -45,14 +49,14 @@
               <v-col>
                 <h1 class="medium-title">Órdenes por fecha</h1>
                 <v-row
-                  class="mt-1"
+                  class="mt-1 container-inside"
                   justify="center"
                   align="center"
                   align-content="center"
                 >
-                  <v-col cols="10">
+                  <v-col cols="10" class="container-inside">
                     <v-menu
-                      v-model="orderDate"
+                      v-model="ordersDate"
                       :close-on-content-click="false"
                       :nudge-right="40"
                       transition="scale-transition"
@@ -75,7 +79,7 @@
                       </template>
                       <v-date-picker
                         v-model="orderDate"
-                        @input="orderDate = false"
+                        @input="ordersDate = false"
                       ></v-date-picker>
                     </v-menu>
                   </v-col>
@@ -95,7 +99,7 @@
               <v-col>
                 <h1 class="medium-title">Ventas por fecha</h1>
                 <v-row
-                  class="mt-1"
+                  class="mt-1 container-inside"
                   justify="center"
                   align="center"
                   align-content="center"
@@ -145,7 +149,7 @@
               <v-col>
                 <h1 class="large-title">Órdenes por mesero</h1>
                 <v-row
-                  class="mt-1"
+                  class="mt-1 container-inside"
                   justify="center"
                   align="center"
                   align-content="center"
@@ -208,7 +212,7 @@
               <v-col>
                 <h1 class="large-title">Órdenes por mesa</h1>
                 <v-row
-                  class="mt-1"
+                  class="mt-1 container-inside"
                   justify="center"
                   align="center"
                   align-content="center"
