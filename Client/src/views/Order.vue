@@ -263,9 +263,6 @@
                     Accesibilidad, proactividad y alimentación.<br />
                     ------------------------------------------------- <br />
                     Atendido por: {{ this.employeeName }} -
-                    {{
-                      Date.day() + "/" + Date.month() + "/" + Date.year() + "/"
-                    }}
                   </div>
                   <div class="content-ticket">
                     <v-row>
