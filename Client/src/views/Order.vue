@@ -191,7 +191,29 @@
         </template>
       </v-data-iterator>
 
-      <!-- Diseño diálogo de pago -->
+      <v-dialog v-model="cDeleteDialog" max-width="300">
+        <v-card>
+          <v-card-title class="text-h5">
+            ¿Estás seguro?
+          </v-card-title>
+          <v-card-text>
+            Esta acción es irreversible.
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary darken-1" text @click="cancelDeleteOrder()">
+              Cancelar
+            </v-btn>
+            <v-btn color="red darken-1" text @click="deleteOrder()">
+              Eliminar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <!-- PAYMENT -->
+
+      <!-- Diálogo de pago -->
       <v-dialog
         v-model="pDialog"
         fullscreen
@@ -214,12 +236,7 @@
             <v-row>
               <!-- Tabla suborden -->
               <v-col cols="8">
-                <v-card
-                  height="100%"
-                  color="#E5E5E5"
-                  elevation="0"
-                  class="pa-3"
-                >
+                <v-card height="100%" elevation="0" class="pa-3">
                   <v-toolbar dense color="primary" dark>
                     <v-toolbar-title class="toolbar-title">
                       Pedidos de la mesa {{ this.idTable }}
@@ -241,15 +258,40 @@
               <v-col>
                 <div class="container-ticket">
                   <div class="header-ticket">
+                    <v-icon size="40" color="black">fas fa-code</v-icon>
                     <h2>Food And Code</h2>
-                    Accesibilidad, proactividad y alimentación.
-                    _________________________________________________
+                    Accesibilidad, proactividad y alimentación.<br />
+                    -------------------------------------------------
                   </div>
                   <div class="content-ticket">
-                    TABLA con lo mismo de los pedidos
+                    <v-row>
+                      <v-col>Cantidad</v-col>
+                      <v-col>Item</v-col>
+                      <v-col>Total</v-col>
+                    </v-row>
+                    <v-row
+                      v-for="(suborder, index) in subOrders"
+                      v-bind:key="index"
+                    >
+                      <v-col>{{ suborder.cant_total_comida }}</v-col>
+                      <v-col>{{ suborder.com_nombre }}</v-col>
+                      <v-col>{{
+                        parseFloat(suborder.total_neto).toFixed(2)
+                      }}</v-col>
+                    </v-row>
                   </div>
                   <div class="footer-ticket">
-                    _________________________________________________
+                    -------------------------------------------------
+                    <v-row>
+                      <v-col>SUBTOTAL</v-col>
+                      <v-spacer></v-spacer>
+                      <v-col>${{ this.subtotal }}</v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col>TOTAL</v-col>
+                      <v-spacer></v-spacer>
+                      <v-col>${{ this.total }}</v-col>
+                    </v-row>
                     <br />
                     GRACIAS POR CONSUMIR CON NOSOTROS
                   </div>
@@ -264,7 +306,7 @@
             <v-row no-gutters>
               <v-col cols="8">
                 <v-card color="#F5F5F5" elevation="0" class="pa-3">
-                  <v-card-text>
+                  <v-card-text class="container-inside">
                     <v-row>
                       <h3>Subtotal:</h3>
                       <v-spacer></v-spacer>
@@ -280,13 +322,19 @@
               </v-col>
 
               <v-col cols="4">
-                <v-card color="third" elevation="0" class="pa-3" height="100%">
+                <v-card
+                  color="#F5F5F5"
+                  elevation="0"
+                  class="pa-3"
+                  height="100%"
+                >
                   <v-btn
                     class="px-7 font-weight-black"
                     color="accent"
                     rounded
                     width="100%"
                     height="100%"
+                    @click="openCPaymentDialog()"
                   >
                     Imprimir ticket y pagar
                   </v-btn>
@@ -299,25 +347,46 @@
       </v-dialog>
       <!-- Diseño diálogo de pago -->
 
-      <v-dialog v-model="cDeleteDialog" max-width="300">
+      <!-- Diseño diálogo confirmación de pago -->
+      <v-dialog v-model="cPaymentDialog" max-width="300">
         <v-card>
           <v-card-title class="text-h5">
-            ¿Estás seguro?
+            Confirmar pago
           </v-card-title>
           <v-card-text>
-            Esta acción es irreversible.
+            Selecciona un método de pago
           </v-card-text>
+
+          <v-text-field
+            label="Propina"
+            placeholder="¿Hubo propina?"
+            filled
+            dense
+            class="pl-3 pr-3"
+          ></v-text-field>
+
+          <v-select
+            flat
+            solo-inverted
+            hide-details
+            :items="paymentMethods"
+            label="Método de pago"
+            class="pl-3 pr-3 pb-3"
+          >
+          </v-select>
+
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary darken-1" text @click="cancelDeleteOrder()">
+            <v-btn color="primary darken-1" text @click="cancelPayment()">
               Cancelar
             </v-btn>
-            <v-btn color="red darken-1" text @click="deleteOrder()">
-              Eliminar
+            <v-btn color="success" text @click="insertPayment()">
+              Confirmar
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <!-- Diseño diálogo confirmación de pago -->
     </template>
   </v-container>
 </template>
@@ -347,12 +416,17 @@ export default {
     alertEmptyNewOrder: false,
     loader: null,
     loadingAddOrder: false,
+
     // PAYMENTS
     headers: [
       { text: "Comida", align: "center", value: "com_nombre" },
       { text: "Cantidad", align: "center", value: "cant_total_comida" },
       { text: "Total", align: "center", value: "total_neto" },
     ],
+
+    paymentMethods: [{ text: "Efectivo" }, { text: "Tarjeta de crédito" }],
+
+    cPaymentDialog: false,
     subOrders: [],
     subtotal: "",
     total: "",
@@ -497,14 +571,14 @@ export default {
       const apiData = await this.axios.get(
         "/payment/orderTotal/" + idOrder.toString()
       );
-      this.subtotal = apiData.data[0].total_orden;
+      this.subtotal = parseFloat(apiData.data[0].total_orden).toFixed(2);
     },
 
     async showOrderTotalIVA(idOrder) {
       const apiData = await this.axios.get(
         "/payment/orderTotalIVA/" + idOrder.toString()
       );
-      this.total = apiData.data[0].total_orden;
+      this.total = parseFloat(apiData.data[0].total_orden).toFixed(2);
     },
 
     async insertPayment(item) {
@@ -527,6 +601,16 @@ export default {
       this.idTable = order.mes_id;
       this.pDialog = true;
     },
+
+    openCPaymentDialog() {
+      this.cPaymentDialog = true;
+    },
+
+    cancelPayment() {
+      this.cPaymentDialog = false;
+    },
+
+    confirmPayment() {},
   },
 
   components: {},
