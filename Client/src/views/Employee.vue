@@ -398,7 +398,7 @@ export default {
     dialog: false,
     dialogmore: false,
     activo_inactivo: true,
-    dialogo_editar: true,
+    dialogo_editar: false,
     editar_activo: true,
   }),
 
