@@ -471,7 +471,6 @@ export default {
       this.dialogo_editar = true;
     },
     getMeseros() {
-      console.log("Hola");
       this.axios
         .get("/mesero/seleccionarTodos")
         .then((response) => {

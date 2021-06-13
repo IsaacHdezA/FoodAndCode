@@ -21,8 +21,10 @@ mesero.cambiarEstado = (datos, cb) => {
 
 mesero.actualizar = (datos, cb) => {
   conn.query(
-    "UPDATE mesero SET mro_nombre=?,mro_telefono=?,mro_correo=?, mro_sueldo=?,mro_sueldo=?,mro_domicilio=?,mro_estado=?,mro_foto=? WHERE mro_id=?",
+    "UPDATE mesero SET mro_nombre=?,mro_telefono=?,mro_correo=?, mro_sueldo=?,mro_domicilio=?,mro_estado=?,mro_foto=? WHERE mro_id=?",
+    datos,
     cb
   );
 };
+
 module.exports = mesero;
