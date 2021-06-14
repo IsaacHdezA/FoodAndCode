@@ -1,18 +1,9 @@
 <template>
   <v-container>
-    <h1>Mesas Misa</h1>
+    <h1>Mesas </h1>
     {{nueva_suborden}}
-    {{orden_correct[0]['value']}}
+    {{orden_correct['value']}}
     <v-container>
-      <v-row>
-        <v-spacer></v-spacer>
-        <v-btn color="success" @click="ad_dialog = true"
-          >Ajustes
-          <v-icon class="ml-3">
-            fa fa-sliders-h
-          </v-icon>
-        </v-btn>
-      </v-row>
 
       <v-spacer></v-spacer>
       <v-row>
@@ -63,7 +54,7 @@
                 height="100px"
                 width="100px"
                 :disabled="viewActivityTables(3, this.tables)"
-                @click="sub_dialog = true, getSuborders(3), nueva_suborden.sub_ord_id=orden_correct[2]['value']"
+                @click="getSuborders(3), sub_dialog = true, nueva_suborden.sub_ord_id=orden_correct[2]['value']"
               >
                 Mesa 3 <br />
                 {{
@@ -326,33 +317,29 @@
               :items-per-page="5"
               class="elevation-1"
             >
+              <template v-slot:top>
+              <v-toolbar flat>
+                  <v-toolbar-title>Usuarios</v-toolbar-title>
+                  
+              </v-toolbar>
+              </template>
+              <template v-slot:[`item.actions`]="{item}">
+              <v-icon @click="eliminar_Suborden(item)" small>
+                  fas fa-trash
+              </v-icon>
+              </template>
             </v-data-table>
           </v-container>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="success" @click="new_dialog=true"
-            >Agregar Suborden
-          </v-btn>
+          <v-btn color="success" @click="new_dialog=true">Agregar Suborden</v-btn>
+           <v-btn color="error" @click="cancelar()">Cancelar </v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="ad_dialog" max-width="500px">
-      <v-card>
-        <v-card-title>
-          Ajustes Mesas
-        </v-card-title>
-        <v-card-text>
-          <v-container> </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="success" @click="cambiar_estado()">Aceptar</v-btn>
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    
     <v-dialog v-model="new_dialog" max-width="500px">
       <v-card>
         <v-card-title>
@@ -362,12 +349,8 @@
                 <v-container>
                 <v-row >
                   <v-col >
-                      <v-select
-                          items = 2
-                          label="Asiento"
-                          v-model="nueva_suborden.sub_asiento"
-                      >  
-                      </v-select>
+                      <v-text-field v-model="nueva_suborden.sub_asiento" label='Asiento' type="Number">
+                    </v-text-field>
                     </v-col>
                   <v-col >
                       <v-select
@@ -386,9 +369,8 @@
             </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="success" @click="agregar_suborden()"
-            >Agregar Suborden
-          </v-btn>
+          <v-btn color="success" @click="agregar_suborden()">Agregar Suborden </v-btn>
+          <v-btn color="error" @click="cancelar()">Cancelar </v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -403,12 +385,8 @@ export default {
   data() {
     return {
       headers: [
-        {
-          text: "Asiento",
-          align: "start",
-          sortable: false,
-          value: "sub_asiento",
-        },
+        { text: "Indice", align: "start", sortable: false, value: "sub_id",},
+        { text: "Asiento", value: "sub_asiento" },
         { text: "Comida", value: "com_nombre" },
         { text: "Cantidad", value: "sub_cant" },
         { text: "Costo", value: "costo" },
@@ -416,7 +394,7 @@ export default {
       ],
 
       asientos: [
-        {text: "value", value: ["1","2"] },
+        {sub_asiento: '1'}, {sub_asiento: '2'},
       ],
       posicion: "0",
       nueva_suborden: {
@@ -424,10 +402,6 @@ export default {
         sub_com_id: '',
         sub_asiento: '',
         sub_cant: '',
-      },
-
-      asientos: {
-        sub_asiento: ["1","2","3","4","5","6","7","8"]
       },
 
       tables: [],
@@ -447,7 +421,7 @@ export default {
     this.getActiveTables();
     this.readFood();
     this.orden_correcta();
-    //this.getSuborders();
+    
   },
 
   methods: {
@@ -460,8 +434,6 @@ export default {
           value: table.mes_id,
         })
       );
-
-      //console.log(this.tables);
     },
 
     async getSpacesTables() {
@@ -477,10 +449,10 @@ export default {
 
     async getSuborders(mes_id) {
       this.sub_dialog = true;
-      const apiData = await this.axios.get("table/allSuborders/",mes_id.toString());
+      const apiData = await this.axios.get("table/allSuborders/"+mes_id.toString());
       this.suborders = apiData.data;
 
-      //console.log(this.suborders);
+      console.log(this.suborders);
     },
 
     viewActivityTables(i, t) {
@@ -508,6 +480,13 @@ export default {
       this.new_dialog = false;
     },
 
+    cancelar(){
+      this.nueva_suborden={};
+      this.new_dialog = false;
+      this.sub_dialog = false;
+      this.ad_dialog =  false;
+    },
+
     async orden_correcta(){
       const apiData = await this.axios.get("table/ordenTable/");
 
@@ -517,7 +496,12 @@ export default {
           value: orden_c.ord_id,
         })
       );
-      console.log(this.orden_correct);
+     // console.log(this.orden_correct);
+
+    },
+
+    async eliminarSuborden(item){
+      await this.axios("table/deleteSuborder", item.sub_id);
 
     }
 
