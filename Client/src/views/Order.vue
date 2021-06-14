@@ -159,7 +159,7 @@
                     <v-toolbar-title> Mesa {{ order.mes_id }} </v-toolbar-title>
                   </v-toolbar>
                   <v-spacer></v-spacer>
-                  <v-btn icon color="black">
+                  <v-btn icon color="black" @click="openSubOrderDialog(order)">
                     <v-icon>fas fa-eye</v-icon>
                   </v-btn>
                   <v-btn icon color="black" @click="openCDeleteDialog(order)">
