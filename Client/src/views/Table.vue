@@ -3,10 +3,7 @@
     <h1>Mesas</h1>
     <v-container>
       <v-spacer></v-spacer>
-
-      <!-- Primer renglón mesas -->
       <v-row>
-        <!-- Primera columna, renglón 1: Mesa 1 -->
         <v-col cols="4">
           <v-btn
             class="mx-15 ma-3"
@@ -29,13 +26,8 @@
             }}/8
           </v-btn>
         </v-col>
-        <!-- Primera columna, renglón 1: Mesa 1 -->
-
-        <!-- Segunda columna, renglón 1: Mesas 2-5 -->
         <v-col cols="4">
-          <!-- Primer renglón segunda columna -->
           <v-row>
-            <!---->
             <v-col cols="6">
               <v-btn
                 class="mx-3"
@@ -58,7 +50,6 @@
                 }}/4
               </v-btn>
             </v-col>
-            <!---->
             <v-col cols="6">
               <v-btn
                 class="mx-3"
@@ -369,53 +360,52 @@
       </v-row>
     </v-container>
 
-    <v-dialog v-model="sub_dialog" max-width="50%">
+    <v-dialog class="toolbar-subtitle" v-model="sub_dialog" max-width="1000">
       <v-card>
-        <v-card-title>
-          Mesa
-        </v-card-title>
-        <v-card-text>
-          <v-container>
-            <v-data-table
-              :headers="headers"
-              :items="suborders"
-              :items-per-page="5"
-              class="elevation-1"
-            >
-              <template v-slot:top>
-                <v-toolbar flat>
-                  <v-toolbar-title>Usuarios</v-toolbar-title>
-                </v-toolbar>
-              </template>
-              <template v-slot:[`item.actions`]="{ item }">
-                <v-icon @click="eliminarSuborden(item)" small>
-                  fas fa-trash
-                </v-icon>
-              </template>
-            </v-data-table>
-          </v-container>
-        </v-card-text>
+        <v-toolbar dark class="toolbar-title" color="primary">
+          <v-toolbar-title> Mesa {{}} </v-toolbar-title>
+        </v-toolbar>
+        <v-data-table
+          class="container-inside"
+          :headers="headers"
+          :items="suborders"
+        >
+          <template v-slot:[`item.actions`]="{ item }">
+            <v-icon @click="" small>
+              fas fa-pencil-alt
+            </v-icon>
+            <v-icon @click="eliminarSuborden(item)" small>
+              fas fa-trash
+            </v-icon>
+          </template>
+        </v-data-table>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="success" @click="new_dialog = true"
-            >Agregar Suborden</v-btn
-          >
-          <v-btn color="error" @click="cancelar()">Cancelar </v-btn>
-          <v-spacer></v-spacer>
+          <v-btn color="primary darken-1" text @click="cancelar()">
+            Cerrar
+          </v-btn>
+          <v-btn color="green darken-1" text @click="new_dialog = true">
+            Agregar Suborden
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="new_dialog" max-width="500px">
+    <v-dialog class="toolbar-subtitle" v-model="new_dialog" max-width="500">
       <v-card>
-        <v-card-title>
-          Nueva Suborden
-        </v-card-title>
+        <v-toolbar dark class="toolbar-title" color="primary">
+          <v-toolbar-title> Nuevo pedido </v-toolbar-title>
+        </v-toolbar>
         <v-card-text>
           <v-container>
             <v-row>
               <v-col>
-                <v-select :items="asientosTotales" label="Asientos"> </v-select>
+                <v-select
+                  :items="asientosTotales"
+                  label="Asiento"
+                  v-model="nueva_suborden.sub_asiento"
+                >
+                </v-select>
               </v-col>
               <v-col>
                 <v-select
@@ -438,16 +428,21 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="success" @click="agregar_suborden()"
-            >Agregar Suborden
+          <v-btn color="primary darken-1" text @click="cancelar()">
+            Cancelar
           </v-btn>
-          <v-btn color="error" @click="cancelar()">Cancelar </v-btn>
-          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" text @click="agregar_suborden()">
+            Agregar
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
   </v-container>
 </template>
+
+<style lang="css">
+@import "../styles/app.css";
+</style>
 
 <script>
 export default {
@@ -456,11 +451,10 @@ export default {
   data() {
     return {
       headers: [
-        { text: "Indice", align: "start", sortable: false, value: "sub_id" },
         { text: "Asiento", value: "sub_asiento" },
         { text: "Comida", value: "com_nombre" },
         { text: "Cantidad", value: "sub_cant" },
-        { text: "Costo", value: "costo" },
+        { text: "Costo", value: "sub_precio" },
         { text: "Acciones", value: "actions" },
       ],
 
@@ -584,7 +578,7 @@ export default {
     async eliminarSuborden(item) {
       console.log(item.sub_id);
       const data = {
-        sub_id: item.sub_id
+        sub_id: item.sub_id,
       };
       await this.axios.post("table/deleteSuborder", data);
     },

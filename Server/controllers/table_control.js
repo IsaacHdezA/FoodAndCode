@@ -17,7 +17,6 @@ tableControl.filledSpacesTables = (request, result) =>
 
 tableControl.allSuborders = (request, result) => {
   const mes_id = request.params.mes_id;
-  console.log(mes_id);
   tableModel.allSuborders([mes_id], (error, rows) =>
     error
       ? result.status(500).send({ message: error })
@@ -32,11 +31,16 @@ tableControl.readFood = (request, result) =>
       : result.status(200).send(rows)
   );
 
+tableControl.ordenTable = (request, result) =>
+  tableModel.ordenTable([], (error, rows) =>
+    error
+      ? result.status(500).send({ message: error })
+      : result.status(200).send(rows)
+  );
+
 tableControl.addSuborder = (request, result) => {
   const body = request.body;
-  console.log(body);
   if (body.sub_ord_id && body.sub_com_id && body.sub_asiento && body.sub_cant) {
-    // VALIDACION DE DATOS
     tableModel.addSuborder(
       [body.sub_ord_id, body.sub_com_id, body.sub_asiento, body.sub_cant],
       (error, rows) => {
@@ -56,26 +60,16 @@ tableControl.addSuborder = (request, result) => {
 
 tableControl.deleteSuborder = (request, result) => {
   const body = request.body;
-  console.log(body.sub_id);
-  if (body.sub_id) { // VALIDACIÓN DE DATOS
-    tableModel.deleteSuborder([body.sub_id],
-      (error, rows) => {
-        if (error) result.status(500).send({ message: error });
-        else {
-          if (rows.affectedRows > 0)
-            result.status(202).send({ message: "Comida eliminada" });
-          else result.status(500).send({ message: "No se elimino la comida" });
-        }
+  if (body.sub_id) {
+    tableModel.deleteSuborder([body.sub_id], (error, rows) => {
+      if (error) result.status(500).send({ message: error });
+      else {
+        if (rows.affectedRows > 0)
+          result.status(202).send({ message: "Comida eliminada" });
+        else result.status(500).send({ message: "No se elimino la comida" });
       }
-    );
+    });
   } else result.status(401).send({ message: "Peticion incorrecta" }); // VALIDACION DE DATOS
-}
-
-tableControl.ordenTable = (request, result) =>
-  tableModel.ordenTable([], (error, rows) =>
-    error
-      ? result.status(500).send({ message: error })
-      : result.status(200).send(rows)
-  );
+};
 
 module.exports = tableControl;
