@@ -152,4 +152,24 @@ mesero_control.actualizars = (req, res) => {
     res.status(401).send({message: "Peticion incorrecta"});
   }
 };
+
+mesero_control.activos = (req, res) => {
+  mesero.activos([], (err, rows) => {
+    if (err) {
+      res.status(500).send({message: "Error"});
+    } else {
+      res.status(202).send(rows);
+    }
+  });
+};
+
+mesero_control.inactivos = (req, res) => {
+  mesero.inactivos([], (err, rows) => {
+    if (err) {
+      res.status(500).send({message: "Error"});
+    } else {
+      res.status(202).send(rows);
+    }
+  });
+};
 module.exports = mesero_control;

@@ -19,6 +19,14 @@ mesero.cambiarEstado = (datos, cb) => {
   conn.query("UPDATE mesero SET mro_estado=? WHERE mro_id=?", datos, cb);
 };
 
+mesero.activos = (datos, cb) => {
+  conn.query("SELECT * FROM mesero WHERE mro_estado='a'", [], cb);
+};
+
+mesero.inactivos = (datos, cb) => {
+  conn.query("SELECT * FROM mesero WHERE mro_estado='i'", [], cb);
+};
+
 mesero.actualizar = (datos, cb) => {
   conn.query(
     "UPDATE mesero SET mro_nombre=?,mro_telefono=?,mro_correo=?, mro_sueldo=?,mro_domicilio=?,mro_estado=?,mro_foto=? WHERE mro_id=?",

@@ -23,5 +23,7 @@ router.get("/seleccionarTodos", mesero_control.seleccionarTodos);
 router.put("/cambiarEstado", mesero_control.cambiarEstado);
 router.put("/actualizar", uploadS, mesero_control.actualizar);
 router.put("/actualizars", mesero_control.actualizars);
+router.get("/activos", mesero_control.activos);
+router.get("/inactivos", mesero_control.inactivos);
 
 module.exports = router;
