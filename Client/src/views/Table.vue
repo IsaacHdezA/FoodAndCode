@@ -580,7 +580,12 @@ export default {
       this.new_dialog = false;
       this.getSuborders(this.actualTable, this.actualOrder);
       this.getSpacesTables();
-      this.nueva_suborden = {};
+      this.newSubOrder = {
+        sub_ord_id: "",
+        sub_com_id: "",
+        sub_asiento: "",
+        sub_cant: "",
+      };
     },
 
     cancelarAddSub() {
@@ -589,7 +594,12 @@ export default {
     },
 
     cancelarSuborders() {
-      this.nueva_suborden = {};
+      this.newSubOrder = {
+        sub_ord_id: "",
+        sub_com_id: "",
+        sub_asiento: "",
+        sub_cant: "",
+      };
       this.sub_dialog = false;
       this.actualTable = "";
       this.actualOrder = "";
