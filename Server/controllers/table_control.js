@@ -34,39 +34,33 @@ tableControl.readFood = (request, result) =>
 
 tableControl.addSuborder = (request, result) => {
   const body = request.body;
+  console.log(body);
   if (
-    body.com_cat_id &&
-    body.com_nombre &&
-    body.com_precio &&
-    body.com_descripcion
+    body.sub_ord_id &&
+    body.sub_com_id &&
+    body.sub_asiento &&
+    body.sub_cant
   ) {  // VALIDACION DE DATOS
-    food_model.new_food(
+    tableModel.addSuborder(
       [
-        body.com_cat_id,
-        body.com_nombre,
-        body.com_precio,
-        body.com_descripcion,
+        body.sub_ord_id,
+        body.sub_com_id,
+        body.sub_asiento,
+        body.sub_cant
       ],
       (error, rows) => {
         if (error) {
           result.status(500).send({ message: error });
+          console.log(error);
         }
         else {
           if (rows.affectedRows > 0)
-            result.status(202).send({ message: "Comida registrada" });
-          else result.status(500).send({ message: "No se registró la comida" });
+            result.status(202).send({ message: "Suborden registrada" });
+          else result.status(500).send({ message: "No se registró la suborden" });
         }
       }
     );
   } else result.status(401).send({ message: "Peticion incorrecta" }); // VALIDACION DE DATOS
-
-
-
-  tableModel.addSuborder([], (error, rows) =>
-    error
-    ? result.status(500).send({ message: error })
-    : result.status(200).send(rows)
-  );
 }
 
 tableControl.deleteSuborder = (request, result) =>
