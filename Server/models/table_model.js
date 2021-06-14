@@ -58,7 +58,7 @@ table.allSuborders = (data, callback) =>
                 "ON c.com_id = r2.com_id "+
             "INNER JOIN suborden AS s "+
                 "ON s.sub_ord_id = r1.ord_id "+
-                "WHERE m.mes_id = ?",
+            "WHERE m.mes_id = ?",
             data,
             callback
         );
