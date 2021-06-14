@@ -653,6 +653,10 @@ export default {
         else if (apiData.data[i].ord_estado == "i")
           apiData.data[i].ord_estado = "Pagada";
         else apiData.data[i].ord_estado = "Pendiente";
+
+        apiData.data[i].pag_propina = parseFloat(
+          apiData.data[i].pag_propina
+        ).toFixed(2);
       }
 
       this.ordersPerEmployee = apiData.data;
