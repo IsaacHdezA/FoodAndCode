@@ -549,7 +549,7 @@ export default {
       }
     },
 
-    async showMeseros() {
+    async getMeseros() {
       let apiData;
       if (this.filtro == "Todos") {
         apiData = await this.axios.get("/mesero/seleccionarTodos");
