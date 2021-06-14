@@ -16,8 +16,9 @@ tableControl.filledSpacesTables = (request, result) =>
   );
 
 tableControl.allSuborders = (request, result) => {
-  const mes_id = request.params.mes_id;
-  tableModel.allSuborders([mes_id], (error, rows) =>
+  const mes_id = request.params.mes_id,
+    ord_id = request.params.ord_id;
+  tableModel.allSuborders([mes_id, ord_id], (error, rows) =>
     error
       ? result.status(500).send({ message: error })
       : result.status(200).send(rows)

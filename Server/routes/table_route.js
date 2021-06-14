@@ -4,7 +4,7 @@ const tableControl = require("../controllers/table_control.js");
 
 router.get("/allActiveTables", tableControl.allActiveTables);
 router.get("/filledSpacesTables", tableControl.filledSpacesTables);
-router.get("/allSuborders/:mes_id", tableControl.allSuborders);
+router.get("/allSuborders/:mes_id/:ord_id", tableControl.allSuborders);
 router.get("/readFood", tableControl.readFood);
 router.get("/ordenTable", tableControl.ordenTable);
 
