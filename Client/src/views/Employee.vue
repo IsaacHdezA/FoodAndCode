@@ -179,7 +179,9 @@
                         size="200"
                         v-on:click="moreinformation(item)"
                       >
-                        <img v-bind:src="item.mro_foto" />
+                        <img
+                          v-bind:src="'http://localhost:3000/' + item.mro_foto"
+                        />
                       </v-avatar>
                     </p>
                     <h4>{{ item.mro_nombre }}</h4>
@@ -438,7 +440,8 @@ export default {
       this.empleado_selected.mro_direccion = empleado.mro_domicilio;
       this.empleado_selected.mro_sueldo = empleado.mro_sueldo;
       this.empleado_selected.mro_id = empleado.mro_id;
-      this.empleado_selected.mro_foto = empleado.mro_foto;
+      this.empleado_selected.mro_foto =
+        "http://localhost:3000/" + empleado.mro_foto;
       if (this.empleado_selected.mro_estado == "a") {
         this.activo_inactivo = true;
       } else {
@@ -561,12 +564,6 @@ export default {
         apiData = await this.axios.get("/mesero/inactivos");
         this.meseros = apiData.data;
       }
-
-      for (let i = 0; i < apiData.data.length; i++)
-        if (apiData.data[i].mro_foto !== "")
-          apiData.data[i].mro_foto =
-            "http://localhost:3000/" + apiData.data[i].mro_foto;
-        else apiData.data[i].mro_foto = "localhost:3000/no_user.png";
     },
 
     async submit() {
