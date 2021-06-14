@@ -596,7 +596,13 @@ export default {
 
       await this.axios.post("/payment/insertPayment", this.newPayment);
 
-      this.newPayment = [];
+      this.newPayment = {
+        pag_ord_id: "",
+        pag_subtotal: "",
+        pag_total: "",
+        pag_propina: 0,
+        pag_tipo_pago: "Efectivo",
+      };
     },
 
     cancelPayment() {
