@@ -251,6 +251,48 @@
                     class="container-inside"
                   >
                   </v-data-table>
+                  <!-- Subtotal y pago -->
+                  <v-container class="pt-3">
+                    <v-row no-gutters>
+                      <v-col cols="8">
+                        <v-card color="#F5F5F5" elevation="0" class="pa-3">
+                          <v-card-text class="container-inside">
+                            <v-row>
+                              <h3>Subtotal:</h3>
+                              <v-spacer></v-spacer>
+                              <h3>${{ this.subtotal }}</h3>
+                            </v-row>
+                            <v-row>
+                              <h2>Total (10% IVA):</h2>
+                              <v-spacer></v-spacer>
+                              <h2>${{ this.total }}</h2>
+                            </v-row>
+                          </v-card-text>
+                        </v-card>
+                      </v-col>
+
+                      <v-col cols="4">
+                        <v-card
+                          color="#F5F5F5"
+                          elevation="0"
+                          class="pa-3"
+                          height="100%"
+                        >
+                          <v-btn
+                            class="px-7 font-weight-black"
+                            color="accent"
+                            rounded
+                            width="100%"
+                            height="100%"
+                            @click="openCPaymentDialog()"
+                          >
+                            Pagar e imprimir ticket
+                          </v-btn>
+                        </v-card>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                  <!-- Subtotal y pago -->
                 </v-card>
               </v-col>
               <!-- Tabla suborden -->
@@ -304,49 +346,6 @@
               <!-- Ticket -->
             </v-row>
           </v-container>
-
-          <!-- Subtotal y pago -->
-          <v-container>
-            <v-row no-gutters>
-              <v-col cols="8">
-                <v-card color="#F5F5F5" elevation="0" class="pa-3">
-                  <v-card-text class="container-inside">
-                    <v-row>
-                      <h3>Subtotal:</h3>
-                      <v-spacer></v-spacer>
-                      <h3>${{ this.subtotal }}</h3>
-                    </v-row>
-                    <v-row>
-                      <h2>Total (10% IVA):</h2>
-                      <v-spacer></v-spacer>
-                      <h2>${{ this.total }}</h2>
-                    </v-row>
-                  </v-card-text>
-                </v-card>
-              </v-col>
-
-              <v-col cols="4">
-                <v-card
-                  color="#F5F5F5"
-                  elevation="0"
-                  class="pa-3"
-                  height="100%"
-                >
-                  <v-btn
-                    class="px-7 font-weight-black"
-                    color="accent"
-                    rounded
-                    width="100%"
-                    height="100%"
-                    @click="openCPaymentDialog()"
-                  >
-                    Pagar e imprimir ticket
-                  </v-btn>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-container>
-          <!-- Subtotal y pago -->
         </v-card>
       </v-dialog>
       <!-- Diseño diálogo de pago -->
