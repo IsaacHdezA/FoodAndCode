@@ -367,7 +367,7 @@
               label="Activo"
               color="success"
               hide-details
-              @click="cambio"
+              @click="cambiarEstado"
             >
             </v-switch>
           </p>
