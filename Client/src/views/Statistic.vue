@@ -56,7 +56,7 @@
                 >
                   <v-col cols="10" class="container-inside">
                     <v-menu
-                      v-model="ordersDate"
+                      v-model="menuOrdersDate"
                       :close-on-content-click="false"
                       :nudge-right="40"
                       transition="scale-transition"
@@ -79,12 +79,12 @@
                       </template>
                       <v-date-picker
                         v-model="orderDate"
-                        @input="ordersDate = false"
+                        @input="menuOrdersDate = false"
                       ></v-date-picker>
                     </v-menu>
                   </v-col>
                   <v-col cols="2">
-                    <v-btn icon color="primary">
+                    <v-btn icon color="primary" @click="openOrdersDialog()">
                       <v-icon>fas fa-check</v-icon>
                     </v-btn>
                   </v-col>
@@ -92,6 +92,13 @@
               </v-col>
             </v-row>
           </v-container>
+          <v-alert type="error" class="mt-1" :value="alertErrorOrdersPerDate">
+            <v-row align="center" justify="center" align-content="center">
+              <v-col class="grow">
+                Debes seleccionar una fecha
+              </v-col>
+            </v-row>
+          </v-alert>
         </div>
         <div class="block container-sales-date">
           <v-container>
@@ -106,7 +113,7 @@
                 >
                   <v-col cols="10">
                     <v-menu
-                      v-model="salesDate"
+                      v-model="menuSalesDate"
                       :close-on-content-click="false"
                       :nudge-right="40"
                       transition="scale-transition"
@@ -129,12 +136,12 @@
                       </template>
                       <v-date-picker
                         v-model="saleDate"
-                        @input="salesDate = false"
+                        @input="menuSalesDate = false"
                       ></v-date-picker>
                     </v-menu>
                   </v-col>
                   <v-col cols="2">
-                    <v-btn icon color="primary">
+                    <v-btn icon color="primary" @click="getCountSalesPerDate()">
                       <v-icon>fas fa-check</v-icon>
                     </v-btn>
                   </v-col>
@@ -142,6 +149,25 @@
               </v-col>
             </v-row>
           </v-container>
+          <v-alert type="info" class="mt-1" :value="alertCountSalesPerDate">
+            <v-row align="center" justify="center" align-content="center">
+              <v-col class="grow">
+                El número de ventas de esa fecha fue de:
+                <b>{{ this.countSalesPerDate }}</b>
+              </v-col>
+            </v-row>
+          </v-alert>
+          <v-alert
+            type="error"
+            class="mt-1"
+            :value="alertErrorCountSalesPerDate"
+          >
+            <v-row align="center" justify="center" align-content="center">
+              <v-col class="grow">
+                Debes seleccionar una fecha
+              </v-col>
+            </v-row>
+          </v-alert>
         </div>
         <div class="block container-orders-table">
           <v-container>
@@ -168,7 +194,7 @@
                   </v-col>
                   <v-col cols="4">
                     <v-menu
-                      v-model="ordersEmployeeDate"
+                      v-model="menuOrdersEmployeeDate"
                       :close-on-content-click="false"
                       :nudge-right="40"
                       transition="scale-transition"
@@ -191,13 +217,17 @@
                       </template>
                       <v-date-picker
                         v-model="employeeDate"
-                        @input="ordersEmployeeDate = false"
+                        @input="menuOrdersEmployeeDate = false"
                         color="primary"
                       ></v-date-picker>
                     </v-menu>
                   </v-col>
                   <v-col cols="2">
-                    <v-btn icon color="primary">
+                    <v-btn
+                      icon
+                      color="primary"
+                      @click="getCountOrdersPerEmployee()"
+                    >
                       <v-icon>fas fa-check</v-icon>
                     </v-btn>
                   </v-col>
@@ -205,6 +235,29 @@
               </v-col>
             </v-row>
           </v-container>
+          <v-alert
+            type="info"
+            class="mt-1"
+            :value="alertCountOrdersPerEmployee"
+          >
+            <v-row align="center" justify="center" align-content="center">
+              <v-col class="grow">
+                El número de órdenes del mesero fue de:
+                <b>{{ this.countOrdersPerEmployee }}</b>
+              </v-col>
+            </v-row>
+          </v-alert>
+          <v-alert
+            type="error"
+            class="mt-1"
+            :value="alertErrorCountOrdersPerEmployee"
+          >
+            <v-row align="center" justify="center" align-content="center">
+              <v-col class="grow">
+                Debes seleccionar un mesero y una fecha
+              </v-col>
+            </v-row>
+          </v-alert>
         </div>
         <div class="block container-orders-employee">
           <v-container>
@@ -231,7 +284,7 @@
                   </v-col>
                   <v-col cols="6">
                     <v-menu
-                      v-model="ordersTableDate"
+                      v-model="menuOrdersTableDate"
                       :close-on-content-click="false"
                       :nudge-right="40"
                       transition="scale-transition"
@@ -254,13 +307,17 @@
                       </template>
                       <v-date-picker
                         v-model="tableDate"
-                        @input="ordersTableDate = false"
+                        @input="menuOrdersTableDate = false"
                         color="primary"
                       ></v-date-picker>
                     </v-menu>
                   </v-col>
                   <v-col cols="2">
-                    <v-btn icon color="primary">
+                    <v-btn
+                      icon
+                      color="primary"
+                      @click="getCountOrdersPerTable()"
+                    >
                       <v-icon>fas fa-check</v-icon>
                     </v-btn>
                   </v-col>
@@ -268,9 +325,50 @@
               </v-col>
             </v-row>
           </v-container>
+          <v-alert type="info" class="mt-1" :value="alertCountOrdersPerTable">
+            <v-row align="center" justify="center" align-content="center">
+              <v-col class="grow">
+                El número de órdenes de la mesa fue de:
+                <b>{{ this.countOrdersPerTable }}</b>
+              </v-col>
+            </v-row>
+          </v-alert>
+          <v-alert
+            type="error"
+            class="mt-1"
+            :value="alertErrorCountOrdersPerTable"
+          >
+            <v-row align="center" justify="center" align-content="center">
+              <v-col class="grow">
+                Debes seleccionar una mesa y una fecha
+              </v-col>
+            </v-row>
+          </v-alert>
         </div>
       </div>
     </v-container>
+    <v-dialog class="toolbar-subtitle" v-model="oDialog" max-width="600">
+      <v-card>
+        <v-toolbar dark class="toolbar-title" color="primary">
+          <v-toolbar-title>
+            Ordenes de la fecha {{ this.orderDate }}
+          </v-toolbar-title>
+        </v-toolbar>
+        <v-data-table
+          :headers="headers"
+          :items="ordersPerDate"
+          :sort-by="['mes_id', 'mro_nombre', 'ord_estado']"
+          :sort-desc="[false, true]"
+          class="container-inside"
+        ></v-data-table>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary darken-1" text @click="closeOrdersDialog()">
+            Cerrar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -283,7 +381,11 @@ export default {
   name: "Statistic",
 
   data: () => ({
-    todayProfit: "",
+    headers: [
+      { text: "Mesa", align: "center", value: "mes_id" },
+      { text: "Mesero a cargo", align: "center", value: "mro_nombre" },
+      { text: "Estado", align: "center", value: "ord_estado" },
+    ],
     months: [
       "Ene",
       "Feb",
@@ -298,10 +400,13 @@ export default {
       "Nov",
       "Dic",
     ],
+
     monthProfits: [],
     tables: [],
     employees: [],
     ordersPerDate: [],
+
+    todayProfit: "",
     ordersPerTable: "",
     ordersPerEmployee: "",
     salesPerDate: "",
@@ -311,19 +416,75 @@ export default {
     employeeDate: "",
     idTable: "",
     idEmployee: "",
-    ordersDate: false,
-    salesDate: false,
-    ordersTableDate: false,
-    ordersEmployeeDate: false,
+    countOrdersPerTable: "",
+    countOrdersPerEmployee: "",
+    countSalesPerDate: "",
+
+    menuOrdersDate: false,
+    menuSalesDate: false,
+    menuOrdersTableDate: false,
+    menuOrdersEmployeeDate: false,
     createSpark: false,
     thereProfits: false,
+    oDialog: false,
+    alertErrorOrdersPerDate: false,
+    alertCountOrdersPerTable: false,
+    alertCountOrdersPerEmployee: false,
+    alertCountSalesPerDate: false,
+    alertErrorCountOrdersPerTable: false,
+    alertErrorCountOrdersPerEmployee: false,
+    alertErrorCountSalesPerDate: false,
   }),
 
   created() {
     this.getTodayProfit();
     this.getMonthProfits();
-    this.getActiveTables();
-    this.getActiveEmployees();
+    this.getTables();
+    this.getEmployees();
+  },
+
+  watch: {
+    alertCountOrdersPerTable(value) {
+      if (!value) return;
+
+      setTimeout(() => (this.alertCountOrdersPerTable = false), 5000);
+    },
+
+    alertErrorCountOrdersPerTable(value) {
+      if (!value) return;
+
+      setTimeout(() => (this.alertErrorCountOrdersPerTable = false), 3000);
+    },
+
+    alertCountOrdersPerEmployee(value) {
+      if (!value) return;
+
+      setTimeout(() => (this.alertCountOrdersPerEmployee = false), 5000);
+    },
+
+    alertErrorCountOrdersPerEmployee(value) {
+      if (!value) return;
+
+      setTimeout(() => (this.alertErrorCountOrdersPerEmployee = false), 3000);
+    },
+
+    alertCountSalesPerDate(value) {
+      if (!value) return;
+
+      setTimeout(() => (this.alertCountSalesPerDate = false), 5000);
+    },
+
+    alertErrorCountSalesPerDate(value) {
+      if (!value) return;
+
+      setTimeout(() => (this.alertErrorCountSalesPerDate = false), 3000);
+    },
+
+    alertErrorOrdersPerDate(value) {
+      if (!value) return;
+
+      setTimeout(() => (this.alertErrorOrdersPerDate = false), 3000);
+    },
   },
 
   methods: {
@@ -355,16 +516,63 @@ export default {
       this.thereProfits = true;
     },
 
-    async getAllOrdersPerDate() {},
+    async getAllOrdersPerDate() {
+      const apiData = await this.axios.get(
+        "statistic/allOrdersPerDate/" + this.orderDate.toString()
+      );
 
-    async getCountOrdersPerTable() {},
+      for (let i = 0; i < apiData.data.length; i++) {
+        if (apiData.data[i].ord_estado == "a")
+          apiData.data[i].ord_estado = "Activa";
+        else if (apiData.data[i].ord_estado == "i")
+          apiData.data[i].ord_estado = "Pagada";
+        else apiData.data[i].ord_estado = "Pendiente";
+      }
 
-    async getCountOrdersPerEmployee() {},
+      this.ordersPerDate = apiData.data;
+    },
 
-    async getCountSalesPerDate() {},
+    async getCountOrdersPerTable() {
+      if (this.idTable && this.tableDate) {
+        const apiData = await this.axios.get(
+          "statistic/countOrdersPerTable/" +
+            this.idTable.toString() +
+            "/" +
+            this.tableDate.toString()
+        );
 
-    async getActiveEmployees() {
-      const apiData = await this.axios.get("order/allActiveEmployees/");
+        this.countOrdersPerTable = apiData.data[0].nOrdersPerTable;
+        this.alertCountOrdersPerTable = true;
+      } else this.alertErrorCountOrdersPerTable = true;
+    },
+
+    async getCountOrdersPerEmployee() {
+      if (this.idEmployee && this.employeeDate) {
+        const apiData = await this.axios.get(
+          "statistic/countOrdersPerEmployee/" +
+            this.idEmployee.toString() +
+            "/" +
+            this.employeeDate.toString()
+        );
+
+        this.countOrdersPerEmployee = apiData.data[0].nOrdersPerEmployee;
+        this.alertCountOrdersPerEmployee = true;
+      } else this.alertErrorCountOrdersPerEmployee = true;
+    },
+
+    async getCountSalesPerDate() {
+      if (this.saleDate) {
+        const apiData = await this.axios.get(
+          "statistic/countSalesPerDate/" + this.saleDate.toString()
+        );
+
+        this.countSalesPerDate = apiData.data[0].nSalesPerDate;
+        this.alertCountSalesPerDate = true;
+      } else this.alertErrorCountSalesPerDate = true;
+    },
+
+    async getEmployees() {
+      const apiData = await this.axios.get("statistic/allEmployees/");
 
       apiData.data.forEach((employee) =>
         this.employees.push({
@@ -374,8 +582,8 @@ export default {
       );
     },
 
-    async getActiveTables() {
-      const apiData = await this.axios.get("order/allActiveTables/");
+    async getTables() {
+      const apiData = await this.axios.get("statistic/allTables/");
 
       apiData.data.forEach((table) =>
         this.tables.push({
@@ -383,6 +591,19 @@ export default {
           value: table.mes_id,
         })
       );
+    },
+
+    openOrdersDialog() {
+      if (this.orderDate) {
+        this.getAllOrdersPerDate();
+        this.oDialog = true;
+      } else this.alertErrorOrdersPerDate = true;
+    },
+
+    closeOrdersDialog() {
+      this.orderDate = "";
+      this.ordersPerDate = [];
+      this.oDialog = false;
     },
   },
 

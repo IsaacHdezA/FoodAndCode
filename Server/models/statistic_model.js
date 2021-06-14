@@ -17,21 +17,21 @@ statistic.monthProfits = (data, callback) =>
 
 statistic.allOrdersPerDate = (data, callback) =>
   connection.query(
-    "SELECT * FROM orden WHERE DATE_FORMAT(ord_fecha_hora, '%Y-%m-%d') = ?",
+    "SELECT o.ord_id, t.mes_id, e.mro_nombre, DATE_FORMAT(o.ord_fecha_hora, '%Y-%m-%d') AS ord_fecha_hora, o.ord_estado FROM orden o INNER JOIN mesero e ON(e.mro_id = o.ord_mro_id) INNER JOIN mesa t ON(t.mes_id = o.ord_mes_id) HAVING ord_fecha_hora = ? ORDER BY ord_fecha_hora DESC",
     data,
     callback
   );
 
 statistic.countOrdersPerTable = (data, callback) =>
   connection.query(
-    "SELECT COUNT(*) AS nOrdersPerTable FROM order WHERE ord_mes_id = ?",
+    "SELECT COUNT(*) AS nOrdersPerTable FROM orden WHERE ord_mes_id = ? AND DATE_FORMAT(ord_fecha_hora, '%Y-%m-%d') = ?",
     data,
     callback
   );
 
 statistic.countOrdersPerEmployee = (data, callback) =>
   connection.query(
-    "SELECT COUNT(*) AS nOrdersPerEmployee FROM order WHERE ord_mro_id = ?",
+    "SELECT COUNT(*) AS nOrdersPerEmployee FROM orden WHERE ord_mro_id = ? AND DATE_FORMAT(ord_fecha_hora, '%Y-%m-%d') = ?",
     data,
     callback
   );
@@ -39,6 +39,16 @@ statistic.countOrdersPerEmployee = (data, callback) =>
 statistic.countSalesPerDate = (data, callback) =>
   connection.query(
     "SELECT COUNT(*) AS nSalesPerDate FROM pago WHERE DATE_FORMAT(pag_fecha_pago, '%Y-%m-%d') = ?",
+    data,
+    callback
+  );
+
+statistic.allTables = (data, callback) =>
+  connection.query("SELECT mes_id FROM mesa ORDER BY mes_id", data, callback);
+
+statistic.allEmployees = (data, callback) =>
+  connection.query(
+    "SELECT mro_id, mro_nombre FROM mesero ORDER BY mro_nombre",
     data,
     callback
   );

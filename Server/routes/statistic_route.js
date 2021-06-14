@@ -5,17 +5,19 @@ const statisticControl = require("../controllers/statistic_control.js");
 router.get("/todayProfit/:fecha", statisticControl.todayProfit);
 router.get("/monthProfits", statisticControl.monthProfits);
 router.get(
-  "/allOrdersPerDate:ord_fecha_hora",
+  "/allOrdersPerDate/:ord_fecha_hora",
   statisticControl.allOrdersPerDate
 );
 router.get(
-  "/countOrdersPerTable/:mes_id",
+  "/countOrdersPerTable/:mes_id/:fecha",
   statisticControl.countOrdersPerTable
 );
 router.get(
-  "/countOrdersPerEmployee/:mro_id",
+  "/countOrdersPerEmployee/:mro_id/:fecha",
   statisticControl.countOrdersPerEmployee
 );
 router.get("/countSalesPerDate/:fecha", statisticControl.countSalesPerDate);
+router.get("/allTables/", statisticControl.allTables);
+router.get("/allEmployees/", statisticControl.allEmployees);
 
 module.exports = router;
