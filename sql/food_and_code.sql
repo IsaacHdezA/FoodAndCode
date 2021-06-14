@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS pago(
 CREATE TABLE IF NOT EXISTS comida(
     com_id TINYINT UNSIGNED AUTO_INCREMENT,
     com_cat_id TINYINT UNSIGNED NOT NULL,
-    com_nombre VARCHAR(20) NOT NULL,
+    com_nombre VARCHAR(50) NOT NULL,
     com_precio DECIMAL(9,2) NOT NULL,
     com_descripcion TEXT NULL,
     com_estado CHAR(1) NOT NULL DEFAULT 'a',
