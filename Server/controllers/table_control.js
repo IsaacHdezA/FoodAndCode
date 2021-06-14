@@ -22,5 +22,32 @@ tableControl.filledSpacesTables = (request, result) =>
       : result.status(200).send(rows)
   );
 
+  tableControl.readFood = (request, result) =>
+  tableModel.readFood([], (error, rows) =>
+    error
+      ? result.status(500).send({ message: error })
+      : result.status(200).send(rows)
+  );
+
+  tableControl.addSuborder = (request, result) =>
+  tableModel.addSuborder([], (error, rows) =>
+    error
+      ? result.status(500).send({ message: error })
+      : result.status(200).send(rows)
+  );
+
+  tableControl.deleteSuborder = (request, result) =>
+  tableModel.deleteSuborder([], (error, rows) =>
+    error
+      ? result.status(500).send({ message: error })
+      : result.status(200).send(rows)
+  );
+
+  tableControl.ordenTable = (request, result) =>
+  tableModel.ordenTable([], (error, rows) =>
+    error
+      ? result.status(500).send({ message: error })
+      : result.status(200).send(rows)
+  );
 
 module.exports = tableControl;
