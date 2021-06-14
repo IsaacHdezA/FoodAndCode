@@ -2,7 +2,6 @@
   <v-container>
     <h1>Mesas</h1>
     <v-container>
-      {{ orden_correct[0]["value"] }}
       <v-spacer></v-spacer>
 
       <!-- Primer renglón mesas -->
@@ -389,7 +388,7 @@
                 </v-toolbar>
               </template>
               <template v-slot:[`item.actions`]="{ item }">
-                <v-icon @click="eliminar_Suborden(item)" small>
+                <v-icon @click="eliminarSuborden(item)" small>
                   fas fa-trash
                 </v-icon>
               </template>
@@ -583,7 +582,11 @@ export default {
     },
 
     async eliminarSuborden(item) {
-      await this.axios("table/deleteSuborder", item.sub_id);
+      console.log(item.sub_id);
+      const data = {
+        sub_id: item.sub_id
+      };
+      await this.axios.post("table/deleteSuborder", data);
     },
   },
 

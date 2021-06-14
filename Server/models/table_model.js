@@ -39,7 +39,7 @@ table.readFood = (data, callback) =>
 
 table.allSuborders = (data, callback) =>
   connection.query(
-    "SELECT DISTINCT m.mes_id, s.sub_asiento, c.com_nombre, s.sub_cant, (c.com_precio*s.sub_cant) AS costo " +
+    "SELECT DISTINCT m.mes_id, s.sub_id, s.sub_asiento, c.com_nombre, s.sub_cant, (c.com_precio*s.sub_cant) AS costo " +
       "FROM mesa AS m " +
       "LEFT JOIN (SELECT o.ord_id, m.mes_id " +
       "FROM orden AS o, mesa AS m " +

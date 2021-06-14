@@ -54,12 +54,22 @@ tableControl.addSuborder = (request, result) => {
   } else result.status(401).send({ message: "Peticion incorrecta" }); // VALIDACION DE DATOS
 };
 
-tableControl.deleteSuborder = (request, result) =>
-  tableModel.deleteSuborder([], (error, rows) =>
-    error
-      ? result.status(500).send({ message: error })
-      : result.status(200).send(rows)
-  );
+tableControl.deleteSuborder = (request, result) => {
+  const body = request.body;
+  console.log(body.sub_id);
+  if (body.sub_id) { // VALIDACIÓN DE DATOS
+    tableModel.deleteSuborder([body.sub_id],
+      (error, rows) => {
+        if (error) result.status(500).send({ message: error });
+        else {
+          if (rows.affectedRows > 0)
+            result.status(202).send({ message: "Comida eliminada" });
+          else result.status(500).send({ message: "No se elimino la comida" });
+        }
+      }
+    );
+  } else result.status(401).send({ message: "Peticion incorrecta" }); // VALIDACION DE DATOS
+}
 
 tableControl.ordenTable = (request, result) =>
   tableModel.ordenTable([], (error, rows) =>
