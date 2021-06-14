@@ -577,12 +577,14 @@ export default {
     async readFood() {
       const apiData = await this.axios.get("/food/all_foods");
 
-      apiData.data.forEach((comida) =>
-        this.comidas.push({
-          text: comida.com_nombre,
-          value: comida.com_id,
-        })
-      );
+      apiData.data.forEach((comida) => {
+        if (comida.com_estado == 'a') {
+          this.comidas.push({
+            text: comida.com_nombre,
+            value: comida.com_id,
+          });
+        }
+      });
     },
 
     async agregar_suborden() {
