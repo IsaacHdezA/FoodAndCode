@@ -486,8 +486,6 @@ export default {
         { text: "Costo", value: "sub_precio" },
         { text: "Acciones", value: "actions" },
       ],
-
-      asientos: [],
       asientosTotales: [],
       posicion: "0",
       nueva_suborden: {
@@ -530,15 +528,8 @@ export default {
       );
     },
 
-    async getSeats(mes_id) {
-      const apiData = await this.axios.get(
-        "table/getSeats/" + mes_id.toString()
-      );
-
-      console.log(apiData.data);
-    },
-
     async getSpacesTables() {
+      this.spaces = [];
       const apiData = await this.axios.get("table/filledSpacesTables/");
 
       apiData.data.forEach((space) =>
@@ -587,7 +578,7 @@ export default {
     async agregar_suborden() {
       await this.axios.post("table/addSuborder/", this.nueva_suborden);
       this.new_dialog = false;
-      this.getSuborders(this.actualTable);
+      this.getSuborders(this.actualTable, this.actualOrder);
       this.getSpacesTables();
       this.nueva_suborden = {};
     },
@@ -614,7 +605,6 @@ export default {
           value: orden_c.ord_id,
         })
       );
-      // console.log(this.orden_correct);
     },
 
     async eliminarSuborden(item) {
@@ -622,7 +612,8 @@ export default {
         sub_id: item.sub_id,
       };
       await this.axios.post("table/deleteSuborder", data);
-      this.getSuborders(this.actualTable);
+      this.getSuborders(this.actualTable, this.actualOrder);
+      this.getSpacesTables();
     },
   },
 

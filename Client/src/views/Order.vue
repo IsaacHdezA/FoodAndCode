@@ -96,7 +96,7 @@
                     <v-toolbar-title> Mesa {{ order.mes_id }} </v-toolbar-title>
                   </v-toolbar>
                   <v-spacer></v-spacer>
-                  <v-btn icon color="white">
+                  <v-btn icon color="white" @click="openSubOrderDialog(order)">
                     <v-icon>fas fa-eye</v-icon>
                   </v-btn>
 
@@ -208,6 +208,94 @@
             </v-btn>
             <v-btn color="red darken-1" text @click="deleteOrder()">
               Eliminar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog
+        class="toolbar-subtitle"
+        v-model="subOrdersDialog"
+        max-width="1000"
+      >
+        <v-card>
+          <v-toolbar dark class="toolbar-title" color="primary">
+            <v-toolbar-title> Mesa {{ this.order.mes_id }} </v-toolbar-title>
+          </v-toolbar>
+          <v-data-table
+            class="container-inside"
+            :headers="headersSubOrdersDialog"
+            :items="subOrdersForDialog"
+          >
+            <template v-slot:[`item.actions`]="{ item }">
+              <v-icon @click="eliminarSuborden(item)" small>
+                fas fa-trash
+              </v-icon>
+            </template>
+          </v-data-table>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary darken-1" text @click="cancelarSuborders()">
+              Cerrar
+            </v-btn>
+            <v-btn
+              color="green darken-1"
+              text
+              @click="newSubOrderDialog = true"
+            >
+              Agregar Suborden
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog
+        class="toolbar-subtitle"
+        v-model="newSubOrderDialog"
+        max-width="500"
+      >
+        <v-card>
+          <v-toolbar dark class="toolbar-title" color="primary">
+            <v-toolbar-title> Nuevo pedido </v-toolbar-title>
+          </v-toolbar>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col>
+                  <v-select
+                    :items="asientosTotales"
+                    label="Asiento"
+                    v-model="newSubOrder.sub_asiento"
+                  >
+                  </v-select>
+                </v-col>
+                <v-col>
+                  <v-select
+                    :items="comidas"
+                    label="Comida"
+                    v-model="newSubOrder.sub_com_id"
+                  >
+                  </v-select>
+                </v-col>
+                <v-col>
+                  <v-text-field
+                    v-model="newSubOrder.sub_cant"
+                    label="Cantidad"
+                    type="Number"
+                    min="1"
+                  >
+                  </v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary darken-1" text @click="cancelarAddSub()">
+              Cancelar
+            </v-btn>
+            <v-btn color="green darken-1" text @click="agregar_suborden()">
+              Agregar
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -409,11 +497,34 @@ export default {
       mro_id: "",
       mes_id: "",
     },
+
     cDeleteDialog: false,
     alertNewOrder: false,
     alertEmptyNewOrder: false,
     loader: null,
     loadingAddOrder: false,
+
+    // SUBORDERS
+    headersSubOrdersDialog: [
+      { text: "Asiento", value: "sub_asiento" },
+      { text: "Comida", value: "com_nombre" },
+      { text: "Cantidad", value: "sub_cant" },
+      { text: "Costo", value: "sub_precio" },
+      { text: "Acciones", value: "actions" },
+    ],
+
+    newSubOrder: {
+      sub_ord_id: "",
+      sub_com_id: "",
+      sub_asiento: "",
+      sub_cant: "",
+    },
+    comidas: [],
+    asientosTotales: [],
+    subOrdersForDialog: [],
+
+    subOrdersDialog: false,
+    newSubOrderDialog: false,
 
     // PAYMENTS
     headers: [
@@ -562,6 +673,74 @@ export default {
     openCDeleteDialog(order) {
       this.order = order;
       this.cDeleteDialog = true;
+    },
+
+    // SUBORDERS
+
+    async getSuborders(mes_id, ord_id) {
+      this.subOrdersDialog = true;
+      const apiData = await this.axios.get(
+        "table/allSuborders/" + mes_id.toString() + "/" + ord_id.toString()
+      );
+
+      if (mes_id === 1 || mes_id === 6 || mes_id === 11)
+        this.asientosTotales = [1, 2, 3, 4, 5, 6, 7, 8];
+      else this.asientosTotales = [1, 2, 3, 4];
+
+      this.subOrdersForDialog = apiData.data;
+    },
+
+    async readFood() {
+      const apiData = await this.axios.get("/food/all_foods");
+
+      apiData.data.forEach((comida) =>
+        this.comidas.push({
+          text: comida.com_nombre,
+          value: comida.com_id,
+        })
+      );
+    },
+
+    openSubOrderDialog(order) {
+      this.order = order;
+      this.subOrdersDialog = true;
+      this.readFood();
+      this.getSuborders(order.mes_id, order.ord_id);
+    },
+
+    cancelarAddSub() {
+      this.newSubOrderDialog = false;
+    },
+
+    cancelarSuborders() {
+      this.newSubOrder = {
+        sub_ord_id: "",
+        sub_com_id: "",
+        sub_asiento: "",
+        sub_cant: "",
+      };
+      this.subOrdersDialog = false;
+    },
+
+    async agregar_suborden() {
+      this.newSubOrder.sub_ord_id = this.order.ord_id;
+      await this.axios.post("table/addSuborder/", this.newSubOrder);
+      this.getSuborders(this.order.mes_id, this.order.ord_id);
+      this.newSubOrder = {
+        sub_ord_id: "",
+        sub_com_id: "",
+        sub_asiento: "",
+        sub_cant: "",
+      };
+      this.newSubOrderDialog = false;
+    },
+
+    async eliminarSuborden(item) {
+      const data = {
+        sub_id: item.sub_id,
+      };
+      await this.axios.post("table/deleteSuborder", data);
+      this.getSuborders(this.order.mes_id, this.order.ord_id);
     },
 
     // PAYMENTS
