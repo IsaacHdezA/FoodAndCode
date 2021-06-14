@@ -235,7 +235,12 @@
           <v-container>
             <v-row>
               <v-col cols="8">
-                <v-card height="100%" elevation="0" class="pa-3">
+                <v-card
+                  height="100%"
+                  elevation="0"
+                  class="pa-3"
+                  style="background: transparent"
+                >
                   <v-toolbar dense color="primary" dark>
                     <v-toolbar-title class="toolbar-title">
                       Pedidos de la mesa {{ this.idTable }}
