@@ -31,7 +31,7 @@ statistic.allOrdersPerTable = (data, callback) =>
 
 statistic.allOrdersPerEmployee = (data, callback) =>
   connection.query(
-    "SELECT o.ord_id, t.mes_id, e.mro_nombre, DATE_FORMAT(o.ord_fecha_hora, '%H:%i') AS ord_fecha_hora, o.ord_estado FROM orden o INNER JOIN mesero e ON(e.mro_id = o.ord_mro_id) INNER JOIN mesa t ON(t.mes_id = o.ord_mes_id) WHERE o.ord_mro_id = ? AND DATE_FORMAT(o.ord_fecha_hora, '%Y-%m-%d') = ? ORDER BY ord_fecha_hora DESC",
+    "SELECT o.ord_id, t.mes_id, e.mro_nombre, p.pag_propina, DATE_FORMAT(o.ord_fecha_hora, '%H:%i') AS ord_fecha_hora, o.ord_estado FROM orden o INNER JOIN mesero e ON(e.mro_id = o.ord_mro_id) INNER JOIN mesa t ON(t.mes_id = o.ord_mes_id) INNER JOIN pago p ON(p.pag_ord_id = o.ord_id) WHERE o.ord_mro_id = ? AND DATE_FORMAT(o.ord_fecha_hora, '%Y-%m-%d') = ? ORDER BY ord_fecha_hora DESC",
     data,
     callback
   );
