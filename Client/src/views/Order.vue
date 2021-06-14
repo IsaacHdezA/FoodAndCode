@@ -91,18 +91,18 @@
               lg="4"
             >
               <v-card dense color="primary">
-                <v-card-title dark class="subheading font-weight-bold">
-                  Mesa {{ order.mes_id }}
+                <v-card-title class="subheading font-weight-bold">
+                  <v-toolbar dark flat color="primary">
+                    <v-toolbar-title> Mesa {{ order.mes_id }} </v-toolbar-title>
+                  </v-toolbar>
                   <v-spacer></v-spacer>
-                  <v-btn icon color="black">
+                  <v-btn icon color="white">
                     <v-icon>fas fa-eye</v-icon>
                   </v-btn>
 
-                  <!-- Abrir el diálogo de pago -->
-                  <v-btn icon color="black" @click="openPaymentDialog(order)">
+                  <v-btn icon color="white" @click="openPaymentDialog(order)">
                     <v-icon size="21">fas fa-money-bill-alt</v-icon>
                   </v-btn>
-                  <!-- Abrir el diálogo de pago -->
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-list dense class="container-inside" color="grey lighten-4">
@@ -155,7 +155,9 @@
             >
               <v-card dense color="secondary">
                 <v-card-title class="subheading font-weight-bold">
-                  Mesa {{ order.mes_id }}
+                  <v-toolbar flat color="secondary">
+                    <v-toolbar-title> Mesa {{ order.mes_id }} </v-toolbar-title>
+                  </v-toolbar>
                   <v-spacer></v-spacer>
                   <v-btn icon color="black">
                     <v-icon>fas fa-eye</v-icon>
@@ -212,8 +214,6 @@
       </v-dialog>
 
       <!-- PAYMENT -->
-
-      <!-- Diálogo de pago -->
       <v-dialog
         v-model="pDialog"
         fullscreen
@@ -234,7 +234,6 @@
 
           <v-container>
             <v-row>
-              <!-- Tabla suborden -->
               <v-col cols="8">
                 <v-card height="100%" elevation="0" class="pa-3">
                   <v-toolbar dense color="primary" dark>
@@ -243,7 +242,6 @@
                     </v-toolbar-title>
                     <v-spacer></v-spacer>
                   </v-toolbar>
-
                   <v-data-table
                     :headers="headers"
                     :items="subOrders"
@@ -251,7 +249,6 @@
                     class="container-inside"
                   >
                   </v-data-table>
-                  <!-- Subtotal y pago -->
                   <v-container class="pt-3">
                     <v-row no-gutters>
                       <v-col cols="8">
@@ -292,12 +289,8 @@
                       </v-col>
                     </v-row>
                   </v-container>
-                  <!-- Subtotal y pago -->
                 </v-card>
               </v-col>
-              <!-- Tabla suborden -->
-
-              <!-- Ticket -->
               <v-col>
                 <div class="container-ticket" id="ticket">
                   <div class="header-ticket">
@@ -343,14 +336,10 @@
                   </div>
                 </div>
               </v-col>
-              <!-- Ticket -->
             </v-row>
           </v-container>
         </v-card>
       </v-dialog>
-      <!-- Diseño diálogo de pago -->
-
-      <!-- Diseño diálogo confirmación de pago -->
       <v-dialog v-model="cPaymentDialog" max-width="300">
         <v-card>
           <v-card-title class="text-h5">
@@ -359,7 +348,6 @@
           <v-card-text>
             Selecciona un método de pago
           </v-card-text>
-
           <v-form>
             <v-text-field
               v-model="newPayment.pag_propina"
@@ -371,7 +359,6 @@
               class="pl-3 pr-3"
               required
             ></v-text-field>
-
             <v-select
               v-model="newPayment.pag_tipo_pago"
               flat
@@ -383,7 +370,6 @@
             >
             </v-select>
           </v-form>
-
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="primary darken-1" text @click="cancelPayment()">
@@ -395,7 +381,6 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <!-- Diseño diálogo confirmación de pago -->
     </template>
   </v-container>
 </template>
