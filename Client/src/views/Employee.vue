@@ -486,7 +486,7 @@ export default {
       this.empleado_actualizar.mro_sueldo = empleado.mro_sueldo;
       this.empleado_actualizar.mro_id = empleado.mro_id;
       this.empleado_actualizar.mro_foto = empleado.mro_foto
-        .split(":3000/")
+        .split(":3000/http://localhost:3000/")
         .pop();
       if (this.empleado_actualizar.mro_estado == "a") {
         this.editar_activo = true;
