@@ -220,7 +220,7 @@
         hide-overlay
         transition="dialog-bottom-transition"
       >
-        <v-card>
+        <v-card class="container-content-payment">
           <v-toolbar dark color="primary" class="toolbar-title">
             <v-btn icon dark9 @click="pDialog = false">
               <v-icon>fas fa-times</v-icon>
