@@ -202,7 +202,7 @@
       <v-dialog v-model="dialog" hide-overlay persistent width="300">
         <v-card color="primary" dark>
           <v-card-text>
-            Creando mesero porfavor espere
+            Cargando...
             <v-progress-linear
               indeterminate
               color="white"
@@ -360,6 +360,9 @@
           </a>
           <p class="font-weight-black">
             {{ empleado_selected.mro_telefono }}
+          </p>
+          <p>
+            {{ "$ " + empleado_selected.mro_sueldo }}
           </p>
           <p>
             <v-switch
