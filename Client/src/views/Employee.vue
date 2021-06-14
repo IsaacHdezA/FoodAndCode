@@ -115,7 +115,7 @@
                 <v-row justify="center">
                   <v-col cols="10">
                     <v-btn
-                      @click="submit()"
+                      v-on:click="submit()"
                       class="px-30 font-weight-black"
                       color="accent"
                       rounded
@@ -131,11 +131,7 @@
     </template>
     <template>
       <v-container fluid>
-        <v-data-iterator
-          :items="meseros"
-          :item-key="this.meseros.mro_id"
-          hide-default-footer
-        >
+        <v-data-iterator :items="meseros" item-key="mro_id" hide-default-footer>
           <template v-slot:header>
             <v-toolbar dark color="primary" class="mb-1">
               <v-select
@@ -145,7 +141,7 @@
                 hide-details
                 :items="keys"
                 @change="cambio"
-                prepend-inner-icon="fas fa-filter"
+                prepend-inner-icon="mdi-magnify"
               ></v-select>
             </v-toolbar>
           </template>
@@ -164,7 +160,7 @@
                     <v-spacer></v-spacer>
                     <v-btn
                       class="ma-1 "
-                      @click="lanzarEditable(item)"
+                      v-on:click="lanzarEditable(item)"
                       white
                       icon
                       color="dark"
@@ -181,9 +177,9 @@
                         class="hgcursor"
                         align-self="center"
                         size="200"
-                        @click="moreinformation(item)"
+                        v-on:click="moreinformation(item)"
                       >
-                        <img :src="item.mro_foto" />
+                        <img v-bind:src="item.mro_foto" />
                       </v-avatar>
                     </p>
                     <h4>{{ item.mro_nombre }}</h4>
@@ -333,7 +329,7 @@
           <v-btn
             depressed
             class="l-14"
-            @click="actualizarEmpleado()"
+            v-on:click="actualizarEmpleado()"
             color="primary"
           >
             Guardar informacion
@@ -442,8 +438,7 @@ export default {
       this.empleado_selected.mro_direccion = empleado.mro_domicilio;
       this.empleado_selected.mro_sueldo = empleado.mro_sueldo;
       this.empleado_selected.mro_id = empleado.mro_id;
-      this.empleado_selected.mro_foto =
-        "http://localhost:3000/" + empleado.mro_foto;
+      this.empleado_selected.mro_foto = empleado.mro_foto;
       if (this.empleado_selected.mro_estado == "a") {
         this.activo_inactivo = true;
       } else {
@@ -554,7 +549,7 @@ export default {
       }
     },
 
-    async getMeseros() {
+    async showMeseros() {
       let apiData;
       if (this.filtro == "Todos") {
         apiData = await this.axios.get("/mesero/seleccionarTodos");
