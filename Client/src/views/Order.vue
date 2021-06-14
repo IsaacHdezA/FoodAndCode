@@ -4,7 +4,7 @@
     <br />
     <template>
       <v-card color="grey lighten-4">
-        <v-toolbar flat dense color="primary">
+        <v-toolbar dark flat dense color="primary">
           <v-toolbar-title>Agregar orden</v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
@@ -76,7 +76,7 @@
     <template>
       <v-data-iterator :items="activeOrders" hide-default-footer>
         <template v-slot:header>
-          <v-toolbar class="mb-2" color="primary">
+          <v-toolbar dark class="mb-2" color="primary">
             <v-toolbar-title>Órdenes activas</v-toolbar-title>
           </v-toolbar>
         </template>
@@ -91,7 +91,7 @@
               lg="4"
             >
               <v-card dense color="primary">
-                <v-card-title class="subheading font-weight-bold">
+                <v-card-title dark class="subheading font-weight-bold">
                   Mesa {{ order.mes_id }}
                   <v-spacer></v-spacer>
                   <v-btn icon color="black">
@@ -340,7 +340,7 @@
                     height="100%"
                     @click="openCPaymentDialog()"
                   >
-                    Imprimir ticket y pagar
+                    Pagar e imprimir ticket
                   </v-btn>
                 </v-card>
               </v-col>

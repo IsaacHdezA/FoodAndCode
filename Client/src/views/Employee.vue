@@ -131,7 +131,20 @@
     </template>
     <template>
       <v-container fluid>
-        <v-data-iterator :items="meseros" item-key="mro_id" :items-per-page="4">
+        <v-data-iterator :items="meseros" item-key="mro_id" hide-default-footer>
+          <template v-slot:header>
+            <v-toolbar dark color="primary" class="mb-1">
+              <v-select
+                v-model="filtro"
+                flat
+                solo-inverted
+                hide-details
+                :items="keys"
+                @change="cambio"
+                prepend-inner-icon="mdi-magnify"
+              ></v-select>
+            </v-toolbar>
+          </template>
           <template>
             <v-row>
               <v-col
@@ -354,7 +367,7 @@
               label="Activo"
               color="success"
               hide-details
-              @click="cambiarEstado()"
+              @click="cambio"
             >
             </v-switch>
           </p>
@@ -397,7 +410,7 @@ export default {
       mro_direccion: "",
       mro_correo: "",
       mro_telefono: "",
-      file: [],
+      file: undefined,
       mro_foto: "",
       mro_sueldo: 0.0,
     },
@@ -406,12 +419,17 @@ export default {
     activo_inactivo: true,
     dialogo_editar: false,
     editar_activo: true,
+    filtro: "Todos",
+    keys: ["Todos", "Activos", "Inactivos"],
   }),
 
   created() {
     this.getMeseros();
   },
   methods: {
+    cambio(event) {
+      this.getMeseros();
+    },
     moreinformation(empleado) {
       this.empleado_selected.mro_nombre = empleado.mro_nombre;
       this.empleado_selected.mro_telefono = empleado.mro_telefono;
@@ -536,15 +554,35 @@ export default {
       }
     },
     getMeseros() {
-      this.axios
-        .get("/mesero/seleccionarTodos")
-        .then((response) => {
-          this.meseros = response.data;
-          console.log(this.meseros);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+      if (this.filtro == "Todos") {
+        this.axios
+          .get("/mesero/seleccionarTodos")
+          .then((response) => {
+            this.meseros = response.data;
+            console.log(this.meseros);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      } else if (this.filtro == "Activos") {
+        this.axios
+          .get("/mesero/activos")
+          .then((response) => {
+            this.meseros = response.data;
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      } else {
+        this.axios
+          .get("/mesero/inactivos")
+          .then((response) => {
+            this.meseros = response.data;
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      }
     },
 
     async submit() {
@@ -574,10 +612,5 @@ export default {
     },
   },
   components: {},
-  watch: {
-    dialog(val) {
-      return val;
-    },
-  },
 };
 </script>
