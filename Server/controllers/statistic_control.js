@@ -25,6 +25,24 @@ statisticControl.allOrdersPerDate = (request, result) => {
   });
 };
 
+statisticControl.allOrdersPerTable = (request, result) => {
+  const mes_id = request.params.mes_id,
+    fecha = request.params.fecha;
+  statisticModel.allOrdersPerTable([mes_id, fecha], (error, rows) => {
+    if (error) result.status(500).send({ message: error });
+    else result.status(200).send(rows);
+  });
+};
+
+statisticControl.allOrdersPerEmployee = (request, result) => {
+  const mro_id = request.params.mro_id,
+    fecha = request.params.fecha;
+  statisticModel.allOrdersPerEmployee([mro_id, fecha], (error, rows) => {
+    if (error) result.status(500).send({ message: error });
+    else result.status(200).send(rows);
+  });
+};
+
 statisticControl.countOrdersPerTable = (request, result) => {
   const mes_id = request.params.mes_id,
     fecha = request.params.fecha;
