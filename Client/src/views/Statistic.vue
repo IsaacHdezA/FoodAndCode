@@ -428,7 +428,7 @@
         <v-data-table
           :headers="headersOrdersEmployee"
           :items="ordersPerEmployee"
-          :sort-by="['mes_id', 'ord_fecha_hora', 'ord_estado']"
+          :sort-by="['mes_id', 'ord_fecha_hora', 'ord_estado', 'pag_propina']"
           :sort-desc="[false, true]"
           class="container-inside"
         ></v-data-table>
