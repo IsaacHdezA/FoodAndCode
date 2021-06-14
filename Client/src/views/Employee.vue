@@ -24,9 +24,10 @@
                     background-color="white"
                     label="Nombre"
                     solo
-                    outlined
                     dense
                     required
+                    flat
+                    hide-details
                   ></v-text-field>
                 </v-col>
                 <v-col cols="5">
@@ -36,7 +37,7 @@
                     background-color="white"
                     label="Direccion"
                     solo
-                    outlined
+                    flat
                     dense
                     required
                   ></v-text-field>
@@ -50,7 +51,7 @@
                     background-color="white"
                     label="Correo"
                     solo
-                    outlined
+                    flat
                     dense
                     required
                   ></v-text-field>
@@ -62,8 +63,8 @@
                     background-color="white"
                     label="Telefono"
                     solo
-                    outlined
                     dense
+                    flat
                     required
                   ></v-text-field>
                 </v-col>
@@ -89,7 +90,7 @@
                     background-color="white"
                     label="0.00"
                     solo
-                    outlined
+                    flat
                     dense
                     required
                   ></v-text-field>
@@ -101,9 +102,10 @@
                     filled
                     v-model="nuevo_mesero.mro_foto"
                     prepend-icon="fas fa-camera"
+                    background-color="white"
                     dense
                     solo
-                    outlined
+                    flat
                   ></v-file-input>
                 </v-col>
               </v-row>
