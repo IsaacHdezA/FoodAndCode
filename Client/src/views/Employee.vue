@@ -478,7 +478,6 @@ export default {
           this.dialogmore = false;
         })
         .catch((e) => {
-          console.log(e);
           this.dialogmore = false;
         });
     },
@@ -507,7 +506,6 @@ export default {
       }
 
       if (this.empleado_actualizar.file != undefined) {
-        console.log("hola");
         let form1 = new FormData();
         form1.append("mro_nombre", this.empleado_actualizar.mro_nombre);
         form1.append("mro_domicilio", this.empleado_actualizar.mro_direccion);
@@ -523,13 +521,11 @@ export default {
             headers: {"Content-Type": "multipart/form-data"},
           })
           .then((response) => {
-            console.log(response.data);
             this.getMeseros();
             this.dialog = false;
             this.dialogo_editar = false;
           })
           .catch((e) => {
-            console.log(e);
             this.dialog = false;
             this.dialogo_editar = false;
           });
@@ -562,29 +558,22 @@ export default {
           .get("/mesero/seleccionarTodos")
           .then((response) => {
             this.meseros = response.data;
-            console.log(this.meseros);
           })
-          .catch((e) => {
-            console.log(e);
-          });
+          .catch((e) => {});
       } else if (this.filtro == "Activos") {
         this.axios
           .get("/mesero/activos")
           .then((response) => {
             this.meseros = response.data;
           })
-          .catch((e) => {
-            console.log(e);
-          });
+          .catch((e) => {});
       } else {
         this.axios
           .get("/mesero/inactivos")
           .then((response) => {
             this.meseros = response.data;
           })
-          .catch((e) => {
-            console.log(e);
-          });
+          .catch((e) => {});
       }
     },
 
@@ -604,7 +593,6 @@ export default {
           headers: {"Content-Type": "multipart/form-data"},
         })
         .then((response) => {
-          console.log(response.data);
           this.getMeseros();
           this.dialog = false;
         })
