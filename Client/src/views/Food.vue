@@ -27,7 +27,7 @@
                         background-color="white"
                         label="Nombre"
                         flat
-                        solo-inverted
+                        solo
                         required
                       ></v-text-field>
                     </v-col>
@@ -46,7 +46,7 @@
                         background-color="white"
                         required
                         flat
-                        solo-inverted
+                        solo
                       ></v-select>
                     </v-col>
                     <v-col cols="3" class="text-right mt-n6">
@@ -61,7 +61,7 @@
                         label="Precio de la comida"
                         background-color="white"
                         flat
-                        solo-inverted
+                        solo
                         required
                       ></v-text-field>
                     </v-col>
@@ -128,7 +128,7 @@
             multiple
             class="mb-n6 mt-1"
             flat
-            solo-inverted
+            solo
             background-color="third"
           >
             <template v-slot:selection="{ item, index }">
@@ -146,7 +146,7 @@
             :items="show"
             label="Filtrar por estado"
             flat
-            solo-inverted
+            solo
             class="mb-n6 mx-8 mt-1"
             background-color="third"
           >
@@ -158,7 +158,7 @@
             label="Buscar"
             single-line
             flat
-            solo-inverted
+            solo
             hide-details
             background-color="third"
           ></v-text-field>
