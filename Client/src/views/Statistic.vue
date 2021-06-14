@@ -245,6 +245,11 @@
                 El número de órdenes del mesero fue de:
                 <b>{{ this.countOrdersPerEmployee }}</b>
               </v-col>
+              <v-col class="shrink">
+                <v-btn color="info" outlined>
+                  Ver órdenes
+                </v-btn>
+              </v-col>
             </v-row>
           </v-alert>
           <v-alert

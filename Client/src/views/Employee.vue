@@ -115,7 +115,7 @@
                 <v-row justify="center">
                   <v-col cols="10">
                     <v-btn
-                      v-on:click="submit()"
+                      @click="submit()"
                       class="px-30 font-weight-black"
                       color="accent"
                       rounded
@@ -131,7 +131,11 @@
     </template>
     <template>
       <v-container fluid>
-        <v-data-iterator :items="meseros" item-key="mro_id" hide-default-footer>
+        <v-data-iterator
+          :items="meseros"
+          :item-key="this.meseros.mro_id"
+          hide-default-footer
+        >
           <template v-slot:header>
             <v-toolbar dark color="primary" class="mb-1">
               <v-select
@@ -141,7 +145,7 @@
                 hide-details
                 :items="keys"
                 @change="cambio"
-                prepend-inner-icon="mdi-magnify"
+                prepend-inner-icon="fas fa-filter"
               ></v-select>
             </v-toolbar>
           </template>
@@ -160,7 +164,7 @@
                     <v-spacer></v-spacer>
                     <v-btn
                       class="ma-1 "
-                      v-on:click="lanzarEditable(item)"
+                      @click="lanzarEditable(item)"
                       white
                       icon
                       color="dark"
@@ -177,12 +181,9 @@
                         class="hgcursor"
                         align-self="center"
                         size="200"
-                        v-on:click="moreinformation(item)"
+                        @click="moreinformation(item)"
                       >
-                        <img
-                          v-bind:src="'http://localhost:3000/' + item.mro_foto"
-                          onerror="http://localhost:3000/no_user.png"
-                        />
+                        <img :src="item.mro_foto" />
                       </v-avatar>
                     </p>
                     <h4>{{ item.mro_nombre }}</h4>
@@ -332,7 +333,7 @@
           <v-btn
             depressed
             class="l-14"
-            v-on:click="actualizarEmpleado()"
+            @click="actualizarEmpleado()"
             color="primary"
           >
             Guardar informacion
@@ -518,7 +519,7 @@ export default {
         form1.append("mro_id", this.empleado_actualizar.mro_id);
         await this.axios
           .put("/mesero/actualizar", form1, {
-            headers: {"Content-Type": "multipart/form-data"},
+            headers: { "Content-Type": "multipart/form-data" },
           })
           .then((response) => {
             this.getMeseros();
@@ -552,29 +553,25 @@ export default {
           });
       }
     },
-    getMeseros() {
+
+    async getMeseros() {
+      let apiData;
       if (this.filtro == "Todos") {
-        this.axios
-          .get("/mesero/seleccionarTodos")
-          .then((response) => {
-            this.meseros = response.data;
-          })
-          .catch((e) => {});
+        apiData = await this.axios.get("/mesero/seleccionarTodos");
+        this.meseros = apiData.data;
       } else if (this.filtro == "Activos") {
-        this.axios
-          .get("/mesero/activos")
-          .then((response) => {
-            this.meseros = response.data;
-          })
-          .catch((e) => {});
+        apiData = await this.axios.get("/mesero/activos");
+        this.meseros = apiData.data;
       } else {
-        this.axios
-          .get("/mesero/inactivos")
-          .then((response) => {
-            this.meseros = response.data;
-          })
-          .catch((e) => {});
+        apiData = await this.axios.get("/mesero/inactivos");
+        this.meseros = apiData.data;
       }
+
+      for (let i = 0; i < apiData.data.length; i++)
+        if (apiData.data[i].mro_foto !== "")
+          apiData.data[i].mro_foto =
+            "http://localhost:3000/" + apiData.data[i].mro_foto;
+        else apiData.data[i].mro_foto = "localhost:3000/no_user.png";
     },
 
     async submit() {
@@ -590,7 +587,7 @@ export default {
 
       await this.axios
         .post("/mesero/nuevo", form, {
-          headers: {"Content-Type": "multipart/form-data"},
+          headers: { "Content-Type": "multipart/form-data" },
         })
         .then((response) => {
           this.getMeseros();
