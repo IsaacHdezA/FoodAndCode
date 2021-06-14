@@ -470,7 +470,6 @@ export default {
       { text: "Mesa", align: "center", value: "mes_id" },
       { text: "Hora", align: "center", value: "ord_fecha_hora" },
       { text: "Estado", align: "center", value: "ord_estado" },
-      { text: "Propina", align: "center", value: "pag_propina" },
     ],
     months: [
       "Ene",
