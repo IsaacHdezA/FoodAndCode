@@ -516,6 +516,16 @@ export default {
     this.orden_correcta();
   },
 
+  watch: {
+    sub_dialog(isOpen) {
+      if (!isOpen) this.cancelarSuborders();
+    },
+
+    new_dialog(isOpen) {
+      if (!isOpen) this.cancelarAddSub();
+    },
+  },
+
   methods: {
     async getActiveTables() {
       const apiData = await this.axios.get("table/allActiveTables/");

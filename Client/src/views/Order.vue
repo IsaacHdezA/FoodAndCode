@@ -575,6 +575,15 @@ export default {
       if (!isOpen) this.order = [];
     },
 
+    // SUBORDERS
+    subOrdersDialog(isOpen) {
+      if (!isOpen) this.cancelarSuborders();
+    },
+
+    newSubOrderDialog(isOpen) {
+      if (!isOpen) this.cancelarAddSub();
+    },
+
     // PAYMENTS
     pDialog(isOpen) {
       if (!isOpen) {
