@@ -32,7 +32,7 @@ table.filledSpacesTables = (data, callback) =>
 
 table.allSuborders = (data, callback) =>
   connection.query(
-    "SELECT so.sub_asiento, f.com_nombre, so.sub_cant, (f.com_precio * so.sub_cant) AS sub_precio FROM suborden so INNER JOIN comida f ON(so.sub_com_id = f.com_id) INNER JOIN orden o ON(o.ord_id = so.sub_ord_id) INNER JOIN mesa t ON(t.mes_id = o.ord_mes_id) WHERE t.mes_id = ? ORDER BY so.sub_asiento",
+    "SELECT so.sub_id, so.sub_asiento, f.com_nombre, so.sub_cant, (f.com_precio * so.sub_cant) AS sub_precio FROM suborden so INNER JOIN comida f ON(so.sub_com_id = f.com_id) INNER JOIN orden o ON(o.ord_id = so.sub_ord_id) INNER JOIN mesa t ON(t.mes_id = o.ord_mes_id) WHERE t.mes_id = ? ORDER BY so.sub_asiento",
     data,
     callback
   );

@@ -13,9 +13,9 @@
             width="75%"
             :disabled="viewActivityTables(1, this.tables)"
             @click="
-              (sub_dialog = true),
-                getSuborders(1),
-                (nueva_suborden.sub_ord_id = orden_correct[0]['value'])
+              (sub_dialog = true), (actualTable = 1);
+              getSuborders(1),
+                (nueva_suborden.sub_ord_id = orden_correct[0]['value']);
             "
           >
             Mesa 1 <br />
@@ -38,6 +38,7 @@
                 :disabled="viewActivityTables(2, this.tables)"
                 @click="
                   (sub_dialog = true),
+                    (actualTable = '2'),
                     getSuborders(2),
                     (nueva_suborden.sub_ord_id = orden_correct[1]['value'])
                 "
@@ -59,9 +60,10 @@
                 width="75%"
                 :disabled="viewActivityTables(3, this.tables)"
                 @click="
+                  actualTable = '3';
                   getSuborders(3),
                     (sub_dialog = true),
-                    (nueva_suborden.sub_ord_id = orden_correct[2]['value'])
+                    (nueva_suborden.sub_ord_id = orden_correct[2]['value']);
                 "
               >
                 Mesa 3 <br />
@@ -84,6 +86,7 @@
                 :disabled="viewActivityTables(4, this.tables)"
                 @click="
                   (sub_dialog = true),
+                    (actualTable = '4'),
                     getSuborders(4),
                     (nueva_suborden.sub_ord_id = orden_correct[3]['value'])
                 "
@@ -106,6 +109,7 @@
                 :disabled="viewActivityTables(5, this.tables)"
                 @click="
                   (sub_dialog = true),
+                    (actualTable = '5'),
                     getSuborders(5),
                     (nueva_suborden.sub_ord_id = orden_correct[4]['value'])
                 "
@@ -130,9 +134,9 @@
             width="75%"
             :disabled="viewActivityTables(6, this.tables)"
             @click="
-              (sub_dialog = true),
-                getSuborders(6),
-                (nueva_suborden.sub_ord_id = orden_correct[5]['value'])
+              (sub_dialog = true), (actualTable = '6');
+              getSuborders(6),
+                (nueva_suborden.sub_ord_id = orden_correct[5]['value']);
             "
           >
             Mesa 6 <br />
@@ -158,6 +162,7 @@
                 :disabled="viewActivityTables(7, this.tables)"
                 @click="
                   (sub_dialog = true),
+                    (actualTable = '7'),
                     getSuborders(7),
                     (nueva_suborden.sub_ord_id = orden_correct[6]['value'])
                 "
@@ -179,8 +184,9 @@
                 width="200px"
                 :disabled="viewActivityTables(8, this.tables)"
                 @click="
+                  actualTable = '8';
                   getSuborders(8),
-                    (nueva_suborden.sub_ord_id = orden_correct[7]['value'])
+                    (nueva_suborden.sub_ord_id = orden_correct[7]['value']);
                 "
               >
                 Mesa 8 <br />
@@ -203,6 +209,7 @@
                 :disabled="viewActivityTables(9, this.tables)"
                 @click="
                   (sub_dialog = true),
+                    (actualTable = '9'),
                     getSuborders(9),
                     (nueva_suborden.sub_ord_id = orden_correct[8]['value'])
                 "
@@ -225,6 +232,7 @@
                 :disabled="viewActivityTables(10, this.tables)"
                 @click="
                   (sub_dialog = true),
+                    (actualTable = '10'),
                     getSuborders(10),
                     (nueva_suborden.sub_ord_id = orden_correct[9]['value'])
                 "
@@ -249,9 +257,9 @@
             width="75%"
             :disabled="viewActivityTables(11, this.tables)"
             @click="
-              (sub_dialog = true),
-                getSuborders(11),
-                (nueva_suborden.sub_ord_id = orden_correct[10]['value'])
+              (sub_dialog = true), (actualTable = '11');
+              getSuborders(11),
+                (nueva_suborden.sub_ord_id = orden_correct[10]['value']);
             "
           >
             Mesa 11 <br />
@@ -275,6 +283,7 @@
                 :disabled="viewActivityTables(12, this.tables)"
                 @click="
                   (sub_dialog = true),
+                    (actualTable = '12'),
                     getSuborders(12),
                     (nueva_suborden.sub_ord_id = orden_correct[11]['value'])
                 "
@@ -297,6 +306,7 @@
                 :disabled="viewActivityTables(13, this.tables)"
                 @click="
                   (sub_dialog = true),
+                    (actualTable = '13'),
                     getSuborders(13),
                     (nueva_suborden.sub_ord_id = orden_correct[12]['value'])
                 "
@@ -321,6 +331,7 @@
                 :disabled="viewActivityTables(14, this.tables)"
                 @click="
                   (sub_dialog = true),
+                    (actualTable = '14'),
                     getSuborders(14),
                     (nueva_suborden.sub_ord_id = orden_correct[13]['value'])
                 "
@@ -343,6 +354,7 @@
                 :disabled="viewActivityTables(15, this.tables)"
                 @click="
                   (sub_dialog = true),
+                    (actualTable = '15'),
                     getSuborders(15),
                     (nueva_suborden.sub_ord_id = orden_correct[14]['value'])
                 "
@@ -363,7 +375,7 @@
     <v-dialog class="toolbar-subtitle" v-model="sub_dialog" max-width="1000">
       <v-card>
         <v-toolbar dark class="toolbar-title" color="primary">
-          <v-toolbar-title> Mesa {{}} </v-toolbar-title>
+          <v-toolbar-title> Mesa {{ this.actualTable }} </v-toolbar-title>
         </v-toolbar>
         <v-data-table
           class="container-inside"
@@ -371,9 +383,6 @@
           :items="suborders"
         >
           <template v-slot:[`item.actions`]="{ item }">
-            <v-icon @click="" small>
-              fas fa-pencil-alt
-            </v-icon>
             <v-icon @click="eliminarSuborden(item)" small>
               fas fa-trash
             </v-icon>
@@ -381,7 +390,7 @@
         </v-data-table>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary darken-1" text @click="cancelar()">
+          <v-btn color="primary darken-1" text @click="cancelarSuborders()">
             Cerrar
           </v-btn>
           <v-btn color="green darken-1" text @click="new_dialog = true">
@@ -428,7 +437,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary darken-1" text @click="cancelar()">
+          <v-btn color="primary darken-1" text @click="cancelarAddSub()">
             Cancelar
           </v-btn>
           <v-btn color="green darken-1" text @click="agregar_suborden()">
@@ -468,6 +477,8 @@ export default {
         sub_cant: "",
       },
 
+      actualTable: "",
+
       tables: [],
       spaces: [],
       suborders: [],
@@ -475,7 +486,6 @@ export default {
       orden_correct: [],
 
       sub_dialog: false,
-      ad_dialog: false,
       new_dialog: false,
     };
   },
@@ -553,14 +563,17 @@ export default {
     async agregar_suborden() {
       await this.axios.post("table/addSuborder/", this.nueva_suborden);
       this.new_dialog = false;
+      this.getSuborders(actualTable);
       this.nueva_suborden = {};
     },
 
-    cancelar() {
-      this.nueva_suborden = {};
+    cancelarAddSub() {
       this.new_dialog = false;
+    },
+
+    cancelarSuborders() {
+      this.nueva_suborden = {};
       this.sub_dialog = false;
-      this.ad_dialog = false;
     },
 
     async orden_correcta() {
@@ -576,11 +589,11 @@ export default {
     },
 
     async eliminarSuborden(item) {
-      console.log(item.sub_id);
       const data = {
         sub_id: item.sub_id,
       };
       await this.axios.post("table/deleteSuborder", data);
+      this.getSuborders(this.actualTable);
     },
   },
 
