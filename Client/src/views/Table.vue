@@ -1,10 +1,9 @@
 <template>
   <v-container>
     <h1>Mesas </h1>
-    {{nueva_suborden}}
-    {{orden_correct['value']}}
     <v-container>
 
+      {{orden_correct[0]['value']}}
       <v-spacer></v-spacer>
       <v-row>
         <v-col cols="4">
