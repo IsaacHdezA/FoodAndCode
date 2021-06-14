@@ -4,50 +4,83 @@ const tableControl = () => {};
 tableControl.allActiveTables = (request, result) =>
   tableModel.allActiveTables([], (error, rows) =>
     error
-      ? result.status(500).send({ message: error })
-      : result.status(200).send(rows)
+    ? result.status(500).send({ message: error })
+    : result.status(200).send(rows)
   );
 
 tableControl.filledSpacesTables = (request, result) =>
   tableModel.filledSpacesTables([], (error, rows) =>
     error
-      ? result.status(500).send({ message: error })
-      : result.status(200).send(rows)
+    ? result.status(500).send({ message: error })
+    : result.status(200).send(rows)
   );
 
-  tableControl.allSuborders = (request, result) =>
-  tableModel.allSuborders([], (error, rows) =>
+tableControl.allSuborders = (request, result) => {
+  const mes_id = request.params.mes_id;
+  console.log(mes_id);
+  tableModel.allSuborders([mes_id], (error, rows) =>
     error
-      ? result.status(500).send({ message: error })
-      : result.status(200).send(rows)
+    ? result.status(500).send({ message: error })
+    : result.status(200).send(rows)
   );
+}
 
-  tableControl.readFood = (request, result) =>
+tableControl.readFood = (request, result) =>
   tableModel.readFood([], (error, rows) =>
     error
-      ? result.status(500).send({ message: error })
-      : result.status(200).send(rows)
+    ? result.status(500).send({ message: error })
+    : result.status(200).send(rows)
   );
 
-  tableControl.addSuborder = (request, result) =>
+tableControl.addSuborder = (request, result) => {
+  const body = request.body;
+  if (
+    body.com_cat_id &&
+    body.com_nombre &&
+    body.com_precio &&
+    body.com_descripcion
+  ) {  // VALIDACION DE DATOS
+    food_model.new_food(
+      [
+        body.com_cat_id,
+        body.com_nombre,
+        body.com_precio,
+        body.com_descripcion,
+      ],
+      (error, rows) => {
+        if (error) {
+          result.status(500).send({ message: error });
+        }
+        else {
+          if (rows.affectedRows > 0)
+            result.status(202).send({ message: "Comida registrada" });
+          else result.status(500).send({ message: "No se registró la comida" });
+        }
+      }
+    );
+  } else result.status(401).send({ message: "Peticion incorrecta" }); // VALIDACION DE DATOS
+
+
+
   tableModel.addSuborder([], (error, rows) =>
     error
-      ? result.status(500).send({ message: error })
-      : result.status(200).send(rows)
+    ? result.status(500).send({ message: error })
+    : result.status(200).send(rows)
   );
+}
 
-  tableControl.deleteSuborder = (request, result) =>
+tableControl.deleteSuborder = (request, result) =>
   tableModel.deleteSuborder([], (error, rows) =>
     error
-      ? result.status(500).send({ message: error })
-      : result.status(200).send(rows)
+    ? result.status(500).send({ message: error })
+    : result.status(200).send(rows)
   );
 
-  tableControl.ordenTable = (request, result) =>
+tableControl.ordenTable = (request, result) =>
   tableModel.ordenTable([], (error, rows) =>
     error
-      ? result.status(500).send({ message: error })
-      : result.status(200).send(rows)
+    ? result.status(500).send({ message: error })
+    : result.status(200).send(rows)
   );
 
 module.exports = tableControl;
