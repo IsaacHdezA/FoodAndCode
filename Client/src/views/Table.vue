@@ -43,7 +43,7 @@
                 fab
                 color="primary"
                 height="200px"
-                width="200px"
+                width="75%"
                 :disabled="viewActivityTables(2, this.tables)"
                 @click="
                   (sub_dialog = true),
@@ -66,7 +66,7 @@
                 fab
                 color="primary"
                 height="200px"
-                width="200px"
+                width="75%"
                 :disabled="viewActivityTables(3, this.tables)"
                 @click="
                   getSuborders(3),
@@ -90,7 +90,7 @@
                 fab
                 color="primary"
                 height="200px"
-                width="200px"
+                width="75%"
                 :disabled="viewActivityTables(4, this.tables)"
                 @click="
                   (sub_dialog = true),
@@ -112,7 +112,7 @@
                 fab
                 color="primary"
                 height="200px"
-                width="200px"
+                width="75%"
                 :disabled="viewActivityTables(5, this.tables)"
                 @click="
                   (sub_dialog = true),
@@ -155,7 +155,7 @@
         </v-col>
       </v-row>
 
-      <v-row>
+      <v-row max-height="50%">
         <v-col cols="4">
           <v-row>
             <v-col cols="6">
@@ -370,7 +370,7 @@
       </v-row>
     </v-container>
 
-    <v-dialog v-model="sub_dialog" max-width="500px">
+    <v-dialog v-model="sub_dialog" max-width="50%">
       <v-card>
         <v-card-title>
           Mesa
@@ -416,12 +416,7 @@
           <v-container>
             <v-row>
               <v-col>
-                <v-text-field
-                  v-model="nueva_suborden.sub_asiento"
-                  label="Asiento"
-                  type="Number"
-                >
-                </v-text-field>
+                <v-select :items="asientosTotales" label="Asientos"> </v-select>
               </v-col>
               <v-col>
                 <v-select
@@ -470,7 +465,8 @@ export default {
         { text: "Acciones", value: "actions" },
       ],
 
-      asientos: [{ sub_asiento: "1" }, { sub_asiento: "2" }],
+      asientos: [],
+      asientosTotales: [],
       posicion: "0",
       nueva_suborden: {
         sub_ord_id: "",
@@ -510,6 +506,14 @@ export default {
       );
     },
 
+    async getSeats(mes_id) {
+      const apiData = await this.axios.get(
+        "table/getSeats/" + mes_id.toString()
+      );
+
+      console.log(apiData.data);
+    },
+
     async getSpacesTables() {
       const apiData = await this.axios.get("table/filledSpacesTables/");
 
@@ -528,7 +532,9 @@ export default {
       );
       this.suborders = apiData.data;
 
-      console.log(this.suborders);
+      if (mes_id === 1 || mes_id === 6 || mes_id === 11)
+        this.asientosTotales = [1, 2, 3, 4, 5, 6, 7, 8];
+      else this.asientosTotales = [1, 2, 3, 4];
     },
 
     viewActivityTables(i, t) {
@@ -554,7 +560,7 @@ export default {
     async agregar_suborden() {
       await this.axios.post("table/addSuborder/", this.nueva_suborden);
       this.new_dialog = false;
-      this.nueva_suborden = [];
+      this.nueva_suborden = {};
     },
 
     cancelar() {
