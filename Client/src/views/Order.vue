@@ -709,6 +709,8 @@ export default {
     },
 
     cancelarAddSub() {
+      this.getActiveOrders();
+      this.getWaitingOrders();
       this.newSubOrderDialog = false;
     },
 
@@ -719,6 +721,8 @@ export default {
         sub_asiento: "",
         sub_cant: "",
       };
+      this.getActiveOrders();
+      this.getWaitingOrders();
       this.subOrdersDialog = false;
     },
 
