@@ -10,7 +10,7 @@ statistic.todayProfit = (data, callback) =>
 
 statistic.monthProfits = (data, callback) =>
   connection.query(
-    "SELECT DATE_FORMAT(pag_fecha_pago, '%m') AS pag_ganancia_mes, SUM(pag_total) AS pag_ganancia FROM pago GROUP BY pag_ganancia_mes ORDER BY pag_ganancia_mes",
+    "SELECT DATE_FORMAT(pag_fecha_pago, '%m') AS pag_ganancia_mes, AVG(pag_total) AS pag_ganancia FROM pago GROUP BY pag_ganancia_mes ORDER BY pag_ganancia_mes",
     data,
     callback
   );
