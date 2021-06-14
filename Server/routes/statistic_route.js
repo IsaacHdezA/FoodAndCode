@@ -9,6 +9,14 @@ router.get(
   statisticControl.allOrdersPerDate
 );
 router.get(
+  "/allOrdersPerTable/:mes_id/:fecha",
+  statisticControl.allOrdersPerTable
+);
+router.get(
+  "/allOrdersPerEmployee/:mro_id/:fecha",
+  statisticControl.allOrdersPerEmployee
+);
+router.get(
   "/countOrdersPerTable/:mes_id/:fecha",
   statisticControl.countOrdersPerTable
 );

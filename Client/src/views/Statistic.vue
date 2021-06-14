@@ -245,8 +245,12 @@
                 El número de órdenes del mesero fue de:
                 <b>{{ this.countOrdersPerEmployee }}</b>
               </v-col>
-              <v-col class="shrink">
-                <v-btn color="info" outlined>
+              <v-col v-if="this.countOrdersPerEmployee !== 0">
+                <v-btn
+                  color="primary"
+                  depressed
+                  @click="openOrdersEmployeeDialog()"
+                >
                   Ver órdenes
                 </v-btn>
               </v-col>
@@ -336,6 +340,15 @@
                 El número de órdenes de la mesa fue de:
                 <b>{{ this.countOrdersPerTable }}</b>
               </v-col>
+              <v-col v-if="this.countOrdersPerTable !== 0">
+                <v-btn
+                  color="primary"
+                  depressed
+                  @click="openOrdersTableDialog()"
+                >
+                  Ver órdenes
+                </v-btn>
+              </v-col>
             </v-row>
           </v-alert>
           <v-alert
@@ -360,7 +373,7 @@
           </v-toolbar-title>
         </v-toolbar>
         <v-data-table
-          :headers="headers"
+          :headers="headersOrdersDate"
           :items="ordersPerDate"
           :sort-by="['mes_id', 'mro_nombre', 'ord_estado']"
           :sort-desc="[false, true]"
@@ -369,6 +382,63 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="primary darken-1" text @click="closeOrdersDialog()">
+            Cerrar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog class="toolbar-subtitle" v-model="otDialog" max-width="600">
+      <v-card>
+        <v-toolbar dark class="toolbar-title" color="primary">
+          <v-toolbar-title>
+            Ordenes de la mesa {{ this.idTable }}
+          </v-toolbar-title>
+        </v-toolbar>
+        <v-data-table
+          :headers="headersOrdersTable"
+          :items="ordersPerTable"
+          :sort-by="['mro_nombre', 'ord_fecha_hora', 'ord_estado']"
+          :sort-desc="[false, true]"
+          class="container-inside"
+        ></v-data-table>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary darken-1"
+            text
+            @click="closeOrdersTableDialog()"
+          >
+            Cerrar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog class="toolbar-subtitle" v-model="oeDialog" max-width="600">
+      <v-card>
+        <v-toolbar dark class="toolbar-title" color="primary">
+          <v-toolbar-title>
+            Ordenes de
+            {{
+              typeof ordersPerEmployee[0] !== "undefined"
+                ? ordersPerEmployee[0].mro_nombre
+                : ""
+            }}
+          </v-toolbar-title>
+        </v-toolbar>
+        <v-data-table
+          :headers="headersOrdersEmployee"
+          :items="ordersPerEmployee"
+          :sort-by="['mes_id', 'ord_fecha_hora', 'ord_estado']"
+          :sort-desc="[false, true]"
+          class="container-inside"
+        ></v-data-table>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary darken-1"
+            text
+            @click="closeOrdersEmployeeDialog()"
+          >
             Cerrar
           </v-btn>
         </v-card-actions>
@@ -386,9 +456,19 @@ export default {
   name: "Statistic",
 
   data: () => ({
-    headers: [
+    headersOrdersDate: [
       { text: "Mesa", align: "center", value: "mes_id" },
       { text: "Mesero a cargo", align: "center", value: "mro_nombre" },
+      { text: "Estado", align: "center", value: "ord_estado" },
+    ],
+    headersOrdersTable: [
+      { text: "Mesero a cargo", align: "center", value: "mro_nombre" },
+      { text: "Hora", align: "center", value: "ord_fecha_hora" },
+      { text: "Estado", align: "center", value: "ord_estado" },
+    ],
+    headersOrdersEmployee: [
+      { text: "Mesa", align: "center", value: "mes_id" },
+      { text: "Hora", align: "center", value: "ord_fecha_hora" },
       { text: "Estado", align: "center", value: "ord_estado" },
     ],
     months: [
@@ -410,10 +490,10 @@ export default {
     tables: [],
     employees: [],
     ordersPerDate: [],
+    ordersPerTable: [],
+    ordersPerEmployee: [],
 
     todayProfit: "",
-    ordersPerTable: "",
-    ordersPerEmployee: "",
     salesPerDate: "",
     orderDate: "",
     saleDate: "",
@@ -432,6 +512,8 @@ export default {
     createSpark: false,
     thereProfits: false,
     oDialog: false,
+    otDialog: false,
+    oeDialog: false,
     alertErrorOrdersPerDate: false,
     alertCountOrdersPerTable: false,
     alertCountOrdersPerEmployee: false,
@@ -537,6 +619,44 @@ export default {
       this.ordersPerDate = apiData.data;
     },
 
+    async getOrdersPerTable() {
+      const apiData = await this.axios.get(
+        "statistic/allOrdersPerTable/" +
+          this.idTable.toString() +
+          "/" +
+          this.tableDate.toString()
+      );
+
+      for (let i = 0; i < apiData.data.length; i++) {
+        if (apiData.data[i].ord_estado == "a")
+          apiData.data[i].ord_estado = "Activa";
+        else if (apiData.data[i].ord_estado == "i")
+          apiData.data[i].ord_estado = "Pagada";
+        else apiData.data[i].ord_estado = "Pendiente";
+      }
+
+      this.ordersPerTable = apiData.data;
+    },
+
+    async getOrdersPerEmployee() {
+      const apiData = await this.axios.get(
+        "statistic/allOrdersPerEmployee/" +
+          this.idEmployee.toString() +
+          "/" +
+          this.employeeDate.toString()
+      );
+
+      for (let i = 0; i < apiData.data.length; i++) {
+        if (apiData.data[i].ord_estado == "a")
+          apiData.data[i].ord_estado = "Activa";
+        else if (apiData.data[i].ord_estado == "i")
+          apiData.data[i].ord_estado = "Pagada";
+        else apiData.data[i].ord_estado = "Pendiente";
+      }
+
+      this.ordersPerEmployee = apiData.data;
+    },
+
     async getCountOrdersPerTable() {
       if (this.idTable && this.tableDate) {
         const apiData = await this.axios.get(
@@ -609,6 +729,32 @@ export default {
       this.orderDate = "";
       this.ordersPerDate = [];
       this.oDialog = false;
+    },
+
+    openOrdersTableDialog() {
+      if (this.idTable && this.tableDate) {
+        this.getOrdersPerTable();
+        this.otDialog = true;
+      }
+    },
+
+    closeOrdersTableDialog() {
+      (this.idTable = ""), (this.tableDate = "");
+      this.ordersPerTable = [];
+      this.otDialog = false;
+    },
+
+    openOrdersEmployeeDialog() {
+      if (this.idEmployee && this.employeeDate) {
+        this.getOrdersPerEmployee();
+        this.oeDialog = true;
+      }
+    },
+
+    closeOrdersEmployeeDialog() {
+      (this.idEmployee = ""), (this.employeeDate = "");
+      this.ordersPerEmployee = [];
+      this.oeDialog = false;
     },
   },
 
